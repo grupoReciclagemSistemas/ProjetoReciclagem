@@ -12,7 +12,6 @@ public class Reciclador extends PessoaJuridica {
     
     public Reciclador(){
         super();
-        super.setComprador(true);
     }
 
 }

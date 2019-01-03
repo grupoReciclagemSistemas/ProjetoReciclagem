@@ -23,6 +23,7 @@ public class GerarInstancias {
         g1.setSenha("teste");
         g1.setTelefone("(99) 9999-9999");
         
+   
         DAO<Gerador> acesso = new DAO(g1);
         acesso.inserir();
     }

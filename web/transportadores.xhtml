@@ -21,22 +21,22 @@ and open the template in the editor.
         
         <b:container fluid="true" style="padding-top: 60px; padding-left: 3%; padding-right: 3%; font-size: smaller;">
             <b:form>
-        <b:panel title="Recicladores" look="danger"  showCollapseLink="false">
-            <b:dataTable value="#{controladorReciclador.listar()}" 
-                         var="reciclador" 
+        <b:panel title="Transportadores" showCollapseLink="false">
+            <b:dataTable value="#{controladorTransportador.listar()}" 
+                         var="trans" 
                          page-length="5"
                          page-length-menu="5,10,20"
-                         customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+                         customLangUrl="//cdn.datables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
                          responsive="true"
                          select="false">
-                        <b:dataTableColumn label="ID" value="#{reciclador.idPessoaJuridica}"/>  
-                        <b:dataTableColumn label="Razão Social" value="#{reciclador.razaoSocial}"/>
-                        <b:dataTableColumn label="CNPJ" value="#{reciclador.cnpj}"/>
-                        <b:dataTableColumn label="Email" value="#{reciclador.email}"/>
-                        <b:dataTableColumn label="Telefone" value="#{reciclador.telefone}"/>
+                        <b:dataTableColumn label="ID" value="#{trans.idPessoaJuridica}"/>  
+                        <b:dataTableColumn label="Razão Social" value="#{trans.razaoSocial}"/>
+                        <b:dataTableColumn label="CNPJ" value="#{trans.cnpj}"/>
+                        <b:dataTableColumn label="Email" value="#{trans.email}"/>
+                        <b:dataTableColumn label="Telefone" value="#{trans.telefone}"/>
                         <b:dataTableColumn label="Excluir">
                             
-                            <b:commandButton look="danger" value="Excluir" action="#{controladorReciclador.removerReciclador(reciclador)}" onclick="return confirm('Deseja excluir  o #{reciclador.razaoSocial}')"> </b:commandButton>
+                            <b:commandButton look="danger" value="Excluir" action="#{controladorTransportador.remover(trans)}" onclick="return confirm('Deseja excluir  o #{reciclador.razaoSocial} ?')"> </b:commandButton>
                         </b:dataTableColumn>
                       
                    
@@ -51,3 +51,4 @@ and open the template in the editor.
         </b:container>
     </h:body>
 </html>
+

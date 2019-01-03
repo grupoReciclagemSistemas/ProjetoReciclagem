@@ -41,7 +41,7 @@ public abstract class PessoaJuridica implements Serializable {
     @Column(nullable = false)
     private String telefone;
     
-    private boolean comprador;
+  
     
     public PessoaJuridica(){
         
@@ -131,20 +131,8 @@ public abstract class PessoaJuridica implements Serializable {
         this.telefone = telefone;
     }
 
-    /**
-     * @return the comprador
-     */
-    public boolean isComprador() {
-        return comprador;
-    }
-
-    /**
-     * @param comprador the comprador to set
-     */
-    public void setComprador(boolean comprador) {
-        this.comprador = comprador;
-    }
     
     
+ 
     
 }

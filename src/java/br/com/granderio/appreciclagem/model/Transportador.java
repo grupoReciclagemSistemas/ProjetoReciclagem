@@ -7,10 +7,14 @@ package br.com.granderio.appreciclagem.model;
 
 import javax.persistence.Entity;
 
+/**
+ *
+ * @author Rafael
+ */
 @Entity
-public class Gerador extends PessoaJuridica {
-       
-    public Gerador(){
+public class Transportador extends PessoaJuridica {
+    
+    public Transportador(){
         super();
     }
     

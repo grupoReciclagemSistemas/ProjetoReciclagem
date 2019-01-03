@@ -20,18 +20,26 @@ import javax.inject.Named;
 @ManagedBean
 @SessionScoped
 @Named(value="controladorRegistrar")
-public class ControladorRegistrar implements Serializable {
+public  class ControladorRegistrar implements Serializable {
     
     // 1 --> Reciclador
     // 2 --> Gerador
     private int tipoDePessoa;
     
     private Gerador novoGerador;
+    
+    
     private Reciclador novoReciclador;
+    private boolean transportadoraReciclador = false;
          
     public ControladorRegistrar(){
         novoGerador = new Gerador();
         novoReciclador = new Reciclador();
+    }
+    
+    public String transporte(boolean valor){
+        transportadoraReciclador = true;
+        return "registrar";
     }
     
     public String registrarGerador(){
@@ -95,6 +103,20 @@ public class ControladorRegistrar implements Serializable {
      */
     public void setNovoReciclador(Reciclador novoReciclador) {
         this.novoReciclador = novoReciclador;
+    }
+
+    /**
+     * @return the transportadoraReciclador
+     */
+    public boolean isTransportadoraReciclador() {
+        return transportadoraReciclador;
+    }
+
+    /**
+     * @param transportadoraReciclador the transportadoraReciclador to set
+     */
+    public void setTransportadoraReciclador(boolean transportadoraReciclador) {
+        this.transportadoraReciclador = transportadoraReciclador;
     }
 
      
