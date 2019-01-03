@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="/WEB-INF/menu.xhtml" />
+        
+        <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorRegistrar.tipoDePessoa == 0}" >
+            <b:form>
+                <b:panel title="Registrar" look="info"  showCollapseLink="false">
+                    <f:facet name="footer">                     
+                        <h5 style="color: black"> Escolha o Tipo de Usuario que deseja Cadastrar. </h5>                     
+                    </f:facet>
+                    <b:selectOneMenu value="#{controladorRegistrar.tipoDePessoa}" onchange="submit()">
+                    <f:selectItem itemLabel="-- ESCOLHA --" itemValue="0" />
+                    <f:selectItem itemLabel="Reciclador" itemValue="1" />
+                    <f:selectItem itemLabel="Gerador" itemValue="2" />     
+                </b:selectOneMenu>
+               </b:panel>
+           </b:form>
+            <b:form>
+                <center> <b:commandLink value="Voltar" action="index?faces-redirect=true" /> </center>
+            </b:form>
+       </b:container>
+              
+        <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorRegistrar.tipoDePessoa == 1}" >
+            <b:form>              
+                <b:panel title="Registrar Reciclador" look="info"  showCollapseLink="false"> 
+                  <f:facet name="footer"> 
+                      <center> <b> <h4 style="color: blue"> ATENÇÃO !!! </h4> </b> </center>
+                      <h5 style="color: blue"> Reciclador só poderá Comprar produtos no Sistema. </h5>
+                  </f:facet>
+                    
+                    <b:inputText label="Email" value="#{controladorRegistrar.novoReciclador.email}" size="20"  required="true"/>
+                    <b:inputSecret label="Senha" value="#{controladorRegistrar.novoReciclador.senha}" size="20" required="true"/>
+                    <b:inputText label="Razão Social" value="#{controladorRegistrar.novoReciclador.razaoSocial}" size="50" required="true"/>
+                    <b:inputText label="Telefone" value="#{controladorRegistrar.novoReciclador.telefone}" size="15" required="true"/>              
+                    <b:inputText label="CNPJ" value="#{controladorRegistrar.novoReciclador.cnpj}" size="10" required="true"/>
+                    <center> <b:commandButton value="Registrar" look="info" action="#{controladorRegistrar.registrarReciclador()}" />   </center>              
+                </b:panel>     
+            </b:form>
+            <center>
+                <b:form>           
+                    <b:commandLink value="Voltar"  action="#{controladorRegistrar.voltar()}"/>         
+                </b:form>
+            </center>
+        </b:container>
+        
+        <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorRegistrar.tipoDePessoa == 2}" >
+                       
+            <b:form>
+                
+                <b:panel title="Registrar Gerador" look="danger"  showCollapseLink="false"> 
+                  <f:facet name="footer"> 
+                      <center> <b> <h4 style="color: red"> ATENÇÃO !!! </h4> </b> </center>
+                      <h5 style="color: red"> Gerador só poderá Vender os produtos no Sistema. </h5>
+                  </f:facet>
+                    <b:inputText label="Email" value="#{controladorRegistrar.novoGerador.email}" size="20" required="true"/>
+                    <b:inputSecret label="Senha" value="#{controladorRegistrar.novoGerador.senha}" size="20" required="true"/>
+                    <b:inputText label="Razão Social" value="#{controladorRegistrar.novoGerador.razaoSocial}" size="50" required="true"/>
+                    <b:inputText label="Telefone" value="#{controladorRegistrar.novoGerador.telefone}" size="15" required="true"/>             
+                    <b:inputText label="CNPJ" value="#{controladorRegistrar.novoGerador.cnpj}" size="10" required="true"/>
+                    <center> <b:commandButton value="Registrar" look="danger" action="#{controladorRegistrar.registrarGerador()}"/>    </center>               
+                </b:panel>     
+            </b:form>
+            <center>
+                <b:form>
+                    <b:commandLink value="Voltar" action="#{controladorRegistrar.voltar()}"/>
+                </b:form>
+            </center>
+        </b:container>
+        
+    </h:body>
+</html>
+

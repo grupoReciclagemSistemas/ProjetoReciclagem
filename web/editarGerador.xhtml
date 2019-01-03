@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="/WEB-INF/menu.xhtml" />
+        
+        <b:container fluid="true" style="padding-top: 60px; padding-left: 3%; padding-right: 3%; font-size: smaller;">
+            <b:form> 
+                <b:panel title="Editar Gerador #{controladorGerador.modelo.razaoSocial}" look="danger"  showCollapseLink="false">
+                    
+                    <b:inputText  label="Razão Social" value="#{controladorGerador.modelo.razaoSocial}" /> 
+                    <b:inputText  label="CNPJ" value="#{controladorGerador.modelo.cnpj}" /> 
+                    <b:inputText  label="Telefone" value="#{controladorGerador.modelo.telefone}" /> 
+                    <b:inputText  label="Email" value="#{controladorGerador.modelo.email}" /> 
+                    <b:commandButton value="Editar" look="success" action="#{controladorGerador.editarGerador(controladorGerador.modelo)}"/>
+                    
+                <b:commandButton value="Voltar" look="danger" action="geradores?faces-redirect=true" />
+            </b:panel>
+            </b:form>
+        </b:container>
+    </h:body>
+</html>
+
