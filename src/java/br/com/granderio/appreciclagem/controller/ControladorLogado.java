@@ -7,6 +7,7 @@ package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Reciclador;
+import br.com.granderio.appreciclagem.model.Transportador;
 import java.io.Serializable;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
@@ -23,13 +24,15 @@ public class ControladorLogado implements Serializable {
     
     private Reciclador recicladorLogado;
     private Gerador geradorLogado;
+    private Transportador transportadorLogado;
     
     private String email;
     private String senha;
    
    public ControladorLogado(){
        recicladorLogado = null;
-       geradorLogado = null;      
+       geradorLogado = null;
+       transportadorLogado = null;
    }
    
    public boolean veriRecicladorLogado(){

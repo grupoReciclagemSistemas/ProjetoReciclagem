@@ -32,7 +32,7 @@ import org.hibernate.Session;
  * @param <T> tipo genérico para as classes de modelo a serem persistidas.
  */
 public class DAO<T> {
-
+    
     private T objetoModelo;
     public Session s;
 
