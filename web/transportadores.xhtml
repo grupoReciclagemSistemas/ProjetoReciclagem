@@ -42,10 +42,9 @@ and open the template in the editor.
                    
            </b:dataTable> 
             
-            <f:facet name="footer">
-                             <b:commandButton look="success" value="Novo " action="registrar?faces-redirect=true"> </b:commandButton>
-                            
-                        </f:facet>
+           <f:facet name="footer">
+                <b:commandButton look="success" value="Novo " action="registrar?faces-redirect=true" actionListener="#{controladorRegistrar.teste(3)}"> </b:commandButton>                          
+            </f:facet>
         </b:panel>
           </b:form>
         </b:container>

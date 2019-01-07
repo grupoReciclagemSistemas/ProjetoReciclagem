@@ -33,13 +33,18 @@ and open the template in the editor.
                         <b:dataTableColumn label="Razão Social" value="#{gerador.razaoSocial}"/>
                         <b:dataTableColumn label="CNPJ" value="#{gerador.cnpj}"/>
                         <b:dataTableColumn label="Email" value="#{gerador.email}"/>
-                        <b:dataTableColumn label="Telefone" value="#{gerador.telefone}"/>                                    
+                        <b:dataTableColumn label="Telefone" value="#{gerador.telefone}"/>
+                       
                         <b:dataTableColumn label="Excluir">
                             <b:commandButton value="Excluir" look="danger" action="#{controladorGerador.removerGerador(gerador)}" onclick="return confirm('Deseja realmente excluir #{gerador.razaoSocial}, CNPJ: #{gerador.cnpj}')" />    
                         </b:dataTableColumn>
                         
                                             
-             </b:dataTable>        
+            </b:dataTable>
+            
+            <f:facet name="footer">
+                <b:commandButton look="success" value="Novo " action="registrar?faces-redirect=true" actionListener="#{controladorRegistrar.teste(2)}"> </b:commandButton>                          
+            </f:facet>
         </b:panel>
           </b:form>
         </b:container>

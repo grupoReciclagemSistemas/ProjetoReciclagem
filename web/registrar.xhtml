@@ -44,12 +44,20 @@
                     <b:inputText label="Razão Social" value="#{controladorRegistrar.novoReciclador.razaoSocial}" size="50" required="true"/>
                     <b:inputText label="Telefone" value="#{controladorRegistrar.novoReciclador.telefone}" size="15" required="true"/>              
                     <b:inputText label="CNPJ" value="#{controladorRegistrar.novoReciclador.cnpj}" size="10" required="true"/>
-                    <b:selectBooleanCheckbox value="#{controladorRegistrar.transportadoraReciclador}" label="Possui Transportadora?">
+                    
+                    <b:container fluid="true" style="padding-top: 20px; padding-left: 20%; padding-right: 20%; font-size: smaller;">                  
+                        <b:inputText label="Logradouro" value="#{controladorRegistrar.novoReciclador.endereco.logradouro}" size="10" required="true"/>
+                        <b:inputText label="Bairro" value="#{controladorRegistrar.novoReciclador.endereco.bairro}" size="10" required="true"/>
+                        <b:inputText label="CEP" value="#{controladorRegistrar.novoReciclador.endereco.cep}" size="10" required="true"/>
+                        <b:inputText label="Complemento" value="#{controladorRegistrar.novoReciclador.endereco.complemento}" size="10" required="true"/>
                         
-                    </b:selectBooleanCheckbox>
-                    <b:selectOneMenu rendered="#{controladorRegistrar.transportadoraReciclador == true}">
-                        <f:selectItems var="obj" value="#{controladorGerador.listagem()}" itemLabel="#{obj.email}" itemValue="#{obj}"  ></f:selectItems>
-                    </b:selectOneMenu>
+                        <b:selectOneMenu label="Escolha a UF" value="#{controladorRegistrar.novoReciclador.endereco.uf}">
+                            <f:selectItems var="obj" value="#{controladorEndereco.uf}" itemLabel="#{obj}" itemValue="#{obj}" />
+                        </b:selectOneMenu>
+                        <b:inputText label="Numero" value="#{controladorRegistrar.novoReciclador.endereco.numero}" size="10" required="true"/>
+                        <b:inputText label="Cidade" value="#{controladorRegistrar.novoReciclador.endereco.cidade}" size="10" required="true"/> 
+                    </b:container>
+                    
                     <center> <b:commandButton value="Registrar" look="info" action="#{controladorRegistrar.registrarReciclador()}" />   </center>              
                 </b:panel>     
             </b:form>

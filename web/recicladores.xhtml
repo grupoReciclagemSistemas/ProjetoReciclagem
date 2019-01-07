@@ -34,6 +34,8 @@ and open the template in the editor.
                         <b:dataTableColumn label="CNPJ" value="#{reciclador.cnpj}"/>
                         <b:dataTableColumn label="Email" value="#{reciclador.email}"/>
                         <b:dataTableColumn label="Telefone" value="#{reciclador.telefone}"/>
+                        <b:dataTableColumn label="Logradouro" value="#{reciclador.endereco.logradouro}"/>
+                        <b:dataTableColumn label="Logradouro" value="#{reciclador.endereco.cep}"/>
                         <b:dataTableColumn label="Excluir">
                             
                             <b:commandButton look="danger" value="Excluir" action="#{controladorReciclador.removerReciclador(reciclador)}" onclick="return confirm('Deseja excluir  o #{reciclador.razaoSocial}')"> </b:commandButton>
@@ -43,9 +45,9 @@ and open the template in the editor.
            </b:dataTable> 
             
             <f:facet name="footer">
-                             <b:commandButton look="success" value="Novo " action="registrar?faces-redirect=true"> </b:commandButton>
-                            
-                        </f:facet>
+                <b:commandButton look="success" value="Novo " action="registrar?faces-redirect=true" actionListener="#{controladorRegistrar.teste(1)}"> </b:commandButton>                          
+            </f:facet>
+            
         </b:panel>
           </b:form>
         </b:container>

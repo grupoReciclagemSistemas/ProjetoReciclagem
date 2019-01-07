@@ -24,6 +24,7 @@ public  class ControladorRegistrar implements Serializable {
     
     // 1 --> Reciclador
     // 2 --> Gerador
+    // 3 transportador
     private int tipoDePessoa;
     
     private Gerador novoGerador;
@@ -35,6 +36,10 @@ public  class ControladorRegistrar implements Serializable {
     public ControladorRegistrar(){
         novoGerador = new Gerador();
         novoReciclador = new Reciclador();
+    }
+    
+    public void teste(int x ){
+        this.setTipoDePessoa(x);    
     }
     
     public String transporte(boolean valor){

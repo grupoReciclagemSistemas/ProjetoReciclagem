@@ -6,6 +6,9 @@
 package br.com.granderio.appreciclagem.model;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ArrayList;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -41,10 +45,12 @@ public abstract class PessoaJuridica implements Serializable {
     @Column(nullable = false)
     private String telefone;
     
-  
-    
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Endereco endereco;
+       
     public PessoaJuridica(){
-        
+        idPessoaJuridica = -1;
+        endereco = new Endereco();
     }
 
     /**
@@ -131,8 +137,14 @@ public abstract class PessoaJuridica implements Serializable {
         this.telefone = telefone;
     }
 
-    
-    
- 
-    
+   
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+   
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
 }
