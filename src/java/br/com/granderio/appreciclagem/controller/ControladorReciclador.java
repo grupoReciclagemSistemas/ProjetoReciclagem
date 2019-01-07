@@ -34,7 +34,6 @@ public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
     }
     
     public String novoReciclador(){
-
         return "registrar?faces-redirect=true";
     }
       

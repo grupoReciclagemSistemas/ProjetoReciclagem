@@ -45,7 +45,13 @@
                     <b:inputText label="Telefone" value="#{controladorRegistrar.novoReciclador.telefone}" size="15" required="true"/>              
                     <b:inputText label="CNPJ" value="#{controladorRegistrar.novoReciclador.cnpj}" size="10" required="true"/>
                     
-                    <b:container fluid="true" style="padding-top: 20px; padding-left: 20%; padding-right: 20%; font-size: smaller;">                  
+                    <h:selectOneMenu label="Possui Transportador?" value="">
+                         <f:selectItem itemLabel="Não" itemValue="false" />
+                        <f:selectItem itemLabel="Sim" itemValue="true"/>                   
+                    </h:selectOneMenu>
+                    
+                    <h3 style="color: green"> Endereço </h3>
+                    <b:container fluid="true" style="padding-top: 30px; padding-left: 30%; padding-right: 30%; font-size: smaller;">                  
                         <b:inputText label="Logradouro" value="#{controladorRegistrar.novoReciclador.endereco.logradouro}" size="10" required="true"/>
                         <b:inputText label="Bairro" value="#{controladorRegistrar.novoReciclador.endereco.bairro}" size="10" required="true"/>
                         <b:inputText label="CEP" value="#{controladorRegistrar.novoReciclador.endereco.cep}" size="10" required="true"/>
@@ -72,7 +78,7 @@
                        
             <b:form>
                 
-                <b:panel title="Registrar Gerador" look="danger"  showCollapseLink="false"> 
+                <b:panel title="Registrar Gerador" showCollapseLink="false"> 
                   <f:facet name="footer"> 
                       <center> <b> <h4 style="color: red"> ATENÇÃO !!! </h4> </b> </center>
                       <h5 style="color: red"> Gerador só poderá Vender os produtos no Sistema. </h5>
