@@ -33,6 +33,7 @@ public class Material implements Serializable {
     private Double peso;
     private Double valor;
     
+    // 1 Material pode pertencer a vários itens de Pedidos
     @OneToMany(mappedBy="material", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemPedido> itens;
     

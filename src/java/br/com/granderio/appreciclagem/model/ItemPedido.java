@@ -26,9 +26,11 @@ public class ItemPedido implements Serializable {
     private Double preco;
     private Double quantidade;
     
+    // 1 item de pedido vai pertencer somente a um Pedido de Reciclagem
     @ManyToOne
     private PedidoReciclagem pedidoDeReciclagem;
     
+    // 1 item de pedido vai conter 1 Material
     @ManyToOne
     private Material material;
     

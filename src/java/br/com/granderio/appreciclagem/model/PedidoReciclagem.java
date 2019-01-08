@@ -38,18 +38,27 @@ public class PedidoReciclagem implements Serializable {
     
     private double valorTotal;
     
+    /*
+    Um PedidoReciclagem vai ter vários Itens de Pedidos, que contém 1 Material e 1 Pedido de Reciclagem
+    ou seja, pode fazer 1 Pedido com 50 itens de Pedidos
+    */
     @OneToMany(mappedBy="pedidoDeReciclagem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemPedido> itens;
     
+    // Acho que não precisaria desse atributo, pois o localEntrega vai ser o atributo Endereço de Reciclador
     private String localEntrega;
+    
     private String observações;
     
+    // 1 Pedido De Reciclagem vai ter um gerador --> Empresa que está vendendo o ItemPedido
     @ManyToOne
     private Gerador gerador;
     
+    // 1 Pedido De Reciclagem vai ter um reciclador --> Empresa que está comprando o ItemPedido de GERADOR
     @ManyToOne
     private Reciclador reciclador;
     
+    // 1 Pedido De Reciclagem vai ter um transportador --> Vai fazer a entrega, buscando no Endereço de Gerador para entregar no Endereço de Reciclador
     @ManyToOne
     private Transportador transportador;
     
