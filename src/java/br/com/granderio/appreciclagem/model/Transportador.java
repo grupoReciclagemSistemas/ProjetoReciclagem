@@ -5,7 +5,11 @@
  */
 package br.com.granderio.appreciclagem.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -14,8 +18,28 @@ import javax.persistence.Entity;
 @Entity
 public class Transportador extends PessoaJuridica {
     
+    @OneToMany(mappedBy="transportador", fetch = FetchType.LAZY)
+    private List<PedidoReciclagem> pedidosDeReciclagens;
+    
     public Transportador(){
         super();
+        pedidosDeReciclagens = new ArrayList();
     }
+
+    /**
+     * @return the pedidosDeReciclagens
+     */
+    public List<PedidoReciclagem> getPedidosDeReciclagens() {
+        return pedidosDeReciclagens;
+    }
+
+    /**
+     * @param pedidosDeReciclagens the pedidosDeReciclagens to set
+     */
+    public void setPedidosDeReciclagens(List<PedidoReciclagem> pedidosDeReciclagens) {
+        this.pedidosDeReciclagens = pedidosDeReciclagens;
+    }
+    
+    
     
 }

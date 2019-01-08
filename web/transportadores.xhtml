@@ -36,15 +36,16 @@ and open the template in the editor.
                         <b:dataTableColumn label="Telefone" value="#{trans.telefone}"/>
                         <b:dataTableColumn label="Excluir">
                             
-                            <b:commandButton look="danger" value="Excluir" action="#{controladorTransportador.remover(trans)}" onclick="return confirm('Realmente deseja excluir  #{trans.razaoSocial} - CNPJ: #{trans.cnpj} ?')"> </b:commandButton>
+                            <b:commandButton look="danger" value="Excluir" action="#{controladorTransportador.removerTransportador(trans)}" onclick="return confirm('Realmente deseja excluir  #{trans.razaoSocial} - CNPJ: #{trans.cnpj} ?')"> </b:commandButton>
                         </b:dataTableColumn>
                       
                       
            </b:dataTable> 
             
            <f:facet name="footer">
-                <b:commandButton look="success" value="Novo " action="registrar?faces-redirect=true" actionListener="#{controladorRegistrar.teste(3)}"> </b:commandButton>                          
+                <b:commandButton look="success" value="Novo Registro" action="registrar?faces-redirect=true" > </b:commandButton>                          
             </f:facet>
+            
         </b:panel>
           </b:form>
         </b:container>

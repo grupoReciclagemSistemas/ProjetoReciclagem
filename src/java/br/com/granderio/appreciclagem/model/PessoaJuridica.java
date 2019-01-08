@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -47,10 +49,10 @@ public abstract class PessoaJuridica implements Serializable {
     
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Endereco endereco;
-       
+
     public PessoaJuridica(){
         idPessoaJuridica = -1;
-        endereco = new Endereco();
+        endereco = new Endereco();     
     }
 
     /**
@@ -146,5 +148,7 @@ public abstract class PessoaJuridica implements Serializable {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
+
+   
 
 }

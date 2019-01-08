@@ -6,12 +6,12 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
-import br.com.granderio.appreciclagem.model.Endereco;
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
 import java.io.Serializable;
 import javax.annotation.ManagedBean;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -26,24 +26,25 @@ public  class ControladorRegistrar implements Serializable {
     
     // 1 --> Reciclador
     // 2 --> Gerador
-    // 3 transportador
+    // 3 --> Transportador
     private int tipoDePessoa;
     
     private Gerador novoGerador;
     private Reciclador novoReciclador;
     private Transportador novoTransportador;
-    
      
     public ControladorRegistrar(){
         novoGerador = new Gerador();
         novoReciclador = new Reciclador();
         novoTransportador = new Transportador();
+        
     }
     
     public void registrarTipoPessoa(int valor){
         this.setTipoDePessoa(valor);    
     }
     
+
      public String registrarTransportador(){
        DAO<Transportador> acesso = new DAO(novoTransportador);
        acesso.inserir();
@@ -60,8 +61,16 @@ public  class ControladorRegistrar implements Serializable {
         return "geradores?faces-redirect=true";
     }
     
-    public String registrarReciclador(){       
+    public String registrarReciclador(){
         DAO<Reciclador> acesso = new DAO(novoReciclador);
+        String email = novoReciclador.getEmail();
+        String cnpj = novoReciclador.getCnpj();
+        if( acesso.verificarEmail(email) ){            
+            return "index?faces-redirect=true";
+        }
+        if( acesso.verificarCNPJ(cnpj)){           
+            return "index?faces-redirect=true"; 
+        }      
         acesso.inserir();
         novoReciclador = new Reciclador();
         tipoDePessoa = 0;
@@ -70,6 +79,9 @@ public  class ControladorRegistrar implements Serializable {
     
     public String voltar(){
         tipoDePessoa = 0;
+        novoReciclador = new Reciclador();
+        novoGerador = new Gerador();
+        novoTransportador = new Transportador();
        return "registrar";
     }
    
@@ -128,6 +140,8 @@ public  class ControladorRegistrar implements Serializable {
     public void setNovoTransportador(Transportador novoTransportador) {
         this.novoTransportador = novoTransportador;
     }
+
+    
 
  
 }

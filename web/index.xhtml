@@ -6,23 +6,12 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     
     <h:head>
-        <title>Facelet Title</title>
+        <title>Início</title>
     </h:head>
     <h:body>
         <ui:include src="/WEB-INF/menu.xhtml" />
         
-        <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" >
-            <b:form>
-                <b:panel title="Logar" look="info"  showCollapseLink="false"> 
-                    <b:inputText label="Email" value="#{controladorLogado.email}" size="10" />
-                    <b:inputSecret label="Senha" value="#{controladorLogado.senha}" size="10" />
-                    <center>
-                    <b:commandButton value="Logar" look="success"/> &nbsp; &nbsp;
-                    <b:commandButton value="Registrar" look="info" action="registrar?faces-redirect=true"/>
-                    </center>
-                </b:panel>     
-            </b:form>                      
-        </b:container>
+        <h2>Página Inicial</h2>
         
     </h:body>
 </html>

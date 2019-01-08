@@ -53,5 +53,8 @@ Contributor(s):
     <mapping class="br.com.granderio.appreciclagem.model.Reciclador"/>
     <mapping class="br.com.granderio.appreciclagem.model.Transportador"/>
     <mapping class="br.com.granderio.appreciclagem.model.Endereco"/>
+    <mapping class="br.com.granderio.appreciclagem.model.ItemPedido"/>
+    <mapping class="br.com.granderio.appreciclagem.model.Material"/>
+    <mapping class="br.com.granderio.appreciclagem.model.PedidoReciclagem"/>
   </session-factory>
 </hibernate-configuration>

@@ -16,12 +16,16 @@
  */
 package br.com.granderio.appreciclagem.dao;
 
+import br.com.granderio.appreciclagem.model.Gerador;
+import br.com.granderio.appreciclagem.model.PessoaJuridica;
 import br.com.granderio.appreciclagem.util.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Esta classe implementa um DAO (Data Access Object - Genérico) para conexão ao
@@ -140,5 +144,47 @@ public class DAO<T> {
         return data;
     }
     
+    public boolean verificarEmail(String email){
+        List<PessoaJuridica> lista = null;
+        try{
+            s.getTransaction().begin();
+            Criteria cri = s.createCriteria(PessoaJuridica.class);
+            cri.add(Restrictions.eq("email", email));         
+            lista = cri.list();
+        }catch(HibernateException ex){
+            System.err.println("Erro ao buscar registros: " + ex);
+            s.getTransaction().rollback();
+        }finally{
+          s.getTransaction().commit();
+            s.flush();    
+        }
+        
+        if(lista.size() > 0 ){
+            return true;
+        }
+         return false;   
+    }
+    
+     public boolean verificarCNPJ(String cnpj){
+        List<PessoaJuridica> lista = null;
+        try{
+            s.getTransaction().begin();
+            Criteria cri = s.createCriteria(PessoaJuridica.class);
+            cri.add(Restrictions.eq("cnpj", cnpj));         
+            lista = cri.list();
+        }catch(HibernateException ex){
+            System.err.println("Erro ao buscar registros: " + ex);
+            s.getTransaction().rollback();
+        }finally{
+          s.getTransaction().commit();
+            s.flush();    
+        }
+        if(lista.size() > 0 ){
+            return true;
+        }
+         return false;   
+    }
+    
+  
 }
 
