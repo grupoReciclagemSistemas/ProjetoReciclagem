@@ -6,8 +6,10 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
+import br.com.granderio.appreciclagem.model.Endereco;
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Reciclador;
+import br.com.granderio.appreciclagem.model.Transportador;
 import java.io.Serializable;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
@@ -28,25 +30,28 @@ public  class ControladorRegistrar implements Serializable {
     private int tipoDePessoa;
     
     private Gerador novoGerador;
-    
-    
     private Reciclador novoReciclador;
-    private boolean transportadoraReciclador = false;
-         
+    private Transportador novoTransportador;
+    
+     
     public ControladorRegistrar(){
         novoGerador = new Gerador();
         novoReciclador = new Reciclador();
+        novoTransportador = new Transportador();
     }
     
-    public void teste(int x ){
-        this.setTipoDePessoa(x);    
+    public void registrarTipoPessoa(int valor){
+        this.setTipoDePessoa(valor);    
     }
     
-    public String transporte(boolean valor){
-        transportadoraReciclador = true;
-        return "registrar";
+     public String registrarTransportador(){
+       DAO<Transportador> acesso = new DAO(novoTransportador);
+       acesso.inserir();
+       novoTransportador = new Transportador();
+       tipoDePessoa = 0;
+       return "transportadores?faces-redirect-true";
     }
-    
+     
     public String registrarGerador(){
         DAO<Gerador> acesso = new DAO(novoGerador);
         acesso.inserir();
@@ -55,7 +60,7 @@ public  class ControladorRegistrar implements Serializable {
         return "geradores?faces-redirect=true";
     }
     
-    public String registrarReciclador(){
+    public String registrarReciclador(){       
         DAO<Reciclador> acesso = new DAO(novoReciclador);
         acesso.inserir();
         novoReciclador = new Reciclador();
@@ -111,18 +116,18 @@ public  class ControladorRegistrar implements Serializable {
     }
 
     /**
-     * @return the transportadoraReciclador
+     * @return the novoTransportador
      */
-    public boolean isTransportadoraReciclador() {
-        return transportadoraReciclador;
+    public Transportador getNovoTransportador() {
+        return novoTransportador;
     }
 
     /**
-     * @param transportadoraReciclador the transportadoraReciclador to set
+     * @param novoTransportador the novoTransportador to set
      */
-    public void setTransportadoraReciclador(boolean transportadoraReciclador) {
-        this.transportadoraReciclador = transportadoraReciclador;
+    public void setNovoTransportador(Transportador novoTransportador) {
+        this.novoTransportador = novoTransportador;
     }
 
-     
+ 
 }

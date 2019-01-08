@@ -20,36 +20,15 @@ import javax.inject.Named;
 @Named(value="controladorTransportador")
 public class ControladorTransportador extends ControladorPrincipal<Transportador> {
     
-    private Transportador trans = new Transportador();
-    
+
     public ControladorTransportador(){
         super(new Transportador());
     }
     
-    public String registrarTransportador(){
-        DAO<Transportador> acesso = new DAO(trans);
-        acesso.inserir();
-        return "transportadores?faces-redirect-true";
-    }
-    
-    public String remover(Transportador trans){
+    public String removerTransportador(Transportador trans){
         DAO<Transportador> acesso  = new DAO(trans);
-               acesso.excluir();
-               return "transportadores?faces-redirect=true";
+        acesso.excluir();
+        return "transportadores?faces-redirect=true";
     }
 
-    /**
-     * @return the trans
-     */
-    public Transportador getTrans() {
-        return trans;
-    }
-
-    /**
-     * @param trans the trans to set
-     */
-    public void setTrans(Transportador trans) {
-        this.trans = trans;
-    }
-    
 }

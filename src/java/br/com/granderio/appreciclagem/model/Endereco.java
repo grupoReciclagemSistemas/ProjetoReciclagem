@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+
 /**
  *
  * @author Rafael
@@ -32,9 +33,8 @@ public class Endereco implements Serializable {
     private String bairro;
     
     @OneToOne
-    private PessoaJuridica pessoaJuridica;
+    private PessoaJuridica pessoa;
     
-   
     public Endereco(){
         idEndereco = -1;     
     }
@@ -146,20 +146,21 @@ public class Endereco implements Serializable {
      */
     public void setIdEndereco(long idEndereco) {
         this.idEndereco = idEndereco;
+    }  
+
+    /**
+     * @return the pessoa
+     */
+    public PessoaJuridica getPessoa() {
+        return pessoa;
     }
 
     /**
-     * @return the pessoaJuridica
+     * @param pessoa the pessoa to set
      */
-    public PessoaJuridica getPessoaJuridica() {
-        return pessoaJuridica;
+    public void setPessoa(PessoaJuridica pessoa) {
+        this.pessoa = pessoa;
     }
 
-    /**
-     * @param pessoaJuridica the pessoaJuridica to set
-     */
-    public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
-        this.pessoaJuridica = pessoaJuridica;
-    }
     
 }

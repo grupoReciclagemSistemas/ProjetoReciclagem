@@ -36,7 +36,7 @@ and open the template in the editor.
                         <b:dataTableColumn label="Telefone" value="#{trans.telefone}"/>
                         <b:dataTableColumn label="Excluir">
                             
-                            <b:commandButton look="danger" value="Excluir" action="#{controladorTransportador.remover(trans)}" onclick="return confirm('Deseja excluir  o #{trans.razaoSocial} , #{trans.cnpj}?')"> </b:commandButton>
+                            <b:commandButton look="danger" value="Excluir" action="#{controladorTransportador.remover(trans)}" onclick="return confirm('Realmente deseja excluir  #{trans.razaoSocial} - CNPJ: #{trans.cnpj} ?')"> </b:commandButton>
                         </b:dataTableColumn>
                       
                       
