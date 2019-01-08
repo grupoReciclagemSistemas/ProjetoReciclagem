@@ -35,6 +35,7 @@ public class ItemPedido implements Serializable {
     public ItemPedido(){
         idItemPedido = -1;
         material = new Material();
+        pedidoDeReciclagem = new PedidoReciclagem();
     }
 
     /**
