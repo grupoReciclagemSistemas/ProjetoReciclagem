@@ -23,6 +23,6 @@
     </welcome-file-list>
     <context-param>
         <param-name>BootsFaces_USETHEME</param-name>
-        <param-value>custom</param-value>
+        <param-value>cerulean</param-value>
     </context-param>
 </web-app>

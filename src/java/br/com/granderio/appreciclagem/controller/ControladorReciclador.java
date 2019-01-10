@@ -32,6 +32,7 @@ public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
         acesso.excluir();
         return "recicladores?faces-redirect=true";
     }
+    
     public String testarTrans(boolean valor){
         if(valor){
             return "Sim";

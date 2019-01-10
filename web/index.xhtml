@@ -3,15 +3,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"   
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <h:head>
-        <title>Início</title>
+        <title>Reclick - Inicio</title>
+
     </h:head>
     <h:body>
+ 
         <ui:include src="/WEB-INF/menu.xhtml" />
         
-        <h2>Página Inicial</h2>
+        <b:jumbotron style="background-color: #689f38;">
+            
+            <b:container>
+                <h2 style="color: white;">Reclick, recicle em um clique!</h2>
+                <p style="color: white;">Sistema em construção! ZzZzZzZZzZzZzZZzZzZzZZzZzZzZZzZzZzZZzZzZzZZzZzZzZZzZzZzZZzZzZzZZzZzZzZZzZzZzZZzZzZzZ
+                    ZzZzZzZZzZzZzZZzZzZzZZzZzZzZZzZzZzZ </p>
+                <p >
+                    <b:form>
+                        <b:commandButton look="info" value="Cadastrar" />
+                    </b:form>
+                </p>
+            </b:container>
+
+        </b:jumbotron>
         
     </h:body>
 </html>
