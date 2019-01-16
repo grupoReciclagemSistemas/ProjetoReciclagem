@@ -16,10 +16,9 @@
  */
 package br.com.granderio.appreciclagem.dao;
 
-import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.PessoaJuridica;
 import br.com.granderio.appreciclagem.util.HibernateUtil;
-import java.util.ArrayList;
+import br.com.granderio.appreciclagem.util.UtilError;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -39,12 +38,15 @@ public class DAO<T> {
     
     private T objetoModelo;
     public Session s;
-
+   
+   
     public DAO(T objetoModelo) {
         this.objetoModelo = objetoModelo;
-        if(s==null){
+        
+        if(s == null){
             s = HibernateUtil.getSessionFactory().openSession();
         }
+ 
     }
 
     public T getObjetoModelo() {
@@ -56,11 +58,12 @@ public class DAO<T> {
     }
 
     public void inserir() {      
-        try {
+        try {      
             s.getTransaction().begin();
             s.save(getObjetoModelo());
         } catch (HibernateException ex) {
-            System.err.println("Erro ao incluir registro: " + ex);
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao incluir registro: " + mensagem);
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
@@ -73,7 +76,8 @@ public class DAO<T> {
             s.getTransaction().begin();
             s.update(getObjetoModelo());
         } catch (HibernateException ex) {
-            System.err.println("Erro ao incluir alterar: " + ex);
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao incluir alterar: " + mensagem);
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
@@ -82,16 +86,16 @@ public class DAO<T> {
     }
 
     public void excluir() {      
-        try {
+        try {      
             s.getTransaction().begin();
             s.delete(getObjetoModelo());
         } catch (HibernateException ex) {
-            System.err.println("Erro ao excluir registro: " + ex);
+            String mensagem = UtilError.getMensagemErro(ex);       
+            System.err.println("Erro ao excluir registro: " + mensagem);
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
             s.flush();
-            s.close();
         }
     }
 
@@ -102,9 +106,9 @@ public class DAO<T> {
             Criteria criteria = s.createCriteria(getObjetoModelo().getClass());
             criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
             list = criteria.list();
-
         } catch (HibernateException ex) {
-            System.err.println("Erro ao buscar registros (lista): " + ex);
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros (lista): " + mensagem);
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
@@ -119,14 +123,15 @@ public class DAO<T> {
             s.getTransaction().begin();
             s.load(getObjetoModelo(), id);
         } catch (HibernateException ex) {
-            System.err.println("Erro ao buscar registro: " + ex);
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registro: " + mensagem);
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
             s.flush();      
         }
     }
-
+    
     public List executarConsultaPersonalizada(String sql) {      
         List data = null;
         try {
@@ -135,7 +140,8 @@ public class DAO<T> {
             query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
             data = query.list();
         } catch (HibernateException ex) {
-            System.err.println("Erro ao buscar registros: " + ex);
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros: " + mensagem);
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
@@ -152,10 +158,11 @@ public class DAO<T> {
             cri.add(Restrictions.eq("email", email));         
             lista = cri.list();
         }catch(HibernateException ex){
-            System.err.println("Erro ao buscar registros: " + ex);
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros: " + mensagem);
             s.getTransaction().rollback();
         }finally{
-          s.getTransaction().commit();
+            s.getTransaction().commit();
             s.flush();    
         }
         
@@ -176,7 +183,7 @@ public class DAO<T> {
             System.err.println("Erro ao buscar registros: " + ex);
             s.getTransaction().rollback();
         }finally{
-          s.getTransaction().commit();
+            s.getTransaction().commit();
             s.flush();    
         }
         if(lista.size() > 0 ){

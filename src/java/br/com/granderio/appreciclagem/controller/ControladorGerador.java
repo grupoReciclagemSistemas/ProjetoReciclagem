@@ -7,11 +7,12 @@ package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.model.Gerador;
-import br.com.granderio.appreciclagem.model.PessoaJuridica;
+import br.com.granderio.appreciclagem.model.Reciclador;
 import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+
 
 /**
  *
@@ -29,19 +30,19 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
         novoGerador = new Gerador();
     }
     
-    public String editarGerador(Gerador gerador){
+    public List<Gerador> lista(){
+        DAO<Gerador> lista = new DAO(new Gerador());
+        return lista.obterLista();
+    }
+ 
+    public String salvarEdicao(Gerador gerador){
         DAO<Gerador> acesso = new DAO(gerador);
         acesso.alterar();
         return "geradores?faces-redirect=true";
     }
     
-    public List<Gerador> listagem(){
-        DAO<Gerador> acesso = new DAO(new Gerador());
-        return acesso.obterLista();
-    }
-    
-    public String removerGerador(Gerador gerador){
-        DAO<Gerador> acesso = new DAO(gerador);
+    public String removerGerador(Gerador obj){
+        DAO<Gerador> acesso = new DAO(obj);
         acesso.excluir();
         return "geradores?faces-redirect=true";
     }

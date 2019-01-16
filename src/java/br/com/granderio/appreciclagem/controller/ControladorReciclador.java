@@ -7,6 +7,7 @@ package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.model.Reciclador;
+import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -25,6 +26,11 @@ public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
     public ControladorReciclador(){
         super(new Reciclador());
         
+    }
+    
+    public List<Reciclador> lista(){
+        DAO<Reciclador> lista = new DAO(new Reciclador());
+        return lista.obterLista();
     }
     
     public String removerReciclador(Reciclador obj){

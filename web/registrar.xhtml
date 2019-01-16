@@ -74,6 +74,7 @@
                     <center> <b:commandButton value="Registrar" look="success" action="#{controladorRegistrar.registrarReciclador()}" />   </center>              
                 </b:panel>     
             </b:form>
+            
             <center>
                 <b:form>           
                     <b:commandLink value="Voltar"  action="#{controladorRegistrar.voltar()}"/>         
@@ -95,6 +96,25 @@
                     <b:inputText label="Razão Social" value="#{controladorRegistrar.novoGerador.razaoSocial}" size="50" required="true"/>
                     <b:inputText label="Telefone" value="#{controladorRegistrar.novoGerador.telefone}" size="15" required="true"/>             
                     <b:inputText label="CNPJ" value="#{controladorRegistrar.novoGerador.cnpj}" size="10" required="true"/>
+                    
+                    <h3 style="color: green"> Endereço </h3>
+                    <b:container fluid="true" style="font-size: smaller;">                  
+                        <b:inputText label="Logradouro" value="#{controladorRegistrar.novoGerador.endereco.logradouro}" size="10" required="true"/>
+                        <b:inputText label="Bairro" value="#{controladorRegistrar.novoGerador.endereco.bairro}" size="10" required="true"/>
+                        <b:inputText label="CEP" value="#{controladorRegistrar.novoGerador.endereco.cep}" size="10" required="true"/>
+                        <b:inputText label="Complemento (Opcional)" value="#{controladorRegistrar.novoGerador.endereco.complemento}" size="10"/>
+                        
+                        <b:selectOneMenu label="Escolha a UF:" value="#{controladorRegistrar.novoGerador.endereco.uf}">
+                            <f:selectItems var="obj" value="#{controladorEndereco.uf}" itemLabel="#{obj}" itemValue="#{obj}" />
+                        </b:selectOneMenu>
+                        
+                        <b:selectOneMenu label="Escolha a Cidade:" value="#{controladorRegistrar.novoGerador.endereco.cidade}">
+                            <f:selectItems var="obj" value="#{controladorEndereco.cidadesRJ}" itemLabel="#{obj}" itemValue="#{obj}" />
+                        </b:selectOneMenu>
+                        
+                        <b:inputText label="Numero" value="#{controladorRegistrar.novoGerador.endereco.numero}" size="10" required="true" mask="numeric"/>
+                        
+                    </b:container>
                     
                     <center> <b:commandButton value="Registrar" look="danger" action="#{controladorRegistrar.registrarGerador()}"/>    </center>               
                 </b:panel>     

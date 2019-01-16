@@ -47,12 +47,12 @@ public abstract class PessoaJuridica implements Serializable {
     @Column(nullable = false)
     private String telefone;
     
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy="pessoa", cascade = CascadeType.ALL)
     private Endereco endereco;
 
     public PessoaJuridica(){
         idPessoaJuridica = -1;
-        endereco = new Endereco();     
+        endereco = new Endereco();
     }
 
     /**
@@ -139,15 +139,22 @@ public abstract class PessoaJuridica implements Serializable {
         this.telefone = telefone;
     }
 
-   
+    /**
+     * @return the endereco
+     */
     public Endereco getEndereco() {
         return endereco;
     }
 
-   
+    /**
+     * @param endereco the endereco to set
+     */
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
+
+   
+    
 
    
 

@@ -46,12 +46,6 @@ public abstract class ControladorPrincipal <T> implements Serializable {
         acesso.buscar(id);
     }
     
-    public List listar (){
-        DAO <T> acesso = new DAO(modelo);
-        return acesso.obterLista();
-    }
-    
-
     public T getModelo() {
         return modelo;
     }

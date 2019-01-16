@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
  *
  * @author Rafael
  */
+
 @Entity
 public class Endereco implements Serializable {
     

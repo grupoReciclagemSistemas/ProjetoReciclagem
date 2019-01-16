@@ -47,6 +47,7 @@ public  class ControladorRegistrar implements Serializable {
 
      public String registrarTransportador(){
        DAO<Transportador> acesso = new DAO(novoTransportador);
+       novoTransportador.getEndereco().setPessoa(novoTransportador);
        acesso.inserir();
        novoTransportador = new Transportador();
        tipoDePessoa = 0;
@@ -55,6 +56,7 @@ public  class ControladorRegistrar implements Serializable {
      
     public String registrarGerador(){
         DAO<Gerador> acesso = new DAO(novoGerador);
+        novoGerador.getEndereco().setPessoa(novoGerador);
         acesso.inserir();
         novoGerador = new Gerador();
         tipoDePessoa = 0;
@@ -63,6 +65,7 @@ public  class ControladorRegistrar implements Serializable {
     
     public String registrarReciclador(){
         DAO<Reciclador> acesso = new DAO(novoReciclador);
+        novoReciclador.getEndereco().setPessoa(novoReciclador);
         String email = novoReciclador.getEmail();
         String cnpj = novoReciclador.getCnpj();
         if( acesso.verificarEmail(email) ){            
