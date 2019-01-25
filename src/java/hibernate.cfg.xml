@@ -41,12 +41,12 @@ Contributor(s):
 -->
 <hibernate-configuration>
   <session-factory>
-    <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
-    <property name="hibernate.connection.username">adm</property>
-    <property name="hibernate.connection.url">jdbc:derby://localhost:1527/recicla</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/rec?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
-    <property name="hibernate.connection.password">adm</property>
-    <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.show_sql">true</property>
     <mapping class="br.com.granderio.appreciclagem.model.Gerador"/>
     <mapping class="br.com.granderio.appreciclagem.model.PessoaJuridica"/>
@@ -56,5 +56,6 @@ Contributor(s):
     <mapping class="br.com.granderio.appreciclagem.model.ItemPedido"/>
     <mapping class="br.com.granderio.appreciclagem.model.Material"/>
     <mapping class="br.com.granderio.appreciclagem.model.PedidoReciclagem"/>
+    <mapping class="br.com.granderio.appreciclagem.model.Estoque"/>
   </session-factory>
 </hibernate-configuration>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"   
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Painel do Admin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <ui:include src="/WEB-INF/menu_admin.xhtml" />
+
+        <b:jumbotron>
+            <h:form>
+                <b:row>
+                    <b:column span="3" style="margin-top: 25px;"> 
+                        <b:container style="padding-right: 150px;">
+
+                            <b:panel collapsible="false" title-style="background-color: black; color: white;" title="MENU">
+                                <b:listLinks>
+                                    <h4 style="text-align: center; color: black;"> Listas </h4>
+                                    <b:commandLink value="Geradores" actionListener="#{controlePainel.mudarListagem(0)}" look="info" update="@form" />
+
+                                    <b:commandLink value="Transportadores" actionListener="#{controlePainel.mudarListagem(1)}" look="success" update="@form" style="margin-top: 2px;"/>
+
+                                    <b:commandLink value="Recicladores" actionListener="#{controlePainel.mudarListagem(2)}" look="warning" update="@form" style="margin-top: 2px;"/>
+
+                                    <b:commandLink value="Materiais" actionListener="#{controlePainel.mudarListagem(3)}" look="danger" update="@form" style="margin-top: 2px;"/>
+                                    <hr style="border-color: black" />
+                                    <h4 style="text-align: center; color: black;"> Adicionar </h4>
+                                    <center><b:commandButton value="Material" action="material?faces-redirect=true"  style="margin-top: 2px; background-color: black; color: white;"/> 
+                                    </center>
+
+                                </b:listLinks>
+                            </b:panel>
+
+                        </b:container>
+                    </b:column>
+
+                    <b:column span="9" style="margin-top: 25px;"> 
+
+                        <b:container rendered="#{controlePainel.listagem == 0}">
+                            <b:panel title="Lista de Geradores" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
+                                <b:dataTable var="gerador" value="#{controladorGerador.lista()}"
+                                             page-length="5"
+                                             page-length-menu="5,10,20"
+                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+                                             responsive="true"
+                                             select="false" >
+                                    <b:dataTableColumn label="Nome" value="#{gerador.razaoSocial}"/>
+                                    <b:dataTableColumn label="CNPJ" value="#{gerador.cnpj}"/>
+                                    <b:dataTableColumn label="Telefone" value="#{gerador.telefone}"/>
+                                    <b:dataTableColumn label="Email" value="#{gerador.email}"/>
+                                    <b:dataTableColumn label="Mais info">
+                                        <b:commandButton look="info" value="+" />
+                                    </b:dataTableColumn>
+                                    <b:dataTableColumn label="Remover">
+                                        <b:commandButton look="danger" value="X" action="#{controlePainel.removerGeradorSQL(gerador.idPessoaJuridica)}" onclick="return confirm('Deseja realmente excluir o #{gerador.razaoSocial} ?')"/>
+                                    </b:dataTableColumn>
+                                </b:dataTable>
+                            </b:panel>
+                        </b:container>
+
+                        <b:container rendered="#{controlePainel.listagem == 1}">
+                            <b:panel title="Lista de Transportadores" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
+                                <b:dataTable var="trans" value="#{controladorTransportador.lista()}"
+                                             page-length="5"
+                                             page-length-menu="5,10,20"
+                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+                                             responsive="true"
+                                             select="false" >
+                                    <b:dataTableColumn label="Nome" value="#{trans.razaoSocial}"/>
+                                    <b:dataTableColumn label="CNPJ" value="#{trans.cnpj}"/>
+                                    <b:dataTableColumn label="Telefone" value="#{trans.telefone}"/>
+                                    <b:dataTableColumn label="Email" value="#{trans.email}"/>
+                                    <b:dataTableColumn label="Mais info">
+                                        <b:commandButton look="info" value="+" />
+                                    </b:dataTableColumn>
+                                </b:dataTable>
+                            </b:panel>
+                        </b:container>
+
+                        <b:container rendered="#{controlePainel.listagem == 2}">
+                            <b:panel title="Lista de Recicladores" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
+                                <b:dataTable var="reciclador" value="#{controladorReciclador.lista()}"
+                                             page-length="5"
+                                             page-length-menu="5,10,20"
+                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+                                             responsive="true"
+                                             select="false" >
+                                    <b:dataTableColumn label="Nome" value="#{reciclador.razaoSocial}"/>
+                                    <b:dataTableColumn label="CNPJ" value="#{reciclador.cnpj}"/>
+                                    <b:dataTableColumn label="Telefone" value="#{reciclador.telefone}"/>
+                                    <b:dataTableColumn label="Email" value="#{reciclador.email}"/>
+                                    <b:dataTableColumn label="Mais info">
+                                        <b:commandButton look="info" value="+" />
+                                    </b:dataTableColumn>
+                                </b:dataTable>
+                            </b:panel>
+                        </b:container>
+
+                        <b:container rendered="#{controlePainel.listagem == 3}">
+                            <b:panel title="Lista de Materiais" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
+                                <b:dataTable var="mat" value="#{controladorMaterial.lista()}"
+                                             page-length="5"
+                                             page-length-menu="5,10,20"
+                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+                                             responsive="true"
+                                             select="false" >
+                                    <b:dataTableColumn label="Nome" value="#{mat.nome}"/>
+                                    <b:dataTableColumn label="Descrição" value="#{mat.descricao}"/>
+                                    <b:dataTableColumn label="Data Cadastro" value="#{controladorMaterial.retornaDataCadastro(mat.dataCadastro)}"/>                          
+                                    <b:dataTableColumn label="Mais info">
+                                        <b:commandButton look="info" value="+" />
+                                    </b:dataTableColumn>
+                                </b:dataTable>
+                                <f:facet name="footer"> 
+                                    <b:commandLink look="info" value="Adicionar Novo Material" action="material?faces-redirect=true" />
+                                </f:facet>
+                            </b:panel>
+                        </b:container>
+
+                    </b:column>
+                </b:row>
+            </h:form>
+
+            <b:growl />
+        </b:jumbotron>
+
+    </h:body>
+</html>

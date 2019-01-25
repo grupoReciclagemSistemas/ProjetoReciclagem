@@ -16,7 +16,11 @@
  */
 package br.com.granderio.appreciclagem.dao;
 
+import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.PessoaJuridica;
+import br.com.granderio.appreciclagem.model.Reciclador;
+import br.com.granderio.appreciclagem.model.Gerador;
+import br.com.granderio.appreciclagem.model.Transportador;
 import br.com.granderio.appreciclagem.util.HibernateUtil;
 import br.com.granderio.appreciclagem.util.UtilError;
 import java.util.List;
@@ -48,6 +52,85 @@ public class DAO<T> {
         }
  
     }
+    
+    public Reciclador logarReciclador(String email, String senha){
+        Reciclador reci = null;
+        try{
+            s.getTransaction().begin();
+            Criteria cri = s.createCriteria(Reciclador.class);
+            cri.add(Restrictions.eq("email", email));
+            cri.add(Restrictions.eq("senha", senha));
+            reci = (Reciclador) cri.list().get(0);
+        }catch(HibernateException ex){
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao logar: " + mensagem);
+            s.getTransaction().rollback();
+        }finally{
+            s.getTransaction().commit();
+            s.flush(); 
+        }
+        return reci;
+    }
+    
+    public Gerador logarGerador(String email, String senha){
+        Gerador ger = null;
+        try{
+            s.getTransaction().begin();
+            Criteria cri = s.createCriteria(Gerador.class);
+            cri.add(Restrictions.eq("email", email));
+            cri.add(Restrictions.eq("senha", senha));
+            ger = (Gerador) cri.list().get(0);
+        }catch(HibernateException ex){
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao logar: " + mensagem);
+            s.getTransaction().rollback();
+        }finally{
+            s.getTransaction().commit();
+            s.flush();        
+        }
+        return ger;    
+    }
+    
+    public Transportador logarTransportador(String email, String senha){
+        Transportador trans = null;
+        try{
+            s.getTransaction().begin();
+            Criteria cri = s.createCriteria(Transportador.class);
+            cri.add(Restrictions.eq("email", email));
+            cri.add(Restrictions.eq("senha", senha));
+            trans = (Transportador) cri.list().get(0);
+            if(cri.list().isEmpty()){
+                System.out.println("Vazio");
+            }
+        }catch(HibernateException ex){
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao logar: " + mensagem);
+            s.getTransaction().rollback();
+        }finally{
+            s.getTransaction().commit();
+            s.flush();        
+        }
+        return trans;
+    }
+    
+    public int quantidade(String email, String senha){  
+        int quantidade = 0;
+        try{
+            s.getTransaction().begin();
+            Criteria cri = s.createCriteria(Transportador.class);
+            cri.add(Restrictions.eq("email", email));
+            cri.add(Restrictions.eq("senha", senha));
+            quantidade = cri.list().size();          
+        }catch(HibernateException ex){
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao logar: " + mensagem);
+            s.getTransaction().rollback();
+        }finally{
+            s.getTransaction().commit();
+            s.flush();        
+        }
+        return quantidade;
+    }
 
     public T getObjetoModelo() {
         return objetoModelo;
@@ -70,7 +153,7 @@ public class DAO<T> {
             s.flush();          
         }
     }
-
+    
     public void alterar() {       
         try {
             s.getTransaction().begin();
@@ -83,6 +166,40 @@ public class DAO<T> {
             s.getTransaction().commit();
             s.flush();         
         }
+    }
+    
+    public int quantidadeDeMateriais(){
+        List<Material> lista = null;       
+        try{     
+            s.getTransaction().begin();       
+            Criteria cri = s.createCriteria(Material.class);
+            lista = cri.list();
+        }catch(HibernateException ex){
+            System.err.println("Erro ao buscar lista de Material: " + ex);
+            s.getTransaction().rollback();
+        }finally{
+           s.getTransaction().commit();
+           s.flush(); 
+        }
+        return lista.size();
+    }
+    
+    public PessoaJuridica logar(String email, String senha){
+        List<PessoaJuridica> lista = null;
+        try{     
+            s.getTransaction().begin();       
+            Criteria cri = s.createCriteria(PessoaJuridica.class);
+            cri.add(Restrictions.eq("email", email));
+            cri.add(Restrictions.eq("senha", senha));
+            lista = cri.list();
+        }catch(HibernateException ex){
+            System.err.println("Erro ao buscar lista de Material: " + ex);
+            s.getTransaction().rollback();
+        }finally{
+           s.getTransaction().commit();
+           s.flush(); 
+        }
+        return lista.get(0);
     }
 
     public void excluir() {      
@@ -97,6 +214,61 @@ public class DAO<T> {
             s.getTransaction().commit();
             s.flush();
         }
+    }
+    
+    public void excluirGerador(Gerador gerador){
+        try{
+        s.getTransaction().begin();
+        s.delete(gerador);
+        }catch(HibernateException ex){
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao excluir Gerador --> " + mensagem);
+            s.getTransaction().rollback();
+        }
+        s.getTransaction().commit();
+        s.flush();     
+    }
+    
+    public void excluirGeradorPorSQL(long id){
+        try{
+        s.getTransaction().begin();
+        int a = s.createSQLQuery("DELETE FROM Estoque WHERE gerador_idPessoaJuridica = " + id).executeUpdate();
+        int b = s.createSQLQuery("DELETE FROM Gerador WHERE idPessoaJuridica = " + id).executeUpdate();
+        }catch(HibernateException ex){
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao excluir Gerador --> " + mensagem);
+            s.getTransaction().rollback();
+        }
+        s.getTransaction().commit();
+        s.flush();     
+    }
+    
+    public void excluirTranposrtadorPorSQL(long id){
+        try{
+        s.getTransaction().begin();
+        int a = s.createSQLQuery("DELETE FROM PedidoReciclagem WHERE transportador_idPessoaJuridica = " + id).executeUpdate();
+        int b = s.createSQLQuery("DELETE FROM Transportador WHERE idPessoaJuridica = " + id).executeUpdate();
+        }catch(HibernateException ex){
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao excluir Gerador --> " + mensagem);
+            s.getTransaction().rollback();
+        }
+        s.getTransaction().commit();
+        s.flush();     
+    }
+    
+    public void excluirRecicladorPorSQL(long id){
+        try{
+        s.getTransaction().begin();
+        int a = s.createSQLQuery("DELETE FROM PedidoReciclagem WHERE reciclador_idPessoaJuridica = " + id).executeUpdate();
+        int b = s.createSQLQuery("DELETE FROM Reciclador WHERE idPessoaJuridica = " + id).executeUpdate();
+        }catch(HibernateException ex){
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao excluir Gerador --> " + mensagem);
+            s.getTransaction().rollback();
+        }
+        s.getTransaction().commit();
+        s.flush();     
     }
 
     public List<T> obterLista() {     

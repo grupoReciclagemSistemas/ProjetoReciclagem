@@ -40,13 +40,7 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
         acesso.alterar();
         return "geradores?faces-redirect=true";
     }
-    
-    public String removerGerador(Gerador obj){
-        DAO<Gerador> acesso = new DAO(obj);
-        acesso.excluir();
-        return "geradores?faces-redirect=true";
-    }
-      
+       
     public String voltar(){
         novoGerador.setCnpj("");
         novoGerador.setEmail("");

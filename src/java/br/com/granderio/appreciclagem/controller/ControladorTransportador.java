@@ -30,11 +30,5 @@ public class ControladorTransportador extends ControladorPrincipal<Transportador
         DAO<Transportador> lista = new DAO(new Transportador());
         return lista.obterLista();
     }
-    
-    public String removerTransportador(Transportador trans){
-        DAO<Transportador> acesso  = new DAO(trans);
-        acesso.excluir();
-        return "transportadores?faces-redirect=true";
-    }
 
 }

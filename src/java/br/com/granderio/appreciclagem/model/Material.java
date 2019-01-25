@@ -7,7 +7,7 @@ package br.com.granderio.appreciclagem.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,7 +15,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -27,20 +30,22 @@ public class Material implements Serializable {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long idMaterial;
-    private int codigo;
+    
+    private String nome;
+    
+    @Lob
     private String descricao;
-    private Calendar dataCadastro;
-    private Double peso;
-    private Double valor;
     
-    // 1 Material pode pertencer a vários itens de Pedidos
-    @OneToMany(mappedBy="material", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ItemPedido> itens;
+    @Temporal(value = TemporalType.DATE)
+    private Date dataCadastro;
     
+    private long precoMin;
+    
+    private long precoMax;
+  
     public Material(){
         idMaterial = -1;
-        dataCadastro = Calendar.getInstance();
-        itens = new ArrayList();
+        dataCadastro = new Date();
     }
 
     /**
@@ -58,20 +63,6 @@ public class Material implements Serializable {
     }
 
     /**
-     * @return the codigo
-     */
-    public int getCodigo() {
-        return codigo;
-    }
-
-    /**
-     * @param codigo the codigo to set
-     */
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
-
-    /**
      * @return the descricao
      */
     public String getDescricao() {
@@ -86,58 +77,58 @@ public class Material implements Serializable {
     }
 
     /**
+     * @return the nome
+     */
+    public String getNome() {
+        return nome;
+    }
+
+    /**
+     * @param nome the nome to set
+     */
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    /**
      * @return the dataCadastro
      */
-    public Calendar getDataCadastro() {
+    public Date getDataCadastro() {
         return dataCadastro;
     }
 
     /**
      * @param dataCadastro the dataCadastro to set
      */
-    public void setDataCadastro(Calendar dataCadastro) {
+    public void setDataCadastro(Date dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
     /**
-     * @return the peso
+     * @return the precoMin
      */
-    public Double getPeso() {
-        return peso;
+    public long getPrecoMin() {
+        return precoMin;
     }
 
     /**
-     * @param peso the peso to set
+     * @param precoMin the precoMin to set
      */
-    public void setPeso(Double peso) {
-        this.peso = peso;
+    public void setPrecoMin(long precoMin) {
+        this.precoMin = precoMin;
     }
 
     /**
-     * @return the valor
+     * @return the precoMax
      */
-    public Double getValor() {
-        return valor;
+    public long getPrecoMax() {
+        return precoMax;
     }
 
     /**
-     * @param valor the valor to set
+     * @param precoMax the precoMax to set
      */
-    public void setValor(Double valor) {
-        this.valor = valor;
-    }
-
-    /**
-     * @return the itens
-     */
-    public List<ItemPedido> getItens() {
-        return itens;
-    }
-
-    /**
-     * @param itens the itens to set
-     */
-    public void setItens(List<ItemPedido> itens) {
-        this.itens = itens;
+    public void setPrecoMax(long precoMax) {
+        this.precoMax = precoMax;
     }
 }

@@ -9,35 +9,63 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    
+
     <h:head>
-        
-     
-    </h:head>
-    
-    <h:body style="padding-top: 50px; padding-bottom: 20px;">
-        
-        <b:form>
-            <b:navBar brand="Reclick" style="background-color: #558b2f;" brandStyle="color: white;" brand-img="resources/img/logo.png" brand-img-style="width: 39px; padding-right: 10px;" fixed="top" brandHref="index.xhtml">
-                
-                <b:navbarLinks styleClass="navbar-right">
-                    
-                <b:navCommandLink style="color: white;" value="Inicio" action="index?faces-redirect=true" />
-                
-                <b:navCommandLink style="color: white;" value="Sobre" action="index?faces-redirect=true" />
-                
-                <b:navCommandLink style="color: white;" value="Logar" action="index?faces-redirect=true"  />
-                    
-                <b:dropMenu value="Listagens" style="color: white;">
-                    <b:navCommandLink style="color: #689f38;" value="Geradores" action="/geradores?faces-redirect=true"></b:navCommandLink>
-                    <b:navCommandLink style="color: #689f38;" value="Recicladores" action="/recicladores?faces-redirect=true"></b:navCommandLink>
-                    <b:navCommandLink style="color: #689f38;" value="Transportadores" action="/transportadores?faces-redirect=true"></b:navCommandLink>                    
-                </b:dropMenu>
-                    
-            </b:navbarLinks>
-        </b:navBar>
+        <style>
+            .navbar{
+                background-color: #558b2f;
+            }
+
+            #jumbotron-topo{
+                background-color: #7cb342 !important;
+                color: #FFFFFF !important;
+            }
+
+            #jumbotron-meio{
+                background-color: #ffffff !important;
+                color:#689F38 !important;                
+            }
+            #jumbotron-rodape{
+                background-color: #8FBC8F !important;
+                color:#black !important;                
+            }
+            #jumotron-meio p{
+                color: #689F38 !important;
+            }
+
+            .foto-meio {
+                display: block;
+                position: relative !important;
+                width: 50%;
+                height: 50%;
+                left: 130px;
+            }
             
-    </b:form>
-        
+            .mais-informacoes{
+                margin-bottom:10px;
+            }
+        </style>
+
+    </h:head>
+
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+
+         <b:form id="formMenu">
+             <b:growl id="growlMessages"/>
+             
+            <b:navBar brand="Reclick" style="background-color: #558b2f;" brandStyle="color: white;" brand-img="resources/img/logo.png" brand-img-style="width: 39px; padding-right: 10px;" fixed="top" brandHref="index.xhtml">
+
+                <b:navbarLinks styleClass="navbar-right">
+
+                    <b:navCommandLink style="color: white;" value="Inicio" action="index?faces-redirect=true" />
+
+                    <b:navCommandLink style="color: white;" value="Sobre" action="index?faces-redirect=true" />
+
+                    <b:navCommandLink style="color: white;" value="Logar" action="login?faces-redirect=true"  />
+           </b:navbarLinks>
+            </b:navBar>
+        </b:form>
     </h:body>
 </html>
+
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <title>Java Server Faces</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+
+        <ui:include src="/WEB-INF/menu.xhtml" />
+        <h:form>
+            <b:container rendered="#{controladorLogado.geradorLogado != null}"> <br/>
+                <b:panel>
+                    <h:outputLabel value="Razão Social:" />
+                    <b:inputText readonly="true" value="#{controladorLogado.geradorLogado.razaoSocial}" />
+
+                    <h:outputLabel value="Seu Email:" />
+                    <b:inputText readonly="true" value="#{controladorLogado.geradorLogado.email}" />
+
+                    <h:outputLabel value="Razão Social:" />
+                    <b:inputText readonly="true" value="#{controladorLogado.geradorLogado.razaoSocial}" />
+                </b:panel>
+            </b:container>
+            
+            <b:container rendered="#{controladorLogado.recicladorLogado != null}"> <br/>
+                <b:panel>
+                    <h:outputLabel value="Razão Social:" />
+                    <b:inputText readonly="true" value="#{controladorLogado.recicladorLogado.razaoSocial}" />
+
+                    <h:outputLabel value="Seu Email:" />
+                    <b:inputText readonly="true" value="#{controladorLogado.recicladorLogado.email}" />
+
+                    <h:outputLabel value="Razão Social:" />
+                    <b:inputText readonly="true" value="#{controladorLogado.recicladorLogado.razaoSocial}" />
+                </b:panel>
+            </b:container>
+            
+            <b:container rendered="#{controladorLogado.transportadorLogado != null}"> <br/>
+                <b:panel>
+                    <h:outputLabel value="Razão Social:" />
+                    <b:inputText readonly="true" value="#{controladorLogado.transportadorLogado.razaoSocial}" />
+
+                    <h:outputLabel value="Seu Email:" />
+                    <b:inputText readonly="true" value="#{controladorLogado.transportadorLogado.email}" />
+
+                    <h:outputLabel value="Razão Social:" />
+                    <b:inputText readonly="true" value="#{controladorLogado.transportadorLogado.razaoSocial}" />
+                </b:panel>
+            </b:container>
+        </h:form>
+    </h:body>
+</html>

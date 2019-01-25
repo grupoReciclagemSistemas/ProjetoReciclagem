@@ -45,7 +45,6 @@ public class PedidoReciclagem implements Serializable {
     @OneToMany(mappedBy="pedidoDeReciclagem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemPedido> itens;
     
-    // Acho que não precisaria desse atributo, pois o localEntrega vai ser o atributo Endereço de Reciclador
     private String localEntrega;
     
     private String observações;

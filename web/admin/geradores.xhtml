@@ -12,7 +12,6 @@
     </h:head>
     <h:body>
 
-
         <ui:include src="/WEB-INF/menu.xhtml" />
 
         <b:jumbotron id="jumbotron-topo">
@@ -33,11 +32,7 @@
                                 COMPRE OU VENDA SEU MATERIAL RECICLÁVEL AGORA!
                             </h2>
                         </p> 
-                        <td>
-                            <h:form>
-                                <b:commandButton value="REGISTRE-SE JÁ!" action="registrar?faces-redirect=true" style="border-color: green;"/>
-                            </h:form>
-                        </td>
+                        <td><b:button value="REGISTRE-SE JÁ!"/></td>
                     </b:column>
                 </b:container>
             </b:row>
@@ -94,24 +89,37 @@
                     <b:column medium-screen="6">
                         <div class="section" id="provisioning">
                             <!-- Tabelas de cotação de preço -->
-                            <h:form>
-                            <b:panel collapsible="false" title="LISTA DE MATERIAIS" title-style="background-color: white; color: #7cb342; text-align: center;" style="background-color: white; color: #7cb342;">  
-                                <b:dataTable var="mat" value="#{controladorMaterial.lista()}"
-                                             style="margin-top: 15px;"
-                                             page-length="3"
-                                             page-length-menu="3,6,9"
-                                             responsive="true"
-                                             select="false"
-                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                             >
-                                <b:dataTableColumn label="Material" value="#{mat.nome}" />
-                                <b:dataTableColumn label="Descrição" value="#{mat.descricao}" />  
-                            </b:dataTable>                              
-                                                                 
-                            </b:panel>
-                                <b:commandButton value="Mais informações? CLIQUE AQUI !" style="background-color: #7cb342; color: white;" colLg="12"/> 
-                            </h:form>
-                            
+                            <table class="highlight centered">
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>          
+                                        <th>Preço de compra Kg(1)</th>
+                                        <th>Preço de compra Kg(2)</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>Papelão</td>
+                                        <td>R$0,16</td>
+                                        <td>R$0.29</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vidro(branco)</td>
+                                        <td>R$0,10</td>
+                                        <td>R$0,20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Alumínio</td>
+                                        <td>R$2,80</td>
+                                        <td>R$3,70</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="mais-informacoes">
+                                <a>Mais informações</a>
+                            </div>
                         </div>
                     </b:column>
                     <b:column medium-screen="6">
@@ -129,48 +137,63 @@
                 </b:row>
             </b:container>
         </b:jumbotron>
+        <b:jumbotron class="chat">
+            <footer class="page-footer" style="margin-top:0px;padding-left:0px;" id="contact">
+                <b:container>
+                    <b:row>
+                        <b:column medium-screen="16">
+                            <h5 class="white-text">Contate-nos</h5>
+                            <b:row>
+                                <b:column medium-screen="12">
+                                    <button class="btn waves-effect waves-light white light-green-text text-darken-2" onclick="$crisp.push(['do', 'chat:open'])">
+                                        Nosso Chat
+                                    </button>
+                                </b:column>
+                            </b:row>
+                            <b:column medium-screen="12">
+                                <form id="contactForm" onsubmit="return false;">
+                                    <b:row>
+                                        <b:column medium-screen="12">
+                                            <div>
+                                                <input id="email" name="email" type="email" class="validate white-text"/>
+                                                <label for="email" class="white-text">Email</label>
+                                            </div>
+                                        </b:column>
+                                        <b:column medium-screen="12">
+                                            <div>
+                                                <textarea id="message" name="message" class="materialize-textarea white-text" style="padding-bottom: 0px;"></textarea>
+                                                <label for="message" class="white-text">Message</label>
+                                            </div>
+                                        </b:column>
+                                        <b:column medium-screen="7">
+                                            <div>
+                                                <button class="btn waves-effect waves-light white light-green-text text-darken-2 right" type="submit" onclick="sendEmailViaChat();">Enviar</button>
+                                            </div>
+                                        </b:column>>
+                                    </b:row>
+                                </form>
+                            </b:column>
+                            <b:column medium-screen="12">
+                                <div style="text-align: left;">
+                                    <a><h5 class="white-text">Contate-nos</h5></a>
+                                    <ul>
+                                        <li><span class="white-text">Projeto Reciclagem<br/>Av. Pastor Martin Luther King Junior, 126 - Del Castilho, Rio de Janeiro - RJ, 20765-050</span></li>
+                                    </ul>
+                                </div>
+                            </b:column>
+                        </b:column>>
+                    </b:row>
+                </b:container>
 
-        <b:jumbotron style="background-color: #7cb342; color: #FFFFFF;">     
-            <b:container> 
-                <b:row>
-                    <b:column span="6" >
-                        <h:form>
-                             
-                            <center> <h3> ENVIAR MENSAGEM </h3></center>
-                            <h:outputLabel value="EMAIL:" for="inputEnviarEmail"  />
-                            <b:inputText id="inputEnviarEmail" placeholder="Digite seu Email aqui..." />
-                            <h:outputLabel value="MENSAGEM:" for="inputEnviarMensagem"  />
-                            <b:inputTextarea id="inputEnviarMensagem" placeholder="Digite sua Mensagem aqui..." />               
-                            <b:commandButton style="background-color: white; color: #7cb342; border-color: green;" value="Enviar Mensagem" />
-                            
-                        </h:form>
-                    </b:column>
-
-                    <b:column span="6" >
-                        <center> <h3> PARCEIROS </h3></center>
-                        <h:form style="text-align: center;">
-
-                            <img src="resources/img/logo_estacio.png" width="270px" height="90px"/>
-                        </h:form>
-                    </b:column>
-
-                </b:row>
-            </b:container>
-            <footer>
-                <b:row>
-                    <b:column span="12">
-                        <h:form>                  
-                            <span style="text-align: left; padding-left: 10px; padding-right: 540px;"> 2018 @Copywright </span>
-                            <span style="text-align: center; padding-left: 10px; padding-right: 540px; "> <b:commandLink value="Painel do Admin" style="color: white;" action="/admin/index?faces-redirect=true"/> </span>
-                            <span style="text-align: right; padding-right: 10px;"> Todos os Direitos Reservados. </span>
-                        </h:form>
-                       
-                    </b:column>
-                </b:row>
+                <div class="footer-copyright">
+                    <b:container>
+                        <span class="white-text">© 2018 <a href="http://www.proco-it.com" class="white-text" target="_blank">Copyright</a></span>
+                        <a class="white-text right" title="Privacy Policy">TODOS OS DIREITOS RESERVADOS </a>
+                    </b:container>
+                </div>
             </footer>
         </b:jumbotron>
-        
-        <b:growl />
-
     </h:body>
 </html>
+
+

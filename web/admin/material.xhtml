@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <title>Geradores do Sistema</title>
+    </h:head>
+    
+    <h:body>
+        
+        <ui:include src="/WEB-INF/menu_admin.xhtml" />
+        <b:jumbotron style="background-color: black; color: white;">
+        <b:container fluid="true">
+            
+            <b:form>
+                <b:panel title-style="background-color: white; color: black" collapsible="false" title="Registrar Novo Material"
+                         style="margin-top: 40px;">
+                    <h:outputLabel value="Nome do Material:" style="color: black" />
+                    <b:inputText placeholder="Digite o Nome do Novo Material..." style="color: blue" value="#{controladorMaterial.novoMaterial.nome}" />
+                    
+                    <h:outputLabel value="Descrição do Material:" style="color: black" />
+                    <b:inputTextarea placeholder="Digite a descrição do Novo Material..." style="color: blue" rows="4" value="#{controladorMaterial.novoMaterial.descricao}" />
+                    <center>
+                    <b:commandButton look="success" action="#{controladorMaterial.adicionarMaterial()}" value="Cadastrar" style="margin-right: 3px;" />
+                    <b:commandButton look="danger" action="index?faces-redirect=true" value="Cancelar" />
+                    </center>
+                </b:panel>
+            </b:form>
+        </b:container>
+        </b:jumbotron>
+        
+    </h:body>
+</html>

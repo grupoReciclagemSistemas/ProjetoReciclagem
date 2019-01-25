@@ -5,152 +5,219 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+
     <h:head>
-        <title>Facelet Title</title>
+        <title>Registrar Nova Conta</title>    
     </h:head>
     <h:body>
         <ui:include src="/WEB-INF/menu.xhtml" />
-        
-        
-        <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorRegistrar.tipoDePessoa == 0}" >
-            <b:form>
-                <b:panel title="Registrar" look="info"  showCollapseLink="false">
-                    <f:facet name="footer">                     
-                        <h5 style="color: black"> Escolha o Tipo de Usuario que deseja Cadastrar. </h5>                     
-                    </f:facet>
+
+
+        <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorRegistrar.tipoDePessoa == 0}" >      
+            <b:panel title-style="background-color:green; text-align: center; color: white;" title="Criar uma Nova Conta" collapsible="false" showCollapseLink="false">
+                <b:form>            
                     <b:selectOneMenu value="#{controladorRegistrar.tipoDePessoa}" onchange="submit()">
-                    <f:selectItem itemLabel="-- ESCOLHA --" itemValue="0" />
-                    <f:selectItem itemLabel="Reciclador" itemValue="1" />
-                    <f:selectItem itemLabel="Gerador" itemValue="2" />    
-                     <f:selectItem itemLabel="Transportador" itemValue="3" /> 
-                </b:selectOneMenu>
-               </b:panel>
-           </b:form>
-            <b:form>
-                <center> <b:commandLink value="Voltar" action="index?faces-redirect=true" /> </center>
-            </b:form>
-       </b:container>
-              
-        <b:container fluid="true" style="padding-left: 200px; padding-right: 200px; padding-bottom: 200px;"  rendered="#{controladorRegistrar.tipoDePessoa == 1}" >
-            <b:form>              
-                <b:panel title="Registrar Reciclador"  look="green" showCollapseLink="false" > 
-                  <f:facet name="footer"> 
-                      <center> <b> <h4 style="color: blue"> ATENÇÃO !!! </h4> </b> </center>
-                      <h5 style="color: blue"> Reciclador só poderá Comprar produtos no Sistema. </h5>
-                  </f:facet>
-                    
-                    <b:inputText label="Email" value="#{controladorRegistrar.novoReciclador.email}" size="20"  required="true"/>
-                    <b:inputSecret label="Senha" value="#{controladorRegistrar.novoReciclador.senha}" size="20" required="true"/>
-                    <b:inputText label="Razão Social" value="#{controladorRegistrar.novoReciclador.razaoSocial}" size="50" required="true"/>
-                    <b:inputText label="Telefone" value="#{controladorRegistrar.novoReciclador.telefone}" size="15" required="true"/>              
-                    <b:inputText label="CNPJ" value="#{controladorRegistrar.novoReciclador.cnpj}" size="10" required="true"/>
-                    
-                    <p> Possui Transportadora própria? Obs: Se sim, sua transportadora só poderá transportar materiais que sua empresa comprar de Geradores. </p>
-                    <h:selectOneMenu value="#{controladorRegistrar.novoReciclador.possuiTransportadora}">
-                         <f:selectItem itemLabel="Não" itemValue="false" />
-                        <f:selectItem itemLabel="Sim" itemValue="true"/>                   
+                        <f:selectItem itemLabel="-- ESCOLHA --" itemValue="0" />
+                        <f:selectItem itemLabel="Reciclador" itemValue="1" />
+                        <f:selectItem itemLabel="Gerador" itemValue="2" />    
+                        <f:selectItem itemLabel="Transportador" itemValue="3" /> 
+                    </b:selectOneMenu>
+                </b:form>
+                <f:facet name="footer">                                     
+                        <h6 style="color: black; text-align: center"> Escolha o Tipo de Usuario que deseja Cadastrar. </h6>
+                        <h:form> <center> <b:commandButton value="Voltar ao Inicio" action="index?faces-redirect=true" look="warning"/> </center> </h:form>
+                </f:facet>
+            </b:panel>    
+        </b:container>
+
+        <b:container fluid="true" style="margin-top: 30px; margin-left: 400px; margin-right: 400px;" rendered="#{controladorRegistrar.tipoDePessoa == 1}" >                   
+            <b:panel title="Criar Conta - Reciclador" title-style="background-color:green; text-align: center; color: white;"
+                     collapsible="false" showCollapseLink="false">
+                
+                <f:facet name="footer">          
+                    <center> <b> <h3 style="color: green"> ATENÇÃO !!! </h3> </b> </center>
+                    <p style="color: green; font-size: 24px; text-align: center;"> Reciclador só poderá Comprar produtos no Sistema. </p>
+                    <h:form> 
+                        <center> <b:commandLink value="Voltar" action="registrar?faces-redirect=true" actionListener="#{controladorRegistrar.setTipoDePessoa(0)}"/> </center>
+                    </h:form>
+                </f:facet>
+                
+                <b:form>                
+                    <hr style="color: green;"/>
+                    <h3 style="color: green;;"> DADOS GERAIS </h3>
+                    <b:inputText id="email" label="Email" mask="email" value="#{controladorRegistrar.novoReciclador.email}" required="true" requiredMessage="O E-mail é obrigatório!"/>
+                    <b:message for="email" />
+                    <b:inputSecret id="senha" label="Senha" value="#{controladorRegistrar.novoReciclador.senha}" required="true" requiredMessage="A senha é obrigatória!"/>
+                    <b:message for="senha" />
+                    <b:inputText id="razaoSocial" label="Razão Social" value="#{controladorRegistrar.novoReciclador.razaoSocial}" size="50" required="true" 
+                                 requiredMessage="A Razão Social é obrigatória!"/>
+                    <b:message for="razaoSocial" />
+                    <b:inputText id="telefone" label="Telefone" value="#{controladorRegistrar.novoReciclador.telefone}" required="true" requiredMessage="O Telefone é obrigatório!"/>
+                    <b:message for="telefone" />
+                    <b:inputText id="cnpj" label="CNPJ" value="#{controladorRegistrar.novoReciclador.cnpj}" required="true" requiredMessage="O CNPJ é obrigatório!"/>
+                    <b:message for="cnpj" />
+
+                    <h:outputLabel value="Sua Empresa, possui Transportadora própria?"/>
+                    <br/>
+                    <h:selectOneMenu value="#{controladorRegistrar.novoReciclador.possuiTransportadora}" required="true">
+                        <f:selectItem itemLabel="Não" itemValue="false"/>
+                        <f:selectItem itemLabel="Sim" itemValue="true" />                   
                     </h:selectOneMenu>
-                    
-                    <h3 style="color: green"> Endereço </h3>
+
+                    <hr style="color: green;"/>
+                    <h3 style="color: green"> ENDEREÇO </h3>          
                     <b:container fluid="true" style="font-size: smaller;">                  
-                        <b:inputText label="Logradouro" value="#{controladorRegistrar.novoReciclador.endereco.logradouro}" size="10" required="true"/>
-                        <b:inputText label="Bairro" value="#{controladorRegistrar.novoReciclador.endereco.bairro}" size="10" required="true"/>
-                        <b:inputText label="CEP" value="#{controladorRegistrar.novoReciclador.endereco.cep}" size="10" required="true"/>
-                        <b:inputText label="Complemento (Opcional)" value="#{controladorRegistrar.novoReciclador.endereco.complemento}" size="10"/>
-                        
+                        <b:inputText id="logradouro" label="Logradouro" value="#{controladorRegistrar.novoReciclador.endereco.logradouro}" size="10" required="true"
+                                     requiredMessage="O Logradouro é obrigatório!"/>
+                        <b:message for="logradouro"/>
+                        <b:inputText id="bairro"  label="Bairro" value="#{controladorRegistrar.novoReciclador.endereco.bairro}" size="10" required="true" requiredMessage="O Bairro é obrigatório!"/>
+                        <b:message for="bairro"/>
+                        <b:inputText id="cep" label="CEP" value="#{controladorRegistrar.novoReciclador.endereco.cep}" size="10" required="true" requiredMessage="O CEP é obrigatório!"/>
+                        <b:message for="cep"/>
+                        <b:inputText id="complemento" label="Complemento (Opcional)" value="#{controladorRegistrar.novoReciclador.endereco.complemento}" size="10"/>
+
                         <b:selectOneMenu label="Escolha a UF:" value="#{controladorRegistrar.novoReciclador.endereco.uf}">
                             <f:selectItems var="obj" value="#{controladorEndereco.uf}" itemLabel="#{obj}" itemValue="#{obj}" />
                         </b:selectOneMenu>
-                        
+
                         <b:selectOneMenu label="Escolha a Cidade:" value="#{controladorRegistrar.novoReciclador.endereco.cidade}">
                             <f:selectItems var="obj" value="#{controladorEndereco.cidadesRJ}" itemLabel="#{obj}" itemValue="#{obj}" />
                         </b:selectOneMenu>
-                        
-                        <b:inputText label="Numero" value="#{controladorRegistrar.novoReciclador.endereco.numero}" size="10" required="true" mask="numeric"/>
-                        
+
+                        <b:inputText col-sm="3" label="Numero" value="#{controladorRegistrar.novoReciclador.endereco.numero}" size="10" required="true" mask="numeric">
+                            <f:facet name="prepend"> Nº </f:facet>
+                        </b:inputText>
+
                     </b:container>
-                    
-                    <center> <b:commandButton value="Registrar" look="success" action="#{controladorRegistrar.registrarReciclador()}" />   </center>              
-                </b:panel>     
-            </b:form>
-            
-            <center>
-                <b:form>           
-                    <b:commandLink value="Voltar"  action="#{controladorRegistrar.voltar()}"/>         
-                </b:form>
-            </center>
+
+                    <center> <b:commandButton col-md="12" value="Registrar" look="success" actionListener="#{controladorRegistrar.registrarReciclador()}" style="margin-right: 3px;" />                            
+                    </center>  
+                </b:form>        
+            </b:panel>
         </b:container>
         
-        <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorRegistrar.tipoDePessoa == 2}" >
-                       
-            <b:form>
+        
+        
+        <b:container fluid="true" style="margin-top: 30px; margin-left: 400px; margin-right: 400px;" rendered="#{controladorRegistrar.tipoDePessoa == 2}" >                   
+            <b:panel title="Criar Conta - Gerador" title-style="background-color:green; text-align: center; color: white;"
+                     collapsible="false" showCollapseLink="false">
                 
-                <b:panel title="Registrar Gerador" showCollapseLink="false"> 
-                  <f:facet name="footer"> 
-                      <center> <b> <h4 style="color: red"> ATENÇÃO !!! </h4> </b> </center>
-                      <h5 style="color: red"> Gerador só poderá Vender os produtos no Sistema. </h5>
-                  </f:facet>
-                    <b:inputText label="Email" value="#{controladorRegistrar.novoGerador.email}" size="20" required="true"/>
-                    <b:inputSecret label="Senha" value="#{controladorRegistrar.novoGerador.senha}" size="20" required="true"/>
-                    <b:inputText label="Razão Social" value="#{controladorRegistrar.novoGerador.razaoSocial}" size="50" required="true"/>
-                    <b:inputText label="Telefone" value="#{controladorRegistrar.novoGerador.telefone}" size="15" required="true"/>             
-                    <b:inputText label="CNPJ" value="#{controladorRegistrar.novoGerador.cnpj}" size="10" required="true"/>
-                    
-                    <h3 style="color: green"> Endereço </h3>
+                <f:facet name="footer">          
+                    <center> <b> <h3 style="color: green"> ATENÇÃO !!! </h3> </b> </center>
+                    <p style="color: green; font-size: 24px; text-align: center;"> Gerador só poderá VENDER produtos no Sistema. </p>
+                    <h:form> 
+                        <center> <b:commandLink value="Voltar" action="registrar?faces-redirect=true" actionListener="#{controladorRegistrar.setTipoDePessoa(0)}"/> </center>
+                    </h:form>
+                </f:facet>
+                
+                <b:form>                
+                    <hr style="color: green;"/>
+                    <h3 style="color: green;;"> DADOS GERAIS </h3>
+                    <b:inputText id="email" label="Email" mask="email" value="#{controladorRegistrar.novoGerador.email}" required="true" requiredMessage="O E-mail é obrigatório!"/>
+                    <b:message for="email" />
+                    <b:inputSecret id="senha" label="Senha" value="#{controladorRegistrar.novoGerador.senha}" required="true" requiredMessage="A senha é obrigatória!"/>
+                    <b:message for="senha" />
+                    <b:inputText id="razaoSocial" label="Razão Social" value="#{controladorRegistrar.novoGerador.razaoSocial}" size="50" required="true" 
+                                 requiredMessage="A Razão Social é obrigatória!"/>
+                    <b:message for="razaoSocial" />
+                    <b:inputText id="telefone" label="Telefone" value="#{controladorRegistrar.novoGerador.telefone}" required="true" requiredMessage="O Telefone é obrigatório!"/>
+                    <b:message for="telefone" />
+                    <b:inputText id="cnpj" label="CNPJ" value="#{controladorRegistrar.novoGerador.cnpj}" required="true" requiredMessage="O CNPJ é obrigatório!"/>
+                    <b:message for="cnpj" />
+
+                    <hr style="color: green;"/>
+                    <h3 style="color: green"> ENDEREÇO </h3>          
                     <b:container fluid="true" style="font-size: smaller;">                  
-                        <b:inputText label="Logradouro" value="#{controladorRegistrar.novoGerador.endereco.logradouro}" size="10" required="true"/>
-                        <b:inputText label="Bairro" value="#{controladorRegistrar.novoGerador.endereco.bairro}" size="10" required="true"/>
-                        <b:inputText label="CEP" value="#{controladorRegistrar.novoGerador.endereco.cep}" size="10" required="true"/>
-                        <b:inputText label="Complemento (Opcional)" value="#{controladorRegistrar.novoGerador.endereco.complemento}" size="10"/>
-                        
+                        <b:inputText id="logradouro" label="Logradouro" value="#{controladorRegistrar.novoGerador.endereco.logradouro}" size="10" required="true"
+                                     requiredMessage="O Logradouro é obrigatório!"/>
+                        <b:message for="logradouro"/>
+                        <b:inputText id="bairro"  label="Bairro" value="#{controladorRegistrar.novoGerador.endereco.bairro}" size="10" required="true" requiredMessage="O Bairro é obrigatório!"/>
+                        <b:message for="bairro"/>
+                        <b:inputText id="cep" label="CEP" value="#{controladorRegistrar.novoGerador.endereco.cep}" size="10" required="true" requiredMessage="O CEP é obrigatório!"/>
+                        <b:message for="cep"/>
+                        <b:inputText id="complemento" label="Complemento (Opcional)" value="#{controladorRegistrar.novoGerador.endereco.complemento}" size="10"/>
+
                         <b:selectOneMenu label="Escolha a UF:" value="#{controladorRegistrar.novoGerador.endereco.uf}">
                             <f:selectItems var="obj" value="#{controladorEndereco.uf}" itemLabel="#{obj}" itemValue="#{obj}" />
                         </b:selectOneMenu>
-                        
+
                         <b:selectOneMenu label="Escolha a Cidade:" value="#{controladorRegistrar.novoGerador.endereco.cidade}">
                             <f:selectItems var="obj" value="#{controladorEndereco.cidadesRJ}" itemLabel="#{obj}" itemValue="#{obj}" />
                         </b:selectOneMenu>
-                        
-                        <b:inputText label="Numero" value="#{controladorRegistrar.novoGerador.endereco.numero}" size="10" required="true" mask="numeric"/>
-                        
+
+                        <b:inputText col-sm="3" label="Numero" value="#{controladorRegistrar.novoGerador.endereco.numero}" size="10" required="true" mask="numeric">
+                            <f:facet name="prepend"> Nº </f:facet>
+                        </b:inputText>
+
                     </b:container>
-                    
-                    <center> <b:commandButton value="Registrar" look="danger" action="#{controladorRegistrar.registrarGerador()}"/>    </center>               
-                </b:panel>     
-            </b:form>
-            <center>
-                <b:form>
-                    <b:commandLink value="Voltar" action="#{controladorRegistrar.voltar()}"/>
-                </b:form>
-            </center>
-           
+
+                    <center> <b:commandButton col-md="12" value="Registrar" look="success" actionListener="#{controladorRegistrar.registrarGerador()}" style="margin-right: 3px;" />                            
+                    </center>  
+                </b:form>        
+            </b:panel>
         </b:container>
         
-        <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorRegistrar.tipoDePessoa == 3}" >
-                       
-            <b:form>
+        
+        
+        <b:container fluid="true" style="margin-top: 30px; margin-left: 400px; margin-right: 400px;" rendered="#{controladorRegistrar.tipoDePessoa == 3}" >                   
+            <b:panel title="Criar Conta - Transportador" title-style="background-color:green; text-align: center; color: white;"
+                     collapsible="false" showCollapseLink="false">
                 
-                <b:panel title="Registrar Transportador" showCollapseLink="false"> 
-                  <f:facet name="footer"> 
-                      <center> <b> <h4 style="color: red"> ATENÇÃO !!! </h4> </b> </center>
-                      <h5 style="color: red"> Transportador (só efetua as entregas de materiais). </h5>
-                  </f:facet>
-                    <b:inputText label="Email" value="#{controladorRegistrar.novoTransportador.email}" size="20" required="true"/>
-                    <b:inputSecret label="Senha" value="#{controladorRegistrar.novoTransportador.senha}" size="20" required="true"/>
-                    <b:inputText label="Razão Social" value="#{controladorRegistrar.novoTransportador.razaoSocial}" size="50" required="true"/>
-                    <b:inputText label="Telefone" value="#{controladorRegistrar.novoTransportador.telefone}" size="15" required="true"/>             
-                    <b:inputText label="CNPJ" value="#{controladorRegistrar.novoTransportador.cnpj}" size="10" required="true"/>
-                    <center> <b:commandButton value="Registrar" look="danger" action="#{controladorRegistrar.registrarTransportador()}"/>    </center>               
-                </b:panel>     
-            </b:form>
-            <center>
-                <b:form>
-                    <b:commandLink value="Voltar" action="#{controladorRegistrar.voltar()}"/>
-                </b:form>
-            </center>
+                <f:facet name="footer">          
+                    <center> <b> <h3 style="color: green"> ATENÇÃO !!! </h3> </b> </center>
+                    <p style="color: green; font-size: 24px; text-align: center;"> Transportador só poderá efetuar as entregas dos produtos. </p>
+                    <h:form> 
+                        <center> <b:commandLink value="Voltar" action="registrar?faces-redirect=true" actionListener="#{controladorRegistrar.setTipoDePessoa(0)}"/> </center>
+                    </h:form>
+                </f:facet>
+                
+                <b:form>                
+                    <hr style="color: green;"/>
+                    <h3 style="color: green;;"> DADOS GERAIS </h3>
+                    <b:inputText id="email" label="Email" mask="email" value="#{controladorRegistrar.novoTransportador.email}" required="true" requiredMessage="O E-mail é obrigatório!"/>
+                    <b:message for="email" />
+                    <b:inputSecret id="senha" label="Senha" value="#{controladorRegistrar.novoTransportador.senha}" required="true" requiredMessage="A senha é obrigatória!"/>
+                    <b:message for="senha" />
+                    <b:inputText id="razaoSocial" label="Razão Social" value="#{controladorRegistrar.novoTransportador.razaoSocial}" size="50" required="true" 
+                                 requiredMessage="A Razão Social é obrigatória!"/>
+                    <b:message for="razaoSocial" />
+                    <b:inputText id="telefone" label="Telefone" value="#{controladorRegistrar.novoTransportador.telefone}" required="true" requiredMessage="O Telefone é obrigatório!"/>
+                    <b:message for="telefone" />
+                    <b:inputText id="cnpj" label="CNPJ" value="#{controladorRegistrar.novoTransportador.cnpj}" required="true" requiredMessage="O CNPJ é obrigatório!"/>
+                    <b:message for="cnpj" />
+
+                    <hr style="color: green;"/>
+                    <h3 style="color: green"> ENDEREÇO </h3>          
+                    <b:container fluid="true" style="font-size: smaller;">                  
+                        <b:inputText id="logradouro" label="Logradouro" value="#{controladorRegistrar.novoTransportador.endereco.logradouro}" size="10" required="true"
+                                     requiredMessage="O Logradouro é obrigatório!"/>
+                        <b:message for="logradouro"/>
+                        <b:inputText id="bairro"  label="Bairro" value="#{controladorRegistrar.novoTransportador.endereco.bairro}" size="10" required="true" requiredMessage="O Bairro é obrigatório!"/>
+                        <b:message for="bairro"/>
+                        <b:inputText id="cep" label="CEP" value="#{controladorRegistrar.novoTransportador.endereco.cep}" size="10" required="true" requiredMessage="O CEP é obrigatório!"/>
+                        <b:message for="cep"/>
+                        <b:inputText id="complemento" label="Complemento (Opcional)" value="#{controladorRegistrar.novoTransportador.endereco.complemento}" size="10"/>
+
+                        <b:selectOneMenu label="Escolha a UF:" value="#{controladorRegistrar.novoTransportador.endereco.uf}">
+                            <f:selectItems var="obj" value="#{controladorEndereco.uf}" itemLabel="#{obj}" itemValue="#{obj}" />
+                        </b:selectOneMenu>
+
+                        <b:selectOneMenu label="Escolha a Cidade:" value="#{controladorRegistrar.novoTransportador.endereco.cidade}">
+                            <f:selectItems var="obj" value="#{controladorEndereco.cidadesRJ}" itemLabel="#{obj}" itemValue="#{obj}" />
+                        </b:selectOneMenu>
+
+                        <b:inputText col-sm="3" label="Numero" value="#{controladorRegistrar.novoTransportador.endereco.numero}" size="10" required="true" mask="numeric">
+                            <f:facet name="prepend"> Nº </f:facet>
+                        </b:inputText>
+
+                    </b:container>
+
+                    <center> <b:commandButton col-md="12" value="Registrar" look="success" action="#{controladorRegistrar.registrarTransportador()}" style="margin-right: 3px;" />                            
+                    </center>             
+                </b:form>        
+            </b:panel>
         </b:container>
-       
+
     </h:body>
 </html>
 

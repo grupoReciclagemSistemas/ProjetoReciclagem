@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <title>Geradores do Sistema</title>
+    </h:head>
+    
+    <h:body>
+        
+        <ui:include src="/WEB-INF/menu.xhtml" />
+        
+        <b:container fluid="true" style="padding-top: 60px; padding-left: 3%; padding-right: 3%; font-size: smaller;">
+            <b:form>
+        <b:panel title="Recicladores" showCollapseLink="false">
+            <b:dataTable value="#{controladorMaterial.lista()}"
+                         var="material" 
+                         page-length="5"
+                         page-length-menu="5,10,20"
+                         customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+                         responsive="true"
+                         select="false">                     
+                        <b:dataTableColumn label="Nome" value="#{material.nome}"/>
+                        <b:dataTableColumn label="Descrição" value="#{material.descricao}"/>
+           </b:dataTable> 
+    
+        </b:panel>
+          </b:form>
+        </b:container>
+    </h:body>
+</html>

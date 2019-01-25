@@ -32,13 +32,7 @@ public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
         DAO<Reciclador> lista = new DAO(new Reciclador());
         return lista.obterLista();
     }
-    
-    public String removerReciclador(Reciclador obj){
-        DAO<Reciclador> acesso = new DAO(obj);
-        acesso.excluir();
-        return "recicladores?faces-redirect=true";
-    }
-    
+ 
     public String testarTrans(boolean valor){
         if(valor){
             return "Sim";

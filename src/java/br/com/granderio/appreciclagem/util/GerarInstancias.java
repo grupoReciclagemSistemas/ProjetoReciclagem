@@ -6,31 +6,33 @@ import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
 
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Rafael
- */
 public class GerarInstancias {
     
-    public static void main(String[] args){
-        Gerador g1 = new Gerador();
-        g1.setIdPessoaJuridica(4);
-        g1.setEmail("asad@hotmail.com");
-        g1.setRazaoSocial("TESTANDO INSTANCIAS");
-        g1.setCnpj("213123213-11");
-        g1.setTelefone("(33) 1111-2222");
-        g1.setSenha("1234");
-        
-       DAO<Gerador> acesso = new DAO(g1);
-       acesso.excluir();
-                 
+    public static void main(String[] args) throws InterruptedException{
+            /*
+            Gerador g1 = new Gerador();
+            Endereco ed = new Endereco();
+            ed.setBairro("SJM");
+            ed.setCep("21000-222");
+            ed.setCidade("RIO DE JANEIRO");
+            ed.setComplemento("");
+            ed.setLogradouro("AVENIDA TESTANDO GERADOR ");
+            ed.setNumero(1002);
+            ed.setPessoa(g1);
+            ed.setUf("RJ");
+            
+            g1.setCnpj("111.222.333-44");
+            g1.setEmail("gerador1@teste.com");
+            g1.setRazaoSocial("Gerador X");
+            g1.setSenha("123");
+            g1.setTelefone("(24) 2121-3434");
+            g1.setEstoques(null);
+            g1.setEndereco(ed);
+            
+            DAO<Gerador> dao = new DAO(g1);    
+            dao.inserir();
+*/
+           
     }
-    
+   
 }
