@@ -2,6 +2,7 @@
 package br.com.granderio.appreciclagem.model;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 
@@ -15,15 +16,20 @@ public class Estoque implements Serializable {
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private long idEstoque;
-    
-    @ManyToOne
-    private Gerador gerador;
-    
+     
     @OneToOne
     private Material material;
     
+    @OneToOne
+    private EstoqueGerador estoqueGerador;
+    
+    //Qtd em Toneladas
+    private double quantidadeMaterial;
+    
     public Estoque(){
-        
+        idEstoque = -1;
+        material = null;
+        estoqueGerador = null;
     }
 
     /**
@@ -40,19 +46,6 @@ public class Estoque implements Serializable {
         this.idEstoque = idEstoque;
     }
 
-    /**
-     * @return the gerador
-     */
-    public Gerador getGerador() {
-        return gerador;
-    }
-
-    /**
-     * @param gerador the gerador to set
-     */
-    public void setGerador(Gerador gerador) {
-        this.gerador = gerador;
-    }
 
     /**
      * @return the material
@@ -66,6 +59,34 @@ public class Estoque implements Serializable {
      */
     public void setMaterial(Material material) {
         this.material = material;
+    }
+
+    /**
+     * @return the quantidadeMaterial
+     */
+    public double getQuantidadeMaterial() {
+        return quantidadeMaterial;
+    }
+
+    /**
+     * @param quantidadeMaterial the quantidadeMaterial to set
+     */
+    public void setQuantidadeMaterial(double quantidadeMaterial) {
+        this.quantidadeMaterial = quantidadeMaterial;
+    }
+
+    /**
+     * @return the estoqueGerador
+     */
+    public EstoqueGerador getEstoqueGerador() {
+        return estoqueGerador;
+    }
+
+    /**
+     * @param estoqueGerador the estoqueGerador to set
+     */
+    public void setEstoqueGerador(EstoqueGerador estoqueGerador) {
+        this.estoqueGerador = estoqueGerador;
     }
     
 }

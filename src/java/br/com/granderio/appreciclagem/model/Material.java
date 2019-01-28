@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,7 +22,7 @@ import javax.persistence.TemporalType;
 /**
  *
  * @author Rafael
- */
+ */ // SELECT a FROM Material a WHERE 
 @Entity
 public class Material implements Serializable {
     
@@ -39,13 +38,17 @@ public class Material implements Serializable {
     @Temporal(value = TemporalType.DATE)
     private Date dataCadastro;
     
-    private long precoMin;
+    private double precoMin;
     
-    private long precoMax;
+    private double precoMax;
+    
+    @OneToMany(mappedBy="material", fetch = FetchType.LAZY)
+    private List<MaterialLegislacao> listaMatLegi;
   
     public Material(){
         idMaterial = -1;
         dataCadastro = new Date();
+        listaMatLegi = new ArrayList();
     }
 
     /**
@@ -107,28 +110,42 @@ public class Material implements Serializable {
     /**
      * @return the precoMin
      */
-    public long getPrecoMin() {
+    public double getPrecoMin() {
         return precoMin;
     }
 
     /**
      * @param precoMin the precoMin to set
      */
-    public void setPrecoMin(long precoMin) {
+    public void setPrecoMin(double precoMin) {
         this.precoMin = precoMin;
     }
 
     /**
      * @return the precoMax
      */
-    public long getPrecoMax() {
+    public double getPrecoMax() {
         return precoMax;
     }
 
     /**
      * @param precoMax the precoMax to set
      */
-    public void setPrecoMax(long precoMax) {
+    public void setPrecoMax(double precoMax) {
         this.precoMax = precoMax;
+    }
+
+    /**
+     * @return the listaMatLegi
+     */
+    public List<MaterialLegislacao> getListaMatLegi() {
+        return listaMatLegi;
+    }
+
+    /**
+     * @param listaMatLegi the listaMatLegi to set
+     */
+    public void setListaMatLegi(List<MaterialLegislacao> listaMatLegi) {
+        this.listaMatLegi = listaMatLegi;
     }
 }

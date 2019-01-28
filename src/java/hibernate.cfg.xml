@@ -48,6 +48,10 @@ Contributor(s):
     <property name="hibernate.connection.password">root</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.current_session_context_class">
+    org.hibernate.context.internal.ThreadLocalSessionContext
+    </property>
     <mapping class="br.com.granderio.appreciclagem.model.Gerador"/>
     <mapping class="br.com.granderio.appreciclagem.model.PessoaJuridica"/>
     <mapping class="br.com.granderio.appreciclagem.model.Reciclador"/>
@@ -57,5 +61,8 @@ Contributor(s):
     <mapping class="br.com.granderio.appreciclagem.model.Material"/>
     <mapping class="br.com.granderio.appreciclagem.model.PedidoReciclagem"/>
     <mapping class="br.com.granderio.appreciclagem.model.Estoque"/>
+    <mapping class="br.com.granderio.appreciclagem.model.EstoqueGerador"/>
+    <mapping class="br.com.granderio.appreciclagem.model.Legislacao"/>
+    <mapping class="br.com.granderio.appreciclagem.model.MaterialLegislacao"/>
   </session-factory>
 </hibernate-configuration>

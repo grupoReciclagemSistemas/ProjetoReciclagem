@@ -33,6 +33,8 @@ and open the template in the editor.
                                     <b:commandLink value="Recicladores" actionListener="#{controlePainel.mudarListagem(2)}" look="warning" update="@form" style="margin-top: 2px;"/>
 
                                     <b:commandLink value="Materiais" actionListener="#{controlePainel.mudarListagem(3)}" look="danger" update="@form" style="margin-top: 2px;"/>
+                                    
+                                    <b:commandLink value="Legislações" actionListener="#{controlePainel.mudarListagem(4)}" look="info" update="@form" style="margin-top: 2px;"/>
                                     <hr style="border-color: black" />
                                     <h4 style="text-align: center; color: black;"> Adicionar </h4>
                                     <center><b:commandButton value="Material" action="material?faces-redirect=true"  style="margin-top: 2px; background-color: black; color: white;"/> 
@@ -62,7 +64,7 @@ and open the template in the editor.
                                         <b:commandButton look="info" value="+" />
                                     </b:dataTableColumn>
                                     <b:dataTableColumn label="Remover">
-                                        <b:commandButton look="danger" value="X" action="#{controlePainel.removerGeradorSQL(gerador.idPessoaJuridica)}" onclick="return confirm('Deseja realmente excluir o #{gerador.razaoSocial} ?')"/>
+                                        <b:commandButton look="danger" value="X" action="#{controlePainel.removerGerador(gerador)}" onclick="return confirm('Deseja realmente excluir o #{gerador.razaoSocial} ?')"/>
                                     </b:dataTableColumn>
                                 </b:dataTable>
                             </b:panel>
@@ -123,6 +125,27 @@ and open the template in the editor.
                                 </b:dataTable>
                                 <f:facet name="footer"> 
                                     <b:commandLink look="info" value="Adicionar Novo Material" action="material?faces-redirect=true" />
+                                </f:facet>
+                            </b:panel>
+                        </b:container>
+                        
+                        <b:container rendered="#{controlePainel.listagem == 4}">
+                            <b:panel title="Lista de Legislações" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
+                                <b:dataTable var="legislacao" value="#{controladorLegislacao.lista()}"
+                                             page-length="5"
+                                             page-length-menu="5,10,20"
+                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+                                             responsive="true"
+                                             select="false" >
+                                    <b:dataTableColumn label="ID" value="#{legislacao.idLegislacao}"/>
+                                    <b:dataTableColumn label="CODIGO" value="#{legislacao.codigo}"/>
+                                    <b:dataTableColumn label="DESCRIÇÃO" value="#{legislacao.descricao}"/>                          
+                                    <b:dataTableColumn label="Mais info">
+                                        <b:commandButton look="info" value="+" />
+                                    </b:dataTableColumn>
+                                </b:dataTable>
+                                <f:facet name="footer"> 
+                                    <b:commandLink look="danger" value="Adicionar Nova Legislação" action="legislacao?faces-redirect=true" />
                                 </f:facet>
                             </b:panel>
                         </b:container>

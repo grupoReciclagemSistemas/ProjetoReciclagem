@@ -8,6 +8,9 @@ package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.model.Gerador;
+import br.com.granderio.appreciclagem.model.Material;
+import br.com.granderio.appreciclagem.model.Reciclador;
+import br.com.granderio.appreciclagem.model.Transportador;
 import java.io.Serializable;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
@@ -33,22 +36,27 @@ public class ControladorPainelADM implements Serializable {
     public ControladorPainelADM(){
         
     }
-    
-    public void removerGeradorSQL(long id){
-        DAO<Gerador> dao = new DAO(new Gerador() );
-        dao.excluirGeradorPorSQL(id);
+ 
+    public void removerGerador(Gerador obj){
+        DAO<Gerador> dao = new DAO(obj);
+        dao.excluir();
     }
     
-    public void removerTransportadorSQL(long id){
-        DAO<Gerador> dao = new DAO(new Gerador() );
-        dao.excluirTranposrtadorPorSQL(id);
+    public void removerReciclador(Reciclador obj){
+        DAO<Reciclador> dao = new DAO(obj);
+        dao.excluir();
     }
     
-    public void removerRecicladorSQL(long id){
-        DAO<Gerador> dao = new DAO(new Gerador() );
-        dao.excluirRecicladorPorSQL(id);
+    public void removerTransportador(Transportador obj){
+        DAO<Transportador> dao = new DAO(obj);
+        dao.excluir();
     }
     
+    public void removerMaterial(Material obj){
+        DAO<Material> dao = new DAO(obj);
+        dao.excluir();
+    }
+  
     public void mudarListagem(int novaLista){
         listagem = novaLista;
     }

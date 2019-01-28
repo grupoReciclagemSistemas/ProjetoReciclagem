@@ -16,6 +16,8 @@
  */
 package br.com.granderio.appreciclagem.dao;
 
+import br.com.granderio.appreciclagem.model.Estoque;
+import br.com.granderio.appreciclagem.model.EstoqueGerador;
 import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.PessoaJuridica;
 import br.com.granderio.appreciclagem.model.Reciclador;
@@ -28,6 +30,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -45,78 +48,71 @@ public class DAO<T> {
    
    
     public DAO(T objetoModelo) {
-        this.objetoModelo = objetoModelo;
-        
-        if(s == null){
-            s = HibernateUtil.getSessionFactory().openSession();
+        this.objetoModelo = objetoModelo;    
+        s = HibernateUtil.pegarSession();
+    }
+    
+     /*
+    public long ultimoIdEstoque(){
+        List<Estoque> listagem = null;
+        try{
+            s.getTransaction().begin();
+            Criteria cri = s.createCriteria(Estoque.class);
+            cri.addOrder(Order.desc("idEstoque"));
+            listagem = cri.list();
+        }catch(HibernateException ex){
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao excluir Listagem: " + mensagem);
+            s.getTransaction().rollback();
+        }finally{
+        s.getTransaction().commit();
+        s.flush();
         }
+        return listagem.get(0).getIdEstoque();
+    }
  
-    }
-    
-    public Reciclador logarReciclador(String email, String senha){
-        Reciclador reci = null;
+    public long ultimoIdEstoqueGerador(){
+        List<EstoqueGerador> listagem = null;
         try{
             s.getTransaction().begin();
-            Criteria cri = s.createCriteria(Reciclador.class);
-            cri.add(Restrictions.eq("email", email));
-            cri.add(Restrictions.eq("senha", senha));
-            reci = (Reciclador) cri.list().get(0);
+            Criteria cri = s.createCriteria(EstoqueGerador.class);
+            cri.addOrder(Order.desc("idEstoqueGerador"));
+            listagem = cri.list();
         }catch(HibernateException ex){
             String mensagem = UtilError.getMensagemErro(ex);
-            System.err.println("Erro ao logar: " + mensagem);
+            System.err.println("Erro ao excluir Listagem: " + mensagem);
             s.getTransaction().rollback();
         }finally{
-            s.getTransaction().commit();
-            s.flush(); 
+        s.getTransaction().commit();
+        s.flush();  
         }
-        return reci;
+        return listagem.get(0).getIdEstoqueGerador();
     }
     
-    public Gerador logarGerador(String email, String senha){
-        Gerador ger = null;
+    public void updateGeradorSQL(double qtdMat, long idMaterial, long idGerador){
+        long id1 = (this.ultimoIdEstoque() + 1);
+        long id2 = (this.ultimoIdEstoqueGerador() + 1);
         try{
-            s.getTransaction().begin();
-            Criteria cri = s.createCriteria(Gerador.class);
-            cri.add(Restrictions.eq("email", email));
-            cri.add(Restrictions.eq("senha", senha));
-            ger = (Gerador) cri.list().get(0);
+        s.getTransaction().begin();
+        s.createSQLQuery("INSERT INTO Estoque VALUES ( " + id1 + ", " + qtdMat + ", " + null + ", " + idMaterial + ")").executeUpdate();
+        s.createSQLQuery("INSERT INTO EstoqueGerador VALUES ( " + id2 + ", " + null + ", " + idGerador + ")").executeUpdate();
+        s.createSQLQuery("UPDATE Estoque SET estoqueGerador_idEstoqueGerador = " + id2 + " WHERE idEstoque = " + id1).executeUpdate();
+        s.createSQLQuery("UPDATE EstoqueGerador SET estoque_idEstoque = " + id1 + " WHERE idEstoqueGerador = " + id2).executeUpdate();
         }catch(HibernateException ex){
             String mensagem = UtilError.getMensagemErro(ex);
-            System.err.println("Erro ao logar: " + mensagem);
+            System.err.println("Erro ao excluir Gerador --> " + mensagem);
             s.getTransaction().rollback();
-        }finally{
-            s.getTransaction().commit();
-            s.flush();        
         }
-        return ger;    
+        s.getTransaction().commit();
+        s.flush();  
     }
-    
-    public Transportador logarTransportador(String email, String senha){
-        Transportador trans = null;
-        try{
-            s.getTransaction().begin();
-            Criteria cri = s.createCriteria(Transportador.class);
-            cri.add(Restrictions.eq("email", email));
-            cri.add(Restrictions.eq("senha", senha));
-            trans = (Transportador) cri.list().get(0);
-            if(cri.list().isEmpty()){
-                System.out.println("Vazio");
-            }
-        }catch(HibernateException ex){
-            String mensagem = UtilError.getMensagemErro(ex);
-            System.err.println("Erro ao logar: " + mensagem);
-            s.getTransaction().rollback();
-        }finally{
-            s.getTransaction().commit();
-            s.flush();        
-        }
-        return trans;
-    }
+    */
     
     public int quantidade(String email, String senha){  
         int quantidade = 0;
         try{
             s.getTransaction().begin();
+            
             Criteria cri = s.createCriteria(Transportador.class);
             cri.add(Restrictions.eq("email", email));
             cri.add(Restrictions.eq("senha", senha));
@@ -127,7 +123,7 @@ public class DAO<T> {
             s.getTransaction().rollback();
         }finally{
             s.getTransaction().commit();
-            s.flush();        
+            s.flush();
         }
         return quantidade;
     }
@@ -150,7 +146,7 @@ public class DAO<T> {
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
-            s.flush();          
+            s.flush();
         }
     }
     
@@ -164,10 +160,10 @@ public class DAO<T> {
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
-            s.flush();         
+            s.flush();
         }
     }
-    
+  
     public int quantidadeDeMateriais(){
         List<Material> lista = null;       
         try{     
@@ -179,11 +175,12 @@ public class DAO<T> {
             s.getTransaction().rollback();
         }finally{
            s.getTransaction().commit();
-           s.flush(); 
+           s.flush();
         }
         return lista.size();
     }
     
+    /*
     public PessoaJuridica logar(String email, String senha){
         List<PessoaJuridica> lista = null;
         try{     
@@ -197,11 +194,11 @@ public class DAO<T> {
             s.getTransaction().rollback();
         }finally{
            s.getTransaction().commit();
-           s.flush(); 
+           s.flush();
         }
         return lista.get(0);
     }
-
+  */
     public void excluir() {      
         try {      
             s.getTransaction().begin();
@@ -216,19 +213,7 @@ public class DAO<T> {
         }
     }
     
-    public void excluirGerador(Gerador gerador){
-        try{
-        s.getTransaction().begin();
-        s.delete(gerador);
-        }catch(HibernateException ex){
-            String mensagem = UtilError.getMensagemErro(ex);
-            System.err.println("Erro ao excluir Gerador --> " + mensagem);
-            s.getTransaction().rollback();
-        }
-        s.getTransaction().commit();
-        s.flush();     
-    }
-    
+    /*
     public void excluirGeradorPorSQL(long id){
         try{
         s.getTransaction().begin();
@@ -240,7 +225,7 @@ public class DAO<T> {
             s.getTransaction().rollback();
         }
         s.getTransaction().commit();
-        s.flush();     
+        s.flush();
     }
     
     public void excluirTranposrtadorPorSQL(long id){
@@ -254,7 +239,7 @@ public class DAO<T> {
             s.getTransaction().rollback();
         }
         s.getTransaction().commit();
-        s.flush();     
+        s.flush();  
     }
     
     public void excluirRecicladorPorSQL(long id){
@@ -268,9 +253,9 @@ public class DAO<T> {
             s.getTransaction().rollback();
         }
         s.getTransaction().commit();
-        s.flush();     
+        s.flush();
     }
-
+    */
     public List<T> obterLista() {     
         List<T> list = null;
         try {
@@ -284,7 +269,7 @@ public class DAO<T> {
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
-            s.flush();          
+            s.flush();
         }
 
         return list;
@@ -300,7 +285,7 @@ public class DAO<T> {
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
-            s.flush();      
+            s.flush();
         }
     }
     
@@ -317,53 +302,10 @@ public class DAO<T> {
             s.getTransaction().rollback();
         } finally {
             s.getTransaction().commit();
-            s.flush();     
+            s.flush();
         }
         return data;
     }
-    
-    public boolean verificarEmail(String email){
-        List<PessoaJuridica> lista = null;
-        try{
-            s.getTransaction().begin();
-            Criteria cri = s.createCriteria(PessoaJuridica.class);
-            cri.add(Restrictions.eq("email", email));         
-            lista = cri.list();
-        }catch(HibernateException ex){
-            String mensagem = UtilError.getMensagemErro(ex);
-            System.err.println("Erro ao buscar registros: " + mensagem);
-            s.getTransaction().rollback();
-        }finally{
-            s.getTransaction().commit();
-            s.flush();    
-        }
-        
-        if(lista.size() > 0 ){
-            return true;
-        }
-         return false;   
-    }
-    
-     public boolean verificarCNPJ(String cnpj){
-        List<PessoaJuridica> lista = null;
-        try{
-            s.getTransaction().begin();
-            Criteria cri = s.createCriteria(PessoaJuridica.class);
-            cri.add(Restrictions.eq("cnpj", cnpj));         
-            lista = cri.list();
-        }catch(HibernateException ex){
-            System.err.println("Erro ao buscar registros: " + ex);
-            s.getTransaction().rollback();
-        }finally{
-            s.getTransaction().commit();
-            s.flush();    
-        }
-        if(lista.size() > 0 ){
-            return true;
-        }
-         return false;   
-    }
-    
-  
+      
 }
 

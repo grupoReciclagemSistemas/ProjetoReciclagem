@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"   
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Reclick - Inicio</title>
+
+    </h:head>
+    <h:body>
+
+        <ui:include src="/WEB-INF/menu.xhtml" />
+
+        <ui:repeat var="obj" value="#{controladorLegislacao.lista()}">
+            <h3> #{obj.codigo} </h3>
+            <h6> #{obj.descricao} </h6>
+            <h:form> <b:commandButton action="legi-detalhada?faces-redirect=true" actionListener="#{controladorLegislacao.setar(obj)}" /> </h:form>
+        </ui:repeat>
+    </h:body>
+</html>

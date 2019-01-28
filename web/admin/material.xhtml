@@ -25,14 +25,22 @@ and open the template in the editor.
                 <b:panel title-style="background-color: white; color: black" collapsible="false" title="Registrar Novo Material"
                          style="margin-top: 40px;">
                     <h:outputLabel value="Nome do Material:" style="color: black" />
-                    <b:inputText placeholder="Digite o Nome do Novo Material..." style="color: blue" value="#{controladorMaterial.novoMaterial.nome}" />
-                    
+                    <b:inputText placeholder="Digite o Nome do Novo Material..." style="color: blue" value="#{controladorMaterial.novoMaterial.nome}" />         
                     <h:outputLabel value="Descrição do Material:" style="color: black" />
-                    <b:inputTextarea placeholder="Digite a descrição do Novo Material..." style="color: blue" rows="4" value="#{controladorMaterial.novoMaterial.descricao}" />
-                    <center>
-                    <b:commandButton look="success" action="#{controladorMaterial.adicionarMaterial()}" value="Cadastrar" style="margin-right: 3px;" />
-                    <b:commandButton look="danger" action="index?faces-redirect=true" value="Cancelar" />
-                    </center>
+                    <b:inputTextarea placeholder="Digite a descrição do Novo Material..." style="color: blue" rows="4" value="#{controladorMaterial.novoMaterial.descricao}" />             
+                     <br/>
+                    <h:outputLabel for="valorMin" value="Valor Mínimo em CENTAVOS:" style="color: black" />
+                    <b:inputText  id="valorMin"  value="#{controladorMaterial.novoMaterial.precoMin}" size="10" required="true" mask="numeric">
+                            <f:facet name="prepend"> R$ </f:facet>
+                        </b:inputText>
+                    <br/>
+                    <h:outputLabel for="valorMax" value="Valor Máximo em CENTAVOS:" style="color: black" />
+                    <br/>
+                    <b:inputText id="valorMax"  value="#{controladorMaterial.novoMaterial.precoMax}" size="10" required="true" mask="numeric">
+                            <f:facet name="prepend"> R$ </f:facet>
+                    </b:inputText>
+                    <br/>
+                <b:commandButton action="#{controladorMaterial.adicionarMaterial()}" value="Adicionar" look="success" />
                 </b:panel>
             </b:form>
         </b:container>

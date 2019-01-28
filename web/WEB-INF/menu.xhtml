@@ -7,8 +7,9 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:b="http://bootsfaces.net/ui"   
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <style>
@@ -40,7 +41,7 @@ and open the template in the editor.
                 height: 50%;
                 left: 130px;
             }
-            
+
             .mais-informacoes{
                 margin-bottom:10px;
             }
@@ -48,23 +49,27 @@ and open the template in the editor.
 
     </h:head>
 
-    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+   <h:body style="padding-top: 50px; padding-bottom: 20px;">
+    
 
-         <b:form id="formMenu">
-             <b:growl id="growlMessages"/>
-             
-            <b:navBar brand="Reclick" style="background-color: #558b2f;" brandStyle="color: white;" brand-img="resources/img/logo.png" brand-img-style="width: 39px; padding-right: 10px;" fixed="top" brandHref="index.xhtml">
+        <b:form id="formMenu">
+            <b:growl id="growlMessages"/>
+
+            <b:navBar brand="Reclick" style="background-color: #558b2f;" brandStyle="color: white; font-size: 34px; font-style: italic;" brand-img="resources/img/logo.png" brand-img-style="width: 44px; padding-right: 10px;" fixed="top" brandHref="index.xhtml">
 
                 <b:navbarLinks styleClass="navbar-right">
 
-                    <b:navCommandLink style="color: white;" value="Inicio" action="index?faces-redirect=true" />
+                    <b:navCommandLink style="color: white; font-style: oblique; font-size: 17px;" value="Inicio" action="index?faces-redirect=true" />
 
-                    <b:navCommandLink style="color: white;" value="Sobre" action="index?faces-redirect=true" />
+                    <b:navCommandLink style="color: white; font-style: oblique; font-size: 17px;" value="Sobre" action="index?faces-redirect=true" />
 
-                    <b:navCommandLink style="color: white;" value="Logar" action="login?faces-redirect=true"  />
-           </b:navbarLinks>
+                    <b:navCommandLink style="color: white; font-style: oblique; font-size: 17px;" value="Logar" action="login?faces-redirect=true" rendered="#{controladorLogado.verificarLogado() == false}"  />
+                    <b:navCommandLink style="color: white; font-style: oblique; font-size: 17px;" value="Sua Conta" action="minha_conta?faces-redirect=true" rendered="#{controladorLogado.verificarLogado() == true}"  />
+                </b:navbarLinks>
             </b:navBar>
+
         </b:form>
+  
     </h:body>
 </html>
 

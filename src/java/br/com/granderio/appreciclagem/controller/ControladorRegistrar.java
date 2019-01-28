@@ -6,6 +6,9 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
+import br.com.granderio.appreciclagem.dao.DAOGerador;
+import br.com.granderio.appreciclagem.dao.DAOReciclador;
+import br.com.granderio.appreciclagem.dao.DAOTransportador;
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
@@ -56,7 +59,7 @@ public  class ControladorRegistrar implements Serializable {
     
 
      public String registrarTransportador(){
-       DAO<Transportador> acesso = new DAO(novoTransportador);
+       DAOTransportador acesso = new DAOTransportador(novoTransportador);
        novoTransportador.getEndereco().setPessoa(novoTransportador);
        novoTransportador.setPedidosDeReciclagens(null);
        String email = novoTransportador.getEmail();
@@ -86,7 +89,7 @@ public  class ControladorRegistrar implements Serializable {
      
 
     public String registrarGerador(){
-        DAO<Gerador> acesso = new DAO(novoGerador);
+        DAOGerador acesso = new DAOGerador(novoGerador);
         novoGerador.getEndereco().setPessoa(novoGerador);
         novoGerador.setEstoques(null);
         String email = novoGerador.getEmail();
@@ -105,7 +108,7 @@ public  class ControladorRegistrar implements Serializable {
     }
     
     public void registrarReciclador(){
-        DAO<Reciclador> acesso = new DAO(novoReciclador);
+        DAOReciclador acesso = new DAOReciclador(novoReciclador);
         novoReciclador.getEndereco().setPessoa(novoReciclador);
         novoReciclador.setPedidosDeReciclagens(null);
         String email = novoReciclador.getEmail();

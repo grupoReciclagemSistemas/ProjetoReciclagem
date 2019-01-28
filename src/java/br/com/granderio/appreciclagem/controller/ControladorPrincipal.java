@@ -30,7 +30,7 @@ public abstract class ControladorPrincipal <T> implements Serializable {
         DAO <T> acesso = new DAO(modelo);
         acesso.inserir();
     }
-    
+      
     protected void alterar (){
         DAO <T> acesso = new DAO(modelo);
         acesso.alterar();

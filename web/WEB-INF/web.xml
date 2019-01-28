@@ -25,4 +25,5 @@
         <param-name>BootsFaces_USETHEME</param-name>
         <param-value>cerulean</param-value>
     </context-param>
+
 </web-app>

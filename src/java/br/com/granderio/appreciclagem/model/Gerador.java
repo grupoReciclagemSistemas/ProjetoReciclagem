@@ -16,30 +16,47 @@ import javax.persistence.OneToMany;
 @Entity
 public class Gerador extends PessoaJuridica {
     
-    @OneToMany(mappedBy="gerador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Estoque> estoques;
+    @OneToMany(mappedBy="gerador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<EstoqueGerador> estoques;
     
     public Gerador(){
         super();
         estoques = new ArrayList();
     }
     
-    public void adicionarEstoque(Estoque estoque){
-        DAO<Estoque> acesso = new DAO(estoque);
-        int quantidadeMax = acesso.quantidadeDeMateriais();
-        int quantidade = this.estoques.size();
-        if(quantidade == quantidadeMax){
-            System.out.println("Quantidade Máxima!!!");
-            return;
+    public List<Material> listaDeMaterialQuePodeAdicionar(){
+        List<Material> listaDeMaterialGerador = new ArrayList();
+        int count = 0;
+        for(EstoqueGerador estoqueGerador : estoques){
+            Material obj = (Material) estoques.get(count).getEstoque().getMaterial();     
+            listaDeMaterialGerador.add(obj);
+            count++;
         }
-        estoques.add(estoque);
+        DAO<Material> dao = new DAO(new Material());
+        List<Material> listaDeMaterialConsolidada = (List<Material>) dao.obterLista();
+        listaDeMaterialConsolidada.removeAll(listaDeMaterialGerador);
+        return listaDeMaterialConsolidada;
     }
     
-    public List<Estoque> getEstoques() {
+    public void adicionarEstoqueGerador(EstoqueGerador obj){
+        estoques.add(obj);
+    }
+    
+    public void removerEstoqueGerador(EstoqueGerador obj){
+        estoques.remove(obj);
+    }
+
+    /**
+     * @return the estoques
+     */
+    public List<EstoqueGerador> getEstoques() {
         return estoques;
     }
 
-    public void setEstoques(List<Estoque> estoques) {
+    /**
+     * @param estoques the estoques to set
+     */
+    public void setEstoques(List<EstoqueGerador> estoques) {
         this.estoques = estoques;
     }
 

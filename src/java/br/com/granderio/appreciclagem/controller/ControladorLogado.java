@@ -6,7 +6,13 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
+import br.com.granderio.appreciclagem.dao.DAOGerador;
+import br.com.granderio.appreciclagem.dao.DAOReciclador;
+import br.com.granderio.appreciclagem.dao.DAOTransportador;
+import br.com.granderio.appreciclagem.model.Estoque;
+import br.com.granderio.appreciclagem.model.EstoqueGerador;
 import br.com.granderio.appreciclagem.model.Gerador;
+import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
 import java.io.Serializable;
@@ -28,16 +34,63 @@ public class ControladorLogado implements Serializable {
     private Reciclador recicladorLogado = null;
     private Gerador geradorLogado = null;
     private Transportador transportadorLogado = null;
-
+    
+    //Var para editar
+    private EstoqueGerador estoque = null;
+    private double quantidadeMais = 0.0;
+      
     private String email;
     private String senha;
 
     private int tipoLogin;
-
+    
+    //Atributos para novo EstoqueGerador
+    private Material materialEscolhido;
+    private double quantidadeDoMaterialEscolhido = 0.0;
+     
     public ControladorLogado() {
-
+      
     }
-
+    
+    public void setarEstoqueGerador(EstoqueGerador obj){
+        this.setEstoque(obj);    
+    }
+    
+    public void mudarQuantidadeTotal(){
+      
+    }
+    
+    public void cancelar(){
+        quantidadeMais = 0.0;
+        estoque = null;
+    }
+    
+    public String adicionarNoEstoque(){
+        EstoqueGerador estoqueGerador = new EstoqueGerador();
+        Estoque estoque = new Estoque();
+        estoque.setEstoqueGerador(estoqueGerador);
+        estoqueGerador.setEstoque(estoque);
+        estoque.setMaterial(materialEscolhido);
+        estoque.setQuantidadeMaterial(quantidadeDoMaterialEscolhido);
+        estoqueGerador.setGerador(geradorLogado);
+        geradorLogado.adicionarEstoqueGerador(estoqueGerador);  
+        DAO<Gerador> dao = new DAO(geradorLogado);
+        dao.alterar();     
+        materialEscolhido = new Material();
+        quantidadeDoMaterialEscolhido = 0.0;
+        return "minha_conta?faces-redirect=true";
+    }
+    
+    public void removerEstoqueGerador(EstoqueGerador obj){ 
+        obj.getEstoque().setMaterial(null);
+        obj.getEstoque().setEstoqueGerador(null); 
+        obj.setGerador(null);
+        obj.setEstoque(null);
+        geradorLogado.getEstoques().remove(obj);
+        DAO<EstoqueGerador> acesso = new DAO(obj);
+        acesso.excluir();   
+    }
+    
     public String setTipoLogin() {
         tipoLogin = 0;
         email = "";
@@ -45,30 +98,42 @@ public class ControladorLogado implements Serializable {
         return "login?faces-redirect=true";
     }
 
-    public void logarReciclador() {
-        DAO<Reciclador> acesso = new DAO(recicladorLogado);
+    public String logarReciclador() {
+        DAOReciclador acesso = new DAOReciclador(recicladorLogado);
         recicladorLogado = acesso.logarReciclador(email, senha);
   
         if(recicladorLogado == null){
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "RECICLADOR NÃO ENCONTRADO!", "Usuário não encontrado no Sistema!");
-            FacesContext.getCurrentInstance().addMessage("growl", msg);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return "";
         }  
         
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "LOGADO COM SUCESSO!", "Bem-vindo ao Sistema, " + recicladorLogado.getRazaoSocial());
-            FacesContext.getCurrentInstance().addMessage("growl", msg);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        email = "";
+        senha = "";
+        tipoLogin = 0;
+        return "minha_conta?faces-redirect=true";
     }
 
     public String logarGerador() {
-        DAO<Gerador> acesso = new DAO(geradorLogado);
+        DAOGerador acesso = new DAOGerador(geradorLogado);
         geradorLogado = acesso.logarGerador(email, senha);
-         email = "";
-         senha ="";
+        
+        if(geradorLogado == null){
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "GERADOR NÃO ENCONTRADO!", "Usuário não encontrado no Sistema!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return "";
+        }
+        
+        email = "";
+        senha = "";
         tipoLogin = 0;
         return "minha_conta?faces-redirect=true";
     }
 
     public String logarTransportador() {
-        DAO<Transportador> acesso = new DAO(transportadorLogado);
+        DAOTransportador acesso = new DAOTransportador(transportadorLogado);
         transportadorLogado = acesso.logarTransportador(email, senha);
         email = "";
          senha ="";
@@ -194,6 +259,62 @@ public class ControladorLogado implements Serializable {
      */
     public void setTipoLogin(int tipoLogin) {
         this.tipoLogin = tipoLogin;
+    }
+
+    /**
+     * @return the materialEscolhido
+     */
+    public Material getMaterialEscolhido() {
+        return materialEscolhido;
+    }
+
+    /**
+     * @param materialEscolhido the materialEscolhido to set
+     */
+    public void setMaterialEscolhido(Material materialEscolhido) {
+        this.materialEscolhido = materialEscolhido;
+    }
+
+    /**
+     * @return the quantidadeDoMaterialEscolhido
+     */
+    public double getQuantidadeDoMaterialEscolhido() {
+        return quantidadeDoMaterialEscolhido;
+    }
+
+    /**
+     * @param quantidadeDoMaterialEscolhido the quantidadeDoMaterialEscolhido to set
+     */
+    public void setQuantidadeDoMaterialEscolhido(double quantidadeDoMaterialEscolhido) {
+        this.quantidadeDoMaterialEscolhido = quantidadeDoMaterialEscolhido;
+    }
+
+    /**
+     * @return the estoque
+     */
+    public EstoqueGerador getEstoque() {
+        return estoque;
+    }
+
+    /**
+     * @param estoque the estoque to set
+     */
+    public void setEstoque(EstoqueGerador estoque) {
+        this.estoque = estoque;
+    }
+
+    /**
+     * @return the quantidadeMais
+     */
+    public double getQuantidadeMais() {
+        return quantidadeMais;
+    }
+
+    /**
+     * @param quantidadeMais the quantidadeMais to set
+     */
+    public void setQuantidadeMais(double quantidadeMais) {
+        this.quantidadeMais = quantidadeMais;
     }
 
 }
