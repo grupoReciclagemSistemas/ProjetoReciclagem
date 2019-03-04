@@ -19,6 +19,10 @@ public class Gerador extends PessoaJuridica {
     @OneToMany(mappedBy="gerador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<EstoqueGerador> estoques;
     
+    //Gerador tem uma lista de negociações
+    @OneToMany(mappedBy="gerador", fetch = FetchType.LAZY)
+    private List<Negociacao> negociacoes;
+    
     public Gerador(){
         super();
         estoques = new ArrayList();
@@ -58,6 +62,20 @@ public class Gerador extends PessoaJuridica {
      */
     public void setEstoques(List<EstoqueGerador> estoques) {
         this.estoques = estoques;
+    }
+
+    /**
+     * @return the negociacoes
+     */
+    public List<Negociacao> getNegociacoes() {
+        return negociacoes;
+    }
+
+    /**
+     * @param negociacoes the negociacoes to set
+     */
+    public void setNegociacoes(List<Negociacao> negociacoes) {
+        this.negociacoes = negociacoes;
     }
 
 }

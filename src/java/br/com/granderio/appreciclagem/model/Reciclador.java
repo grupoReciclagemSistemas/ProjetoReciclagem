@@ -19,6 +19,10 @@ public class Reciclador extends PessoaJuridica {
     
     @OneToMany(mappedBy="reciclador", fetch = FetchType.LAZY)
     private List<PedidoReciclagem> pedidosDeReciclagens;
+    
+    //Reciclador tem uma lista de negociações
+    @OneToMany(mappedBy="reciclador", fetch = FetchType.LAZY)
+    private List<Negociacao> negociacoes;
           
     public Reciclador(){
         super();
@@ -47,6 +51,20 @@ public class Reciclador extends PessoaJuridica {
      */
     public void setPedidosDeReciclagens(List<PedidoReciclagem> pedidosDeReciclagens) {
         this.pedidosDeReciclagens = pedidosDeReciclagens;
+    }
+
+    /**
+     * @return the negociacoes
+     */
+    public List<Negociacao> getNegociacoes() {
+        return negociacoes;
+    }
+
+    /**
+     * @param negociacoes the negociacoes to set
+     */
+    public void setNegociacoes(List<Negociacao> negociacoes) {
+        this.negociacoes = negociacoes;
     }
      
 }
