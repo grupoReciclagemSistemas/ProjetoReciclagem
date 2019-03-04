@@ -19,8 +19,18 @@ public class UtilMensagens {
         FacesContext.getCurrentInstance().addMessage("", msg);
     }
     
+    public static void mensagemAdvertencia(String mensagem){
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, mensagem, "");
+        FacesContext.getCurrentInstance().addMessage("", msg);
+    }
+    
     public static void mensagemError(String mensagem){
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, "");
+        FacesContext.getCurrentInstance().addMessage("", msg);
+    }
+    
+    public static void mensagemFatal(String mensagem){
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, mensagem, "");
         FacesContext.getCurrentInstance().addMessage("", msg);
     }
     

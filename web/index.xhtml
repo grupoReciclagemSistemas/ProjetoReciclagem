@@ -4,29 +4,29 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"   
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core" >
 
     <h:head>
         <title>Reclick - Inicio</title>
-
     </h:head>
-    <h:body style="margin: 0px; padding-right: 0px;">
-
-        <ui:include src="/WEB-INF/menu.xhtml" />
-
+    <h:body id="body-index" >
+        <ui:include src="WEB-INF/menu.xhtml"/>
         <b:jumbotron id="jumbotron-topo">
             <b:row>
                 <b:container>
-                        <b:column span="6">
-                        <h2 style="font-style: italic; font-size: 40px;">MAIS ECONOMIA PARA A SUA EMPRESA!</h2>
+                        <b:column span="6" >
                         <br></br>
-                        <h3 class="texto-topo">
-                            Compre e venda seu material reciclável e economize muito mais aonde quer que esteja. Aqui seu lixo vale muito dinheiro! 
-                        </h3>
-                    </b:column>
+                        <br></br>
 
-                    <b:column span="6">
-                        <p style="font-size: 44px;">                          
+                        <p id="coluna-esquerda-topo-titulo">MAIS ECONOMIA PARA A SUA EMPRESA!</p>
+                        <br></br>
+                        <p id="coluna-esquerda-topo-texto">
+                            Compre e venda seu material reciclável e economize muito mais aonde quer que esteja. Aqui seu lixo vale muito dinheiro! 
+                        </p>
+                    </b:column>
+                    <b:column span="6" >
+                        <br></br>
+                        <p id="coluna-direita-topo-texto" >                          
                             COMPRE OU VENDA SEU MATERIAL RECICLÁVEL AGORA!                       
                         </p> 
                         <td>
@@ -37,106 +37,119 @@
                     </b:column>
                 </b:container>
             </b:row>
-        </b:jumbotron>
+        </b:jumbotron> 
+        <b:jumbotron id="jumbotron-meio">
+            <b:container fluid="true">
+                <b:row id="primeira-linha">
 
-        <b:row>
+                    <b:column id="coluna-um" span="3">
 
-            <b:column span="6" style="text-align: center; margin-left: 150px;">
-                <b:panel collapsible="false" style="border-color: #64dd17; ">
-                    <h3 style="font-style: oblique; color: green;"> Sustentabilidade,economia e sucesso </h3>
-                    <p style="text-align: left; font-size: 16px; color: #64dd17"> No Brasil,
-                        as cadeias produtivas envolvidas com lixo movimentam um mercado enorme. 
-                        São 22 bilhões de reais em receitas por ano, segundo uma estimativa da Abrelpe, a 
-                        entidade que representa as empresas de limpeza pública do país.Esse número, que nem considera a manipulação de 
-                        resíduos gerados por indústrias e hospitais, deverá aumentar rapidamente. O padrão de vida do cidadão brasileiro prosperou 
-                        muito nos últimos anos, sobretudo nas classes mais baixas da pirâmide social, cujo poder de consumo aumentou. Viver melhor, como se sabe, 
-                        significa consumir. E consumir gera mais — às vezes muito mais — lixo.
-                    </p>
-                </b:panel>
-            </b:column>
-        </b:row>
+                        <div id="primeira-thumb">
+                            <div class="imagem-primeira-thumb">
+                                <img src="/PegarABUILDDD/resources/img/imagem-primeira-thumb.png"></img>
+                            </div>
+                            <div class="texto-primeira-thumb">
+                                <p class="card-text">Faça uma busca dos materiais.</p>                                
+                            </div>
+                        </div>
+                    </b:column>>
+                    <b:column id="coluna-dois" span="3">
+                        <div id="segunda-thumb">
+                            <div class="imagem-segunda-thumb">
+                                <img src="/PegarABUILDDD/resources/img/imagem-segunda-thumb.png"></img>
+                            </div>
+                            <div class="texto-segunda-thumb">
+                                <p class="card-text">Faça uma busca dos materiais.</p>                                
+                            </div>
+                        </div>
+                    </b:column>
+                    <b:column id="coluna-tres" span="3">
+                        <div id="terceira-thumb">
+                            <div class="imagem-terceira-thumb">
+                                <img src="/PegarABUILDDD/resources/img/imagem-terceira-thumb.png"></img>
+                            </div>
+                            <div class="texto-terceira-thumb">
+                                <p class="card-text">Faça uma busca dos materiais.</p>                                
+                            </div>
+                        </div>
 
-        <b:row>
-            <b:column span="6">
-                <p style="text-align: center;">
-                    <b:image style=" display: block; margin: 0 auto;" name="test" height="50%" width="50%" value="https://img.freepik.com/vetores-gratis/icones-ambiente-verde_1133-184.jpg"/>          
-                </p>
-            </b:column>
 
-            <b:column span="6">
-                <b:panel collapsible="false" style="border-color: #64dd17; margin-right: 150px; ">
-                    <h3 style="font-style: bold; color: green;"> ENTENDA A PROPOSTA DO SISTEMA DESCARTE E COLETA SELETIVA DIGITAL </h3>
-                    <p style="text-align: left; font-size: 16px; color: #64dd17"> No Brasil é nítida a grande deficiência existente de programas ou
-                        projetos de estímulo efetivo de coleta e reciclagem. Segundo o diagnóstico do IBGE , os resultados revelaram que a coleta seletiva ainda
-                        é incipiente em abrangência (ocorre em apenas 41% dos municípios) e em eficiência (apenas 10% daquilo que é potencialmente reciclável é recolhido). 
-                        1.322 municípios brasileiros contam com coleta seletiva. É muito pouco. Considerando que há 5.561 municípios no Brasil, isso significa que em apenas 23%
-                        das cidades a reciclagem é uma realidade.
-                        Diante de um cenário em que a tecnologia e inovação vem tomando uma grande proporção de espaço e visibilidade na geração atual, iniciamos a 
-                        elaboração de um projeto de um aplicativo o qual tem o intuito de estimular o aumento da coleta seletiva e reciclagem.
-                    </p>
-                    <h:form>
-                        <b:commandButton col-lg="12" value="MAIS INFORMAÇÕES" action="registrar?faces-redirect=true" style="background-color: green; color: white; border-color: white;"/>
+                    </b:column>
+                </b:row>
+                <br></br><br></br>
+                <b:row class="segunda-linha">
+
+                    <div class="segunda-linha" >
+                        <b:column span="1" style="text-align: center;">.</b:column>
+                        <b:column span="5">   
+                            <h:form id="formulario-segunda-linha">             
+                                <div>
+                                    <p id="titulo-formulario"> Cotação de Preços - Rio de Janeiro </p>
+                                </div>
+                                <div>
+                                    <b:panel collapsible="false">        
+                                        <b:dataTable id="data-table-form" var="mat" value="#{controladorMaterial.lista()}"
+
+                                                     page-length="3"
+                                                     page-length-menu="3,6,9"
+                                                     responsive="true"
+                                                     select="false"
+                                                     customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+                                                     >
+                                            <b:dataTableColumn class="coluna" label="Material" value="#{mat.nome}" />
+                                            <b:dataTableColumn class="coluna"  label="Descrição" value="#{mat.descricao}" />                
+                                            <b:dataTableColumn class="coluna"  label="Valor MIN - KG" value="R$ #{mat.precoMin}" />
+                                            <b:dataTableColumn class="coluna"  label="Valor MAX - KG" value="R$ #{mat.precoMax}" />
+                                        </b:dataTable>
+                                    </b:panel>     
+                                </div>    
+                            </h:form>
+                        </b:column>
+                        <b:column span="4" style="text-align: center;">
+                            <p class="textos"> No segmento de materiais recicláveis, os preços variam da mesma forma que em qualquer outro setor da economia. São afetados não somente pela escassez ou abundância do produto no mercado, mas também por fatores sazonais, pela falta de valor agregado do protudot e pela forte concorrência.
+                            </p>
+                            <br></br>
+                            <p class="textos"> No mercado de recicláveis, que envolve catadores de papel, atravessadores e indústrias, o que era lixo pode ser rapidamente transformado em dinheiro. As cotações dos produtos, como na Bolsa de Mercadorias e Futuros, variam quase que diariamente.
+                            </p>
+                        </b:column>
+                        <b:column span="2" style="text-align: center;">.</b:column>
+                    </div>
+                </b:row>
+            </b:container>
+        </b:jumbotron> 
+        <b:jumbotron class="jumbotron-rodape-superior" > 
+            <b:panel styleClass="painel">
+                                        <b:column span="1" style="text-align: center;">.</b:column>
+
+                <b:column span="5"> 
+                    <h:form style="margin-left: 50px; text-align: left;">  
+                        <h2 style="text-align: center; color: white;"> ENVIAR MENSAGEM </h2>
+                        <h:outputLabel value="EMAIL:" for="inputEnviarEmail" style="color: white;"/>
+                        <b:inputText id="inputEnviarEmail" placeholder="Digite seu Email aqui" style="color: white;" />
+                        <h:outputLabel value="MENSAGEM:" for="inputEnviarMensagem" style="color: white;"  />
+                        <b:inputTextarea id="inputEnviarMensagem" placeholder="Digite sua Mensagem aqui" style="color: #558b2f;" />               
+                        <b:commandButton style="background-color: whitesmoke; color: black; border: none;" colLg="5" value="ENVIAR MENSAGEM" />         
                     </h:form>
-                </b:panel>
-            </b:column>
-        </b:row>
-        <b:jumbotron style="background-color: green; margin: 0;"> 
-            <b:row>
-                <b:column span="10">   
-                    <h:form style="margin-left: 300px;">             
-                        <h2 style="text-align: center; color: green;"> Lista de Materiais do Sistema </h2>
-                        <b:panel collapsible="false" style="border-color: green;">        
-                            <b:dataTable var="mat" value="#{controladorMaterial.lista()}"
-                                         style="margin-top: 15px; font-size: 16px; font-style: oblique; color: #64dd17"
-                                         page-length="3"
-                                         page-length-menu="3,6,9"
-                                         responsive="true"
-                                         select="false"
-                                         customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                         >
-                                <b:dataTableColumn label="Material" value="#{mat.nome}" />
-                                <b:dataTableColumn label="Descrição" value="#{mat.descricao}" />                
-                                <b:dataTableColumn label="Valor MIN - KG" value="R$ #{mat.precoMin}" />
-                                <b:dataTableColumn label="Valor MAX - KG" value="R$ #{mat.precoMax}" />
-                            </b:dataTable>
-                        </b:panel>                    
-                    </h:form>
-                </b:column>
-                <hr></hr>
-            </b:row>
-
-
-            <b:panel style="margin-left: 50px; margin-right: 50px; border-color: green;">
-                <b:column span="6"> 
-                    <h:form style="margin-left: 50px;">      
-                        <h2 style="text-align: center; color: green;"> ENVIAR MENSAGEM </h2>
-                        <h:outputLabel value="EMAIL:" for="inputEnviarEmail" style="color: green;"/>
-                        <b:inputText id="inputEnviarEmail" placeholder="Digite seu Email aqui" style="color: green;" />
-                        <h:outputLabel value="MENSAGEM:" for="inputEnviarMensagem" style="color: green;"  />
-                        <b:inputTextarea id="inputEnviarMensagem" placeholder="Digite sua Mensagem aqui" style="color: green;" />               
-                        <b:commandButton style="background-color: green; color: white; border-color: white;" colLg="12" value="ENVIAR MENSAGEM" />             
-                    </h:form>
-                </b:column>
-
-                <b:column span="6"> 
-                    <center> <h3> PARCEIROS </h3></center>
+                </b:column><b:column span="6"> 
+                    <center> <h3 style="color: white"> PARCEIROS </h3></center>
                     <h:form style="text-align: center;">
                         <img src="resources/img/logo_estacio.png" width="270px" height="90px"/>
                     </h:form>
                 </b:column>
             </b:panel>
 
-            <hr> </hr>
+        </b:jumbotron>
+        <b:jumbotron id="jumbotron-rodape-inferior">
             <footer>
                 <center> 
-
-                    <h:form style="color: green;">
+                    <h:form style="color: white;">
                         <h:outputLabel value="@ Copywrith 2014" style="margin-right: 4px;"/>            
                         <h:outputLabel value="Todos os direitos reservados" />  
+                        <h:commandLink action="admin/index?faces-redirect=true" value="Painel do Admin" style="margin-left: 8px; color: white;"/>
                     </h:form>
-
                 </center>
             </footer>
         </b:jumbotron>
     </h:body>
 </html>
+

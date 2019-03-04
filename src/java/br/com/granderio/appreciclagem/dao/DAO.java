@@ -22,6 +22,7 @@ import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.PessoaJuridica;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Gerador;
+import br.com.granderio.appreciclagem.model.PedidoReciclagem;
 import br.com.granderio.appreciclagem.model.Transportador;
 import br.com.granderio.appreciclagem.util.HibernateUtil;
 import br.com.granderio.appreciclagem.util.UtilError;
@@ -306,6 +307,26 @@ public class DAO<T> {
         }
         return data;
     }
-      
+    
+    public List<PedidoReciclagem> listaDeMateriaisVendendo(){
+        List<PedidoReciclagem> list = null;
+        try {
+            s.getTransaction().begin();
+            Criteria criteria = s.createCriteria(PedidoReciclagem.class);
+            criteria.add(Restrictions.isNull("transportador"));
+            criteria.add(Restrictions.isNull("reciclador"));
+            list = criteria.list();
+        } catch (HibernateException ex) {
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros (lista): " + mensagem);
+            s.getTransaction().rollback();
+        } finally {
+            s.getTransaction().commit();
+            s.flush();
+        }
+
+        return (List<PedidoReciclagem>) list;
+    }
+        
 }
 

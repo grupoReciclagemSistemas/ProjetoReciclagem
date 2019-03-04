@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <title>Java Server Faces</title>    
+    </h:head>
+    <h:body>      
+        <h:form id="formReciclador" rendered="#{controladorNegociacao.negociacao != null and controladorLogado.recicladorLogado != null}" 
+                style="margin-top: 50px; margin-left: 25px; margin-right: 25px;" prependId="false">
+            <b:panel id="panelMensagens" title="Mensagens" collapsible="false">
+                <h:panelGrid columns="1"> 
+                <ui:repeat var="charAplica" value="#{controladorNegociacao.negociacao.chat.chatAplicacao}">         
+                    #{charAplica.pessoa.razaoSocial} : #{charAplica.mensagem} (Enviada em: #{charAplica.dataHora} )
+                    <br></br>
+                </ui:repeat>
+                </h:panelGrid>
+            </b:panel>
+            <b:inputText id="novaMsg1" placeholder="Nova mensagem..." value="#{controladorNegociacao.novaMensagem}" />
+            <b:commandButton value="Enviar Reciclador" look="succes" action="#{controladorNegociacao.adicionarNovaMensagem(controladorLogado.recicladorLogado)}" update="formGerador, formReciclador"/>
+        </h:form>
+        
+         <h:form  id="formGerador" rendered="#{controladorNegociacao.negociacao != null and controladorLogado.geradorLogado != null}" 
+                 style="margin-top: 50px; margin-left: 25px; margin-right: 25px;" prependId="false">
+            <b:panel id="panelMensagens2" title="Mensagens" collapsible="false">
+                <h:panelGrid columns="1"> 
+                <ui:repeat var="charAplica" value="#{controladorNegociacao.negociacao.chat.chatAplicacao}">
+                    #{charAplica.pessoa.razaoSocial} : #{charAplica.mensagem} (Enviada em: #{charAplica.dataHora})
+                    <br></br>
+                </ui:repeat>
+                </h:panelGrid>
+            </b:panel>
+            <b:inputText id="novaMsg2" placeholder="Nova mensagem..." value="#{controladorNegociacao.novaMensagem}" />
+            <b:commandButton value="Enviar Gerador" look="succes" action="#{controladorNegociacao.adicionarNovaMensagem(controladorLogado.geradorLogado)}" update="formGerador, formReciclador"/>
+        </h:form>
+    </h:body>
+</html>

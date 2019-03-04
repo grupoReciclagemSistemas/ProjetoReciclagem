@@ -16,7 +16,7 @@ and open the template in the editor.
     <h:body>
         <ui:include src="/WEB-INF/menu.xhtml" />
         <b:jumbotron style="background-color: white;"> 
-            <h:form>
+            <h:form prependId="false">
                 <b:row>
                     <b:column span="3">
                         <b:container style="padding-right: 150px;">
@@ -37,8 +37,8 @@ and open the template in the editor.
                         </b:container>
                     </b:column>
 
-                    <b:column span="9">
-                        <h:panelGrid columns="4" rendered="#{controladorLogado.geradorLogado != null}">
+                    <b:column span="9" >
+                        <h:panelGrid columns="4" rendered="#{controladorLogado.geradorLogado != null}" >
                             <b:container>
                                 <b:panel collapsible="false" title="Dados Gerais: #{controladorLogado.geradorLogado.razaoSocial}">                       
                                     <b:inputText readonly="true" label="Seu E-mail:" value="#{controladorLogado.geradorLogado.email}" col-sm="4"/>
@@ -60,19 +60,18 @@ and open the template in the editor.
                                         <b:dataTableColumn label="Nome do Material" value="#{estoque.estoque.material.nome}" style="width: 80px;"/>
                                         <b:dataTableColumn label="Quantidade de Material" value="#{estoque.estoque.quantidadeMaterial} toneladas" 
                                                            orderBy="#{estoque.estoque.quantidadeMaterial}" style="width: 25px;"/>
-                                        <b:dataTableColumn label="Editar Qtd" style="width: 30px; text-align: center">
-                                            <b:button look="info" value="EDITAR" col-lg="12" onclick="$('.teste').modal()" onmousemove="#{controladorLogado.setarEstoqueGerador(estoque)}" />
+                                        <b:dataTableColumn label="ADICIONAR QUANTIDADE" style="width: 30px; text-align: center">
+                                            <b:button look="info" value="EDITAR" col-lg="12" onclick="$('.teste').modal()" onmousemove="#{controladorGerador.setarEstoqueGerador(estoque)}" />
                                                
                                         </b:dataTableColumn>
-                                        <b:dataTableColumn label="Remover" style="width: 30px; text-align: center">
-                                            <b:commandButton look="danger" value="REMOVER" col-lg="12" action="#{controladorLogado.removerEstoqueGerador(estoque)}"
-                                                             onclick="return confirm('Deseja excluir #{estoque.estoque.material.nome} com #{estoque.estoque.quantidadeMaterial} toneladas ?')"/>
+                                        <b:dataTableColumn label="VENDER" style="width: 30px; text-align: center">
+                                            <b:commandButton look="success" value="VENDER" col-lg="12" actionListener="#{controladorGerador.venderEstoqueGerador(estoque)}" 
+                                                             update=":formVender"/>
+                                              
                                         </b:dataTableColumn>
                                     </b:dataTable>
                                     <f:facet name="footer">
-                                        <b:button look="success" value="Adicionar Novo Estoque"   onclick="$('.modalPseudoClass2').modal()" />
-                                           
-                                                                                                       
+                                        <b:button look="success" value="Adicionar novo material..."   onclick="$('.modalPseudoClass2').modal()" />                                                                        
                                     </f:facet>
                                 </b:panel>
                                 
@@ -81,33 +80,30 @@ and open the template in the editor.
                                     <b:panel>
                                         <h:form>
                                             <h:outputLabel value="Lista de Materiais Disponíveis" />
-                                            <b:selectOneMenu value="#{controladorLogado.materialEscolhido}">
+                                            <b:selectOneMenu value="#{controladorGerador.materialEscolhido}">
                                                 <f:selectItems var="material" value="#{controladorLogado.geradorLogado.listaDeMaterialQuePodeAdicionar()}" itemLabel="#{material.nome}" itemValue="#{material}"/>
                                             </b:selectOneMenu>
-                                            <b:inputText label="Quantidade do Material (TONELADAS)" value="#{controladorLogado.quantidadeDoMaterialEscolhido}" mask="numeric"/>
-                                            <b:commandButton value="Adicionar no Estoque" look="success" style="margin-right: 5px;" action="#{controladorLogado.adicionarNoEstoque()}"/>
+                                            <b:inputText label="Quantidade do Material (TONELADAS)" value="#{controladorGerador.quantidadeDoMaterialEscolhido}" mask="numeric"/>
+                                            <b:commandButton value="Adicionar no Estoque" look="success" style="margin-right: 5px;" action="#{controladorGerador.adicionarNoEstoque(controladorLogado.geradorLogado)}"/>
                                             <b:button value="Fechar Janela" look="warning" dismiss="modal" />
                                         </h:form>
                                     </b:panel>
                                 </b:modal>
                                 
-                                <b:modal id="editarQuantidade" styleClass="teste" title="Editar Quantidade do Estoque - #{controladorLogado.estoque}" closable="false"
+                                <b:modal id="editarQuantidade" styleClass="teste" title="Editar Quantidade do Estoque - #{controladorGerador.estoque}" closable="false"
                                          close-on-escape="false" backdrop="false" >
                                     <b:panel>
                                         <h:form>
                                             <h:outputLabel value="Digite a quantidade que deseja incluir nesse Estoque de Material" />
-                                            <b:inputText value="#{controladorLogado.quantidadeMais}" />
-                                            <b:commandButton value="Salvar" actionListener="#{controladorLogado.mudarQuantidadeTotal()}" look="success" style="margin-right: 4px;"/>
-                                            <b:commandButton value="Cancelar" actionListener="#{controladorLogado.cancelar()}" look="warning"/>
+                                            <b:inputText value="#{controladorGerador.quantidadeMais}" />
+                                            <b:commandButton value="Adicionar" action="#{controladorGerador.mudarQuantidadeTotal()}" look="success" style="margin-right: 4px;"/>
+                                            <b:commandButton value="Cancelar" action="#{controladorGerador.cancelar()}" look="warning"/>
                                         </h:form>
                                     </b:panel>
                                 </b:modal>
-                                
+                                                                                        
                             </b:container>
-                        </h:panelGrid>
-                        
-                        
-                        
+                        </h:panelGrid>                 
                         <h:panelGrid columns="4" rendered="#{controladorLogado.recicladorLogado != null}">
                             <b:container>
                                 <b:panel collapsible="false" title="Dados Gerais: #{controladorLogado.recicladorLogado.razaoSocial}">                       
@@ -145,6 +141,50 @@ and open the template in the editor.
                         </h:panelGrid>
                     </b:column>
                 </b:row>
+            </h:form>
+            
+            <h:form id="formVender">
+                <b:panel id="panelVender" title="#{controladorGerador.estoque.estoque.material.nome}" rendered="#{controladorGerador.vender == true}">
+                                        
+                                            <h:outputLabel value="Digite o valor que deseja vender (R$ / KG)" />
+                                            <b:inputText value="#{controladorGerador.valorPorKG}" update="@this" process="@this" />
+                                            <h:outputLabel value="Digite a quantidade que deseja vender (TOTAL : #{controladorGerador.estoque.estoque.quantidadeMaterial})" />
+                                            <b:inputText value="#{controladorGerador.quantidadeTotal}" update="@this" process="@this" />
+                                            <b:commandButton value="Salvar" action="#{controladorGerador.listarVenda(controladorLogado.geradorLogado)}"
+                                              update="formVender" immediate="true" look="success" style="margin-right: 4px;"/>
+                                            <b:commandButton value="Cancelar" action="#{controladorGerador.cancelarVenda()}" look="warning"/>
+                                       
+                        </b:panel>
+              </h:form>
+            
+            <h:form id="negociacoes" style="width: 30%; height: 30%; text-align: center;">
+                <b:panel title="Suas Negociações" id="panelNegociacoes" rendered="#{controladorLogado.recicladorLogado != null}" collapsible="false">
+                    <b:dataTable var="negociacao" value="#{controladorLogado.recicladorLogado.negociacoes}">
+                       <b:dataTableColumn label="Nome do Material" value="#{negociacao.pedido.itens.get(0).material.nome}"/>
+                       <b:dataTableColumn label="Gerador" value="#{negociacao.pedido.gerador.razaoSocial}"/>
+                       <b:dataTableColumn label="Total do Pedido" value="R$ #{negociacao.pedido.valorTotal}"/>
+                       <b:dataTableColumn label="Peso em KG" value="R$ #{negociacao.pedido.valorTotal}"/>
+                       <b:dataTableColumn label="Mandar MSG">
+                           <b:commandButton value="Ir para o Chat" look="info" action="chatNegociacao?faces-redirect=true"
+                                            actionListener="#{controladorNegociacao.setNegociacao(negociacao)}" />
+                       </b:dataTableColumn>
+                    </b:dataTable>
+                </b:panel>
+            </h:form>
+            
+            <h:form id="negociacoes2" style="width: 30%; height: 30%; text-align: center;">
+                <b:panel title="Suas Negociações" id="panelNegociacoes" rendered="#{controladorLogado.geradorLogado != null}" collapsible="false">
+                    <b:dataTable var="negociacao" value="#{controladorLogado.geradorLogado.negociacoes}">
+                       <b:dataTableColumn label="Nome do Material" value="#{negociacao.pedido.itens.get(0).material.nome}"/>
+                       <b:dataTableColumn label="Reciclador" value="#{negociacao.reciclador.razaoSocial}"/>
+                       <b:dataTableColumn label="Total do Pedido" value="R$ #{negociacao.pedido.valorTotal}"/>
+                       <b:dataTableColumn label="Peso em KG" value="R$ #{negociacao.pedido.valorTotal}"/>
+                       <b:dataTableColumn label="Mandar MSG">
+                           <b:commandButton value="Ir para o Chat" look="info" action="chatNegociacao?faces-redirect=true"
+                                            actionListener="#{controladorNegociacao.setNegociacao(negociacao)}" />
+                       </b:dataTableColumn>
+                    </b:dataTable>
+                </b:panel>
             </h:form>
         </b:jumbotron>
     </h:body>

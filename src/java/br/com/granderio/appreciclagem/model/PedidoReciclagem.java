@@ -37,11 +37,7 @@ public class PedidoReciclagem implements Serializable {
     private Calendar data;
     
     private double valorTotal;
-    
-    /*
-    Um PedidoReciclagem vai ter vários Itens de Pedidos, que contém 1 Material e 1 Pedido de Reciclagem
-    ou seja, pode fazer 1 Pedido com 50 itens de Pedidos
-    */
+      
     @OneToMany(mappedBy="pedidoDeReciclagem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemPedido> itens;
     
@@ -69,7 +65,10 @@ public class PedidoReciclagem implements Serializable {
         reciclador = new Reciclador();
         transportador = new Transportador();
     }
-
+    
+    public void adicionarItemPedido(ItemPedido item){
+        itens.add(item);
+    }
     /**
      * @return the idPedidoReciclagem
      */

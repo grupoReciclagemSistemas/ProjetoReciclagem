@@ -6,11 +6,9 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
-import br.com.granderio.appreciclagem.model.Estoque;
-import br.com.granderio.appreciclagem.model.EstoqueGerador;
 import br.com.granderio.appreciclagem.model.Material;
+import br.com.granderio.appreciclagem.model.PedidoReciclagem;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.ManagedBean;
@@ -35,6 +33,8 @@ public class ControladorMaterial extends ControladorPrincipal<Material> {
         novoMaterial = new Material();
         
     }
+    
+   
    
     public String adicionarMaterial(){
         if(novoMaterial.getPrecoMin() > novoMaterial.getPrecoMax()){
