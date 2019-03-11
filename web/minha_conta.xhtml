@@ -9,7 +9,8 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Java Server Faces</title>    
     </h:head>
@@ -166,7 +167,7 @@ and open the template in the editor.
                        <b:dataTableColumn label="Peso em KG" value="R$ #{negociacao.pedido.valorTotal}"/>
                        <b:dataTableColumn label="Mandar MSG">
                            <b:commandButton value="Ir para o Chat" look="info" action="chatNegociacao?faces-redirect=true"
-                                            actionListener="#{controladorNegociacao.setNegociacao(negociacao)}" />
+                                            actionListener="#{controladorNegociacao.listenerIrNegociar(negociacao)}" />
                        </b:dataTableColumn>
                     </b:dataTable>
                 </b:panel>
@@ -181,11 +182,25 @@ and open the template in the editor.
                        <b:dataTableColumn label="Peso em KG" value="R$ #{negociacao.pedido.valorTotal}"/>
                        <b:dataTableColumn label="Mandar MSG">
                            <b:commandButton value="Ir para o Chat" look="info" action="chatNegociacao?faces-redirect=true"
-                                            actionListener="#{controladorNegociacao.setNegociacao(negociacao)}" />
+                                            actionListener="#{controladorNegociacao.listenerIrNegociar(negociacao)}" />
                        </b:dataTableColumn>
                     </b:dataTable>
                 </b:panel>
             </h:form>
         </b:jumbotron>
+        <h:form prependId="false">
+       <p:menu>
+           <p:submenu label="DADOS GERAIS">
+            <p:menuitem value="Ver Dados" action="#{menuView.save}"  />
+        </p:submenu>
+        <p:submenu label="Non-Ajax">
+            <p:menuitem value="Delete" action="#{menuView.delete}"  ajax="false" icon="pi pi-times"/>
+        </p:submenu>
+        <p:submenu label="Navigations">
+            <p:menuitem value="External" url="http://www.primefaces.org" icon="pi pi-home"/>
+            <p:menuitem value="Internal" icon="pi pi-star"/>
+        </p:submenu>
+    </p:menu>
+        </h:form>
     </h:body>
 </html>

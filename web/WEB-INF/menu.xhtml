@@ -9,7 +9,8 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"   
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <style>
 
@@ -212,19 +213,22 @@ and open the template in the editor.
 
     <h:body >
 
-        <b:form id="formMenu" >
-            <b:growl id="growlMessages"/>
+        <h:form id="formMenu" >
+            <p:messages id="messages" showDetail="true" />
 
             <b:navBar class="navbar" brand="Reclick" brandStyle="color: white; font-size: 18px; font-style: italic;" brand-img="resources/img/logo.png" brand-img-style="width: 35px; padding-right: 10px;" fixed="top" brandHref="index.xhtml">
                 <b:navbarLinks styleClass="navbar-right">
                     <b:navCommandLink style="color: white;" value="Inicio" action="index?faces-redirect=true" />
                     <b:navCommandLink style="color: white;" value="Sobre" action="index?faces-redirect=true" />
-                    <b:navCommandLink style="color: white;" value="Logar" action="login?faces-redirect=true" rendered="#{controladorLogado.verificarLogado() == false}"  />
+                    <b:navCommandLink style="color: white;" value="Logar" action="#{controladorLogado.abrirPopupLogar()}" rendered="#{controladorLogado.verificarLogado() == false}"  />
                     <b:navCommandLink style="color: white;" value="Sua Conta" action="minha_conta?faces-redirect=true" rendered="#{controladorLogado.verificarLogado() == true}"  />
                     <b:navCommandLink style="color: white;" value="Materiais Vendendo" action="listaVenda_material?faces-redirect=true" />
                 </b:navbarLinks>
             </b:navBar>
-        </b:form>
+            
+        </h:form>
+        
+        <ui:include src="../login.xhtml" />
     </h:body>
 </html>
 

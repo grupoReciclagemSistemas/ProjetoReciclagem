@@ -16,16 +16,20 @@
  */
 package br.com.granderio.appreciclagem.dao;
 
+import br.com.granderio.appreciclagem.model.Chat;
+import br.com.granderio.appreciclagem.model.ChatAplicacao;
 import br.com.granderio.appreciclagem.model.Estoque;
 import br.com.granderio.appreciclagem.model.EstoqueGerador;
 import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.PessoaJuridica;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Gerador;
+import br.com.granderio.appreciclagem.model.Negociacao;
 import br.com.granderio.appreciclagem.model.PedidoReciclagem;
 import br.com.granderio.appreciclagem.model.Transportador;
 import br.com.granderio.appreciclagem.util.HibernateUtil;
 import br.com.granderio.appreciclagem.util.UtilError;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -326,6 +330,47 @@ public class DAO<T> {
         }
 
         return (List<PedidoReciclagem>) list;
+    }
+    
+    public ChatAplicacao buscarChatAplicacao(long id){
+      List<ChatAplicacao> lista = new ArrayList();
+        try {
+            s.getTransaction().begin();
+            Criteria criteria = s.createCriteria(ChatAplicacao.class);
+            criteria.add(Restrictions.eq("idChatAplicacao", id));
+            lista = criteria.list();
+        } catch (HibernateException ex) {
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros (lista): " + mensagem);
+            s.getTransaction().rollback();
+        } finally {
+            s.getTransaction().commit();
+            s.flush();
+        }
+        if(lista.size() >0){
+            return lista.get(0);
+        }
+        return null;
+    }
+    public Negociacao buscarNegociacao(long id){
+        List<Negociacao> lista = new ArrayList();
+        try {
+            s.getTransaction().begin();
+            Criteria criteria = s.createCriteria(Negociacao.class);
+            criteria.add(Restrictions.eq("idNegociacao", id));
+            lista = criteria.list();
+        } catch (HibernateException ex) {
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros (lista): " + mensagem);
+            s.getTransaction().rollback();
+        } finally {
+            s.getTransaction().commit();
+            s.flush();
+        }
+        if(lista.size() >0){
+            return lista.get(0);
+        }
+        return null;
     }
         
 }

@@ -4,112 +4,72 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"   
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <title>Logar no Sistema</title>  
     </h:head>
     <h:body>
+             
+        <h:form id="formDialogLogar" prependId="false"> 
+            <p:dialog id="dialogLogar" widgetVar="modalLogar" draggable="false" closeOnEscape="false" showEffect="fade" hideEffect="fade"
+                      modal="true" header="LOGAR NO SISTEMA - RECLICK" responsive="true" style="text-align: center; color: green;">  
+                <f:facet name="footer">
+                    <center>
+                    <p:commandButton value="Logar" action="#{controladorLogado.logar()}" style="margin-right: 3px;" />
+                    <p:commandButton value="Cancelar" action="#{controladorLogado.fecharPopupLogar()}" />
+                    </center>
+                </f:facet>
+                <p:row>
+                    <p:column colspan="4" style="margin-right: 6px;">
+                        <p:commandButton value="RECICLADOR" action="#{controladorLogado.setTipoLogin(1)}"
+                                         update="panelGeral, tipoQueIraLogar"/>
+                    </p:column>
+                    
+                    <p:column colspan="4" style="margin-right: 6px;">
+                        <p:commandButton value="GERADOR" action="#{controladorLogado.setTipoLogin(2)}"
+                                         update="panelGeral, tipoQueIraLogar"/>
+                    </p:column>
+                    
+                    <p:column colspan="4" >
+                        <p:commandButton value="TRANSPORTADOR" action="#{controladorLogado.setTipoLogin(3)}" 
+                                         update="panelGeral, tipoQueIraLogar"/>
+                    </p:column>
+                </p:row>
+                <p:separator />
+                <p:outputLabel value="#{controladorLogado.tipoQueIraLogar()}" id="tipoQueIraLogar" style="color: green" />
+                <h:panelGrid id="panelGeral" columns="1" style="margin-top: 10px;">
+                    <h:panelGrid id="panelReciclador" rendered="#{controladorLogado.tipoLogin == 1}" columns="2"
+                                 style="width: 100%;">
+                        <p:outputLabel value="EMAIL" style="color: green; text-align: right; font-size: 18px; margin-right: 4px;" />
+                        <p:inputText id="emailReciclador" value="#{controladorLogado.email}" style="width: 100%;" />
+                        <p:outputLabel value="SENHA"
+                                       style="color: green; text-align: right; font-size: 18px; margin-right: 4px; margin-top: 5px;" />
+                        <p:inputText id="senhaReciclador" value="#{controladorLogado.senha}" style="width: 100%; margin-top: 5px;"/>
+                    </h:panelGrid>
 
-        <ui:include src="/WEB-INF/menu.xhtml" />
-        <b:jumbotron style="background-color: #00E676">
-        <h:form>
-            <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorLogado.tipoLogin == 0}" >
-                <b:panel title-style="background-color: white; text-align: center; color: green;" title="LOGAR NO SISTEMA" collapsible="false" showCollapseLink="false">                
-                    <b:selectOneMenu value="#{controladorLogado.tipoLogin}" onchange="submit()">
-                        <f:selectItem itemLabel="-- ESCOLHA --" itemValue="0" />
-                        <f:selectItem itemLabel="Reciclador" itemValue="1" />
-                        <f:selectItem itemLabel="Gerador" itemValue="2" />    
-                        <f:selectItem itemLabel="Transportador" itemValue="3" /> 
-                    </b:selectOneMenu>
-                </b:panel>
-            </b:container>
+                    <h:panelGrid id="panelGerador" rendered="#{controladorLogado.tipoLogin == 2}" columns="2"
+                                 style="width: 100%;">
+                        <p:outputLabel value="EMAIL" style="color: green; text-align: right; font-size: 18px; margin-right: 4px;" />
+                        <p:inputText id="emailGerador" value="#{controladorLogado.email}" style="width: 100%;" />
+                        <p:outputLabel value="SENHA"
+                                       style="color: green; text-align: right; font-size: 18px; margin-right: 4px; margin-top: 5px;" />
+                        <p:inputText id="senhaGerador" value="#{controladorLogado.senha}" style="width: 100%; margin-top: 5px;"/>
+                    </h:panelGrid>
+
+                    <h:panelGrid id="panelTransportador" rendered="#{controladorLogado.tipoLogin == 3}" columns="2"
+                                 style="width: 100%;">
+                        <p:outputLabel value="EMAIL" style="color: green; text-align: right; font-size: 18px; margin-right: 4px;" />
+                        <p:inputText id="emailTransportador" value="#{controladorLogado.email}" style="width: 100%;" />
+                        <p:outputLabel value="SENHA"
+                                       style="color: green; text-align: right; font-size: 18px; margin-right: 4px; margin-top: 5px;" />
+                        <p:inputText id="senhaTransportador" value="#{controladorLogado.senha}" style="width: 100%; margin-top: 5px;"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+                <p:messages id="messagesLogar" showDetail="true" showIcon="true" />
+            </p:dialog>
         </h:form>
- 
-            <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorLogado.tipoLogin == 1}" >
-                <b:panel title-style="background-color: white; text-align: center; color: green;" title="LOGAR COMO RECICLADOR" collapsible="false" showCollapseLink="false">
-                    <h:form>
-                    <b:inputText id="emailLogar" value="#{controladorLogado.email}" label="Seu Email:" required="true" requiredMessage="Email está Vazio!"> 
-                        <f:facet name="prepend">
-                            <b:icon name="user" />
-                        </f:facet>
-                    </b:inputText>
-                    <b:message for="emailLogar" />
-                    <b:inputSecret id="senhaLogar" value="#{controladorLogado.senha}" label="Sua Senha:" required="true" requiredMessage="Senha está Vazia!">
-                        <f:facet name="prepend">
-                            <b:iconAwesome name="key" />
-                        </f:facet>
-                    </b:inputSecret>
-                    <b:message for="senhaLogar" />
-                    
-                    <center> 
-                        <b:commandButton col-md="12" value="LOGAR" onsuccess="index?faces-redirect=true" action="#{controladorLogado.logarReciclador()}" look="success" style="margin-right: 2px;" />                
-                    </center>
-                    </h:form>
-                    <f:facet name="footer">
-                    <h:form> 
-                        <center> <b:commandLink action="#{controladorLogado.setTipoLogin()}" value="Voltar"/> </center>
-                    </h:form>
-                    </f:facet>
-                </b:panel>         
-            </b:container>
-
-            <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorLogado.tipoLogin == 2}" >
-                <b:panel title-style="background-color: white; text-align: center; color: green;" title="LOGAR COMO GERADOR" collapsible="false" showCollapseLink="false">
-                    <h:form>
-                    <b:inputText id="emailLogar" value="#{controladorLogado.email}" label="Seu Email:" required="true" requiredMessage="Email está Vazio!"> 
-                        <f:facet name="prepend">
-                            <b:icon name="user" />
-                        </f:facet>
-                    </b:inputText>
-                    <b:message for="emailLogar" />
-                    <b:inputSecret id="senhaLogar" value="#{controladorLogado.senha}" label="Sua Senha:" required="true" requiredMessage="Senha está Vazia!">
-                        <f:facet name="prepend">
-                            <b:iconAwesome name="key" />
-                        </f:facet>
-                    </b:inputSecret>
-                    <b:message for="senhaLogar" />
-                    
-                    <center> 
-                        <b:commandButton col-md="12" value="LOGAR" onsuccess="index?faces-redirect=true" action="#{controladorLogado.logarGerador()}" look="success" style="margin-right: 2px;" />                
-                    </center>
-                    </h:form>
-                    <f:facet name="footer">
-                    <h:form> 
-                        <center> <b:commandLink action="#{controladorLogado.setTipoLogin()}" value="Voltar"/> </center>
-                    </h:form>
-                    </f:facet>
-                </b:panel>         
-            </b:container>
-        
-                    <b:container fluid="true" style="padding-top: 60px; padding-left: 40%; padding-right: 40%; font-size: smaller;" rendered="#{controladorLogado.tipoLogin == 3}" >
-                <b:panel title-style="background-color: white; text-align: center; color: green;" title="LOGAR COMO RECICLADOR" collapsible="false" showCollapseLink="false">
-                    <h:form>
-                    <b:inputText id="emailLogar" value="#{controladorLogado.email}" label="Seu Email:" required="true" requiredMessage="Email está Vazio!"> 
-                        <f:facet name="prepend">
-                            <b:icon name="user" />
-                        </f:facet>
-                    </b:inputText>
-                    <b:message for="emailLogar" />
-                    <b:inputSecret id="senhaLogar" value="#{controladorLogado.senha}" label="Sua Senha:" required="true" requiredMessage="Senha está Vazia!">
-                        <f:facet name="prepend">
-                            <b:iconAwesome name="key" />
-                        </f:facet>
-                    </b:inputSecret>
-                    <b:message for="senhaLogar" />
-                    
-                    <center> 
-                        <b:commandButton col-md="12" value="LOGAR" onsuccess="index?faces-redirect=true" action="#{controladorLogado.logarTransportador()}" look="success" style="margin-right: 2px;" />                
-                    </center>
-                    </h:form>
-                    <f:facet name="footer">
-                    <h:form> 
-                        <center> <b:commandLink action="#{controladorLogado.setTipoLogin()}" value="Voltar"/> </center>
-                    </h:form>
-                    </f:facet>
-                </b:panel>         
-            </b:container>
-    </b:jumbotron>
     </h:body>
 </html>
 

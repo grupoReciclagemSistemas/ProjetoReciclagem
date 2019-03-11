@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+update="btn-enviar2, formGerador"<?xml version="1.0" encoding="UTF-8"?>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -9,37 +9,45 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Java Server Faces</title>    
     </h:head>
     <h:body>      
+        
+        <ui:include src="/WEB-INF/menu.xhtml" />
+        
         <h:form id="formReciclador" rendered="#{controladorNegociacao.negociacao != null and controladorLogado.recicladorLogado != null}" 
                 style="margin-top: 50px; margin-left: 25px; margin-right: 25px;" prependId="false">
-            <b:panel id="panelMensagens" title="Mensagens" collapsible="false">
-                <h:panelGrid columns="1"> 
-                <ui:repeat var="charAplica" value="#{controladorNegociacao.negociacao.chat.chatAplicacao}">         
-                    #{charAplica.pessoa.razaoSocial} : #{charAplica.mensagem} (Enviada em: #{charAplica.dataHora} )
-                    <br></br>
-                </ui:repeat>
-                </h:panelGrid>
-            </b:panel>
-            <b:inputText id="novaMsg1" placeholder="Nova mensagem..." value="#{controladorNegociacao.novaMensagem}" />
-            <b:commandButton value="Enviar Reciclador" look="succes" action="#{controladorNegociacao.adicionarNovaMensagem(controladorLogado.recicladorLogado)}" update="formGerador, formReciclador"/>
+            
+            <p:poll interval="2" update="dataListReciclador, dataListGerador" listener="#{controladorNegociacao.updateNegociacao()}"/>
+      
+            <p:dataList id="dataListReciclador" value="#{controladorNegociacao.negociacao.chat.chatAplicacao}" var="msg"
+                        type="unordered" itemType="none" paginator="true" rows="6" styleClass="paginated">
+                <h4 style="color: green;"> #{msg.pessoa.razaoSocial} </h4>
+                <p:inputText value="  #{msg.mensagem}" disabled="true" />
+            </p:dataList>
+            <b:inputText id="novaMsg1" placeholder="Nova mensagem..." value="#{controladorNegociacao.novaMensagem}"
+                         style="margin-top: 4px;"/>
+            
+            <p:commandButton id="btn-enviar1" icon="fa fa-send" value="Enviar Mensagem" action="#{controladorNegociacao.adicionarNovaMensagem(controladorLogado.recicladorLogado)}"
+                             style="margin-top: 10px;" update="btn-enviar1, formReciclador"  />
+
         </h:form>
         
          <h:form  id="formGerador" rendered="#{controladorNegociacao.negociacao != null and controladorLogado.geradorLogado != null}" 
                  style="margin-top: 50px; margin-left: 25px; margin-right: 25px;" prependId="false">
-            <b:panel id="panelMensagens2" title="Mensagens" collapsible="false">
-                <h:panelGrid columns="1"> 
-                <ui:repeat var="charAplica" value="#{controladorNegociacao.negociacao.chat.chatAplicacao}">
-                    #{charAplica.pessoa.razaoSocial} : #{charAplica.mensagem} (Enviada em: #{charAplica.dataHora})
-                    <br></br>
-                </ui:repeat>
-                </h:panelGrid>
-            </b:panel>
-            <b:inputText id="novaMsg2" placeholder="Nova mensagem..." value="#{controladorNegociacao.novaMensagem}" />
-            <b:commandButton value="Enviar Gerador" look="succes" action="#{controladorNegociacao.adicionarNovaMensagem(controladorLogado.geradorLogado)}" update="formGerador, formReciclador"/>
+           <p:dataList id="dataListGerador" value="#{controladorNegociacao.negociacao.chat.chatAplicacao}" var="msg"
+                        type="unordered" itemType="none" paginator="true" rows="6" styleClass="paginated">
+                <h4 style="color: green;"> #{msg.pessoa.razaoSocial} </h4>
+                <p:inputText value="  #{msg.mensagem}" disabled="true" />
+            </p:dataList>
+            <b:inputText id="novaMsg2" placeholder="Nova mensagem..." value="#{controladorNegociacao.novaMensagem}"
+                         style="margin-top: 4px;"/>
+            
+            <p:commandButton id="btn-enviar2" icon="fa fa-send" value="Enviar Mensagem" action="#{controladorNegociacao.adicionarNovaMensagem(controladorLogado.geradorLogado)}"
+                             style="margin-top: 10px;" update="btn-enviar2, formGerador"/>
         </h:form>
     </h:body>
 </html>

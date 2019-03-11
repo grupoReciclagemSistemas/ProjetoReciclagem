@@ -11,6 +11,7 @@ import br.com.granderio.appreciclagem.model.Chat;
 import br.com.granderio.appreciclagem.model.ChatAplicacao;
 import br.com.granderio.appreciclagem.model.Negociacao;
 import br.com.granderio.appreciclagem.model.PessoaJuridica;
+import br.com.granderio.appreciclagem.util.UtilMensagens;
 import java.util.Date;
 import javax.annotation.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -26,13 +27,18 @@ import javax.inject.Named;
 public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
     
     private Negociacao negociacao;
+    private long idNegociacao;
     
     private String novaMensagem;
     
     public ControladorNegociacao(){
         super(new Negociacao() );
     }
-
+    
+    public Negociacao updateNegociacao(){
+        DAO<Negociacao> acesso = new DAO(new Negociacao());
+        return acesso.buscarNegociacao(idNegociacao);
+     }
     /**
      * @return the negociacao
      */
@@ -42,6 +48,10 @@ public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
     
     public void adicionarNovaMensagem(PessoaJuridica pessoa){
         if(novaMensagem != null){
+            if(novaMensagem.equals("")){
+                UtilMensagens.mensagemAdvertencia("Não pode enviar uma mensagem em branca!");
+                return;
+            }
             ChatAplicacao novo = new ChatAplicacao();
             novo.setDataHora(new Date());
             novo.setChat(negociacao.getChat());
@@ -50,7 +60,7 @@ public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
             negociacao.getChat().adicionarChatAplica(novo);
             DAO<Chat> dao = new DAO(negociacao.getChat());
             dao.alterar();
-            novaMensagem = null;
+            novaMensagem = "";
         }
     }
 
@@ -59,6 +69,11 @@ public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
      */
     public void setNegociacao(Negociacao negociacao) {
         this.negociacao = negociacao;
+    }
+    
+    public void listenerIrNegociar(Negociacao negociacao){
+        this.setNegociacao(negociacao);
+        this.setIdNegociacao(negociacao.getIdNegociacao());     
     }
 
     /**
@@ -73,6 +88,20 @@ public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
      */
     public void setNovaMensagem(String novaMensagem) {
         this.novaMensagem = novaMensagem;
+    }
+
+    /**
+     * @return the idNegociacao
+     */
+    public long getIdNegociacao() {
+        return idNegociacao;
+    }
+
+    /**
+     * @param idNegociacao the idNegociacao to set
+     */
+    public void setIdNegociacao(long idNegociacao) {
+        this.idNegociacao = idNegociacao;
     }
     
     

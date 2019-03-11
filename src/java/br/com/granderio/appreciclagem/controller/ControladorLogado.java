@@ -21,6 +21,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -49,7 +50,7 @@ public class ControladorLogado implements Serializable {
     private double quantidadeDoMaterialEscolhido = 0.0;
      
     public ControladorLogado() {
-      
+      tipoLogin = 1;
     }
     
     public void setarEstoqueGerador(EstoqueGerador obj){
@@ -60,11 +61,29 @@ public class ControladorLogado implements Serializable {
       
     }
     
+    public String tipoQueIraLogar(){
+         if(tipoLogin == 1){
+            return "ENTRAR COMO RECICLADOR";
+        }else if(tipoLogin == 2){
+            return "ENTRAR COMO GERADOR";
+        }else{
+            return "ENTRAR COMO TRANSPORTADOR";
+        }
+    }
+    
     public void cancelar(){
         quantidadeMais = 0.0;
         estoque = null;
     }
-    
+    public String logar(){
+        if(tipoLogin == 1){
+            return this.logarReciclador();
+        }else if(tipoLogin == 2){
+            return this.logarGerador();
+        }else{
+            return this.logarTransportador();
+        }
+    }
     public String adicionarNoEstoque(){
         EstoqueGerador estoqueGerador = new EstoqueGerador();
         Estoque estoque = new Estoque();
@@ -92,7 +111,7 @@ public class ControladorLogado implements Serializable {
     }
     
     public String setTipoLogin() {
-        tipoLogin = 0;
+        tipoLogin = 1;
         email = "";
         senha = "";
         return "login?faces-redirect=true";
@@ -100,44 +119,52 @@ public class ControladorLogado implements Serializable {
 
     public String logarReciclador() {
         DAOReciclador acesso = new DAOReciclador(recicladorLogado);
-        recicladorLogado = acesso.logarReciclador(email, senha);
-  
-        if(recicladorLogado == null){
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "RECICLADOR NÃO ENCONTRADO!", "Usuário não encontrado no Sistema!");
+        try{
+            recicladorLogado = acesso.logarReciclador(email, senha);
+        }catch(Exception e){
+            System.out.println("Error: " + e.getMessage());
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Email/Senha inválidos!");
             FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("messagesLogar");
             return "";
-        }  
-        
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "LOGADO COM SUCESSO!", "Bem-vindo ao Sistema, " + recicladorLogado.getRazaoSocial());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
         email = "";
         senha = "";
-        tipoLogin = 0;
+        tipoLogin = 1;
         return "minha_conta?faces-redirect=true";
     }
 
     public String logarGerador() {
         DAOGerador acesso = new DAOGerador(geradorLogado);
-        geradorLogado = acesso.logarGerador(email, senha);
-        
-        if(geradorLogado == null){
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "GERADOR NÃO ENCONTRADO!", "Usuário não encontrado no Sistema!");
+        try{
+            geradorLogado = acesso.logarGerador(email, senha);
+        }catch(Exception e){
+            System.out.println("Error: " + e.getMessage());
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Email/Senha inválidos!");
             FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("messagesLogar");
             return "";
-        }
-        
+        }            
         email = "";
         senha = "";
-        tipoLogin = 0;
+        tipoLogin = 1;
         return "minha_conta?faces-redirect=true";
     }
 
     public String logarTransportador() {
         DAOTransportador acesso = new DAOTransportador(transportadorLogado);
-        transportadorLogado = acesso.logarTransportador(email, senha);
+        try{
+            transportadorLogado = acesso.logarTransportador(email, senha);
+        }catch(Exception e){
+            System.out.println("Error: " + e.getMessage());
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Email/Senha inválidos!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("messagesLogar");
+            return ""; 
+        }
         email = "";
-         senha ="";
-        tipoLogin = 0;
+        senha = "";
+        tipoLogin = 1;
         return "minha_conta?faces-redirect=true";
     }
 
@@ -145,7 +172,7 @@ public class ControladorLogado implements Serializable {
         recicladorLogado = null;
         geradorLogado = null;
         transportadorLogado = null;
-        tipoLogin = 0;
+        tipoLogin = 1;
         return "index?faces-redirect=true";
     }
 
@@ -175,6 +202,18 @@ public class ControladorLogado implements Serializable {
             return false;
         }
         return true;
+    }
+    
+    public void abrirPopupLogar(){
+        if(recicladorLogado == null && geradorLogado == null && transportadorLogado == null)
+            RequestContext.getCurrentInstance().execute("PF('modalLogar').show();");
+    }
+    
+    public void fecharPopupLogar(){
+        email = null;
+        senha = null;
+        tipoLogin = 1;
+        RequestContext.getCurrentInstance().execute("PF('modalLogar').hide();");
     }
 
     /**
