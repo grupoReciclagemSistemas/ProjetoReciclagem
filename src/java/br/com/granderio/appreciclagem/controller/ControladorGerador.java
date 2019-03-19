@@ -12,10 +12,13 @@ import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.ItemPedido;
 import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.PedidoReciclagem;
+import br.com.granderio.appreciclagem.util.UtilMensagens;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 
 /**
@@ -87,12 +90,16 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
     }
     
     public void listarVenda(Gerador geradorLogado){
+        if(estoque.getEstoque().getQuantidadeMaterial() < quantidadeTotal){
+            UtilMensagens.mensagemError("A quantidade que você quer vender é maior que o seu Estoque!");
+            return;
+        }
         ItemPedido itemPedido = new ItemPedido();
         PedidoReciclagem pedido = new PedidoReciclagem();
         itemPedido.setMaterial(estoque.getEstoque().getMaterial());
         itemPedido.setPreco(valorPorKG);
         itemPedido.setQuantidade(quantidadeTotal);
-        estoque.getEstoque().setQuantidadeMaterial( estoque.getEstoque().getQuantidadeMaterial() - quantidadeTotal );
+        this.retirarQuantidadeDoEstoque();
         itemPedido.setPedidoDeReciclagem(pedido);
         pedido.adicionarItemPedido(itemPedido);
         Double valorTotal = (quantidadeTotal*1000) * valorPorKG;
@@ -108,6 +115,21 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
         this.cancelarVenda();       
     }
     
+    public void retirarQuantidadeDoEstoque(){
+        //Passa os valores de Double para STRING
+        String valorAtualStr = String.valueOf(estoque.getEstoque().getQuantidadeMaterial());
+        String valorTotalStr = String.valueOf(quantidadeTotal);
+        
+        //Instancia os BIG DECIMAL PASSANDO AS STRINGS
+        BigDecimal totalAtual = new BigDecimal(valorAtualStr);
+        BigDecimal totalVenda = new BigDecimal(valorTotalStr);
+        
+        //Subtrai o que ele tem, para o que vai vender
+        BigDecimal retorno = totalAtual.subtract(totalVenda);  
+        //Altera na instancia de estoque
+        estoque.getEstoque().setQuantidadeMaterial(retorno.doubleValue());
+    }
+      
     public void cancelarVenda(){
         estoque = null;
         valorPorKG = 0.0;

@@ -8,6 +8,7 @@ package br.com.granderio.appreciclagem.controller;
 import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.PedidoReciclagem;
+import br.com.granderio.appreciclagem.util.UtilMensagens;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -37,17 +38,23 @@ public class ControladorMaterial extends ControladorPrincipal<Material> {
    
    
     public String adicionarMaterial(){
+        if(novoMaterial.getPrecoMin() == 0 ){
+            UtilMensagens.mensagemError("O preço mínimo não pode ser igual a 0");
+            return "";
+        }
+        if(novoMaterial.getPrecoMax() == 0 ){
+            UtilMensagens.mensagemError("O preço máximo não pode ser igual a 0");
+            return "";
+        }
         if(novoMaterial.getPrecoMin() > novoMaterial.getPrecoMax()){
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "O preço mínimo é maior que o máximo!", "");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            UtilMensagens.mensagemError("O preço mínimo é maior que o preço máximo!");
             novoMaterial = new Material();
-            return "index";
+            return "";
         } 
         if(novoMaterial.getPrecoMin() == novoMaterial.getPrecoMax()){
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "O preço mínimo é igual ao máximo!", "");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            UtilMensagens.mensagemError("O preço mínimo é igual ao preço máximo!");
             novoMaterial = new Material();
-            return "index";
+            return "";
         }
         DAO<Material> acesso = new DAO(novoMaterial);
         acesso.inserir();

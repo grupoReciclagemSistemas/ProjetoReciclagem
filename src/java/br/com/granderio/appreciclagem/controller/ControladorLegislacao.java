@@ -35,10 +35,11 @@ public class ControladorLegislacao extends ControladorPrincipal<Legislacao> {
         setModelo2(a);
     }
     
-    public void adicionarLegislacao(){
+    public String adicionarLegislacao(){
         DAO<Legislacao> dao = new DAO(novaLesgilacao);
         dao.inserir();
         novaLesgilacao = new Legislacao();
+        return "index?faces-redirect=true";
     }
     
     public List<Legislacao> lista(){

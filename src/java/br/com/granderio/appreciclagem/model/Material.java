@@ -148,4 +148,5 @@ public class Material implements Serializable {
     public void setListaMatLegi(List<MaterialLegislacao> listaMatLegi) {
         this.listaMatLegi = listaMatLegi;
     }
+ 
 }

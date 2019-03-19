@@ -4,6 +4,12 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    
+    <context-param>
+    <param-name>primefaces.FONT_AWESOME</param-name>
+    <param-value>true</param-value>
+   </context-param>
+   
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -19,7 +25,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>BootsFaces_USETHEME</param-name>
@@ -28,7 +34,7 @@
     
     <context-param>  
         <param-name>primefaces.THEME</param-name>  
-        <param-value>south-street</param-value>  
+        <param-value>bootstrap</param-value>  
     </context-param>
 
 </web-app>

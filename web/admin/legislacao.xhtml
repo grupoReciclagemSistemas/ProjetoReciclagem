@@ -9,7 +9,8 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     
     <h:head>
         <title>Geradores do Sistema</title>
@@ -18,23 +19,32 @@ and open the template in the editor.
     <h:body>
         
         <ui:include src="/WEB-INF/menu_admin.xhtml" />
-        <b:jumbotron style="background-color: black; color: white;">
-        <b:container fluid="true">
-            
-            <h:form>
-                <b:panel title-style="background-color: white; color: black" collapsible="false" title="Adicionar uma Nova LEI"
-                         style="margin-top: 40px;">
-                    <h:outputLabel value="Codigo da Legislacao:" style="color: green" />
-                    <b:inputText placeholder="Digite o Código..." style="color: green" value="#{controladorLegislacao.novaLesgilacao.codigo}" />         
-                    <h:outputLabel value="Descrição do Material:" style="color: green" />
-                    <b:inputTextarea placeholder="Digite a Descrição da Legislação..." style="color: green" rows="50" value="#{controladorLegislacao.novaLesgilacao.descricao}" />             
-                    <br/>              
-                    <br/>
-                    <b:commandButton actionListener="#{controladorLegislacao.adicionarLegislacao()}" action="index?faces-redirect=true" value="Adicionar" look="success" />
-                </b:panel>
-            </h:form>
-        </b:container>
-        </b:jumbotron>
+        
+        <h:form prependId="false" style="margin-top: 4%;">
+            <p:messages id="messages" closable="false" showIcon="true" showDetail="true"  />
+            <p:tabView prependId="false">
+                <p:tab title="Inserir Nova Legislação">
+                    <h:panelGrid columns="2" style="width: 35%;">
+                        <p:outputLabel value="CODIGO" for="codigo" />
+                        <p:inputText id="codigo" value="#{controladorLegislacao.novaLesgilacao.codigo}" required="true" requiredMessage="O código é obrigatório"  />
+
+                        <p:outputLabel value="DESCRIÇÃO COMPLETA" for="descricaoCompleta" style="margin-top: 3%;" />
+                        <p:inputTextarea id="descricaoCompleta" value="#{controladorLegislacao.novaLesgilacao.descricao}" required="true"
+                                         requiredMessage="A descrição completa é obrigatória" style="margin-top: 3%; width: 100%;" />
+                        
+                        <p:outputLabel value="DESCRIÇÃO RESUMO" for="descricaoResumo" style="margin-top: 3%;" />
+                        <p:inputTextarea id="descricaoResumo" value="#{controladorLegislacao.novaLesgilacao.resumoDescricao}" required="true"
+                                         requiredMessage="O resumo de descrição é obrigatório" style="margin-top: 3%; width: 100%;" />
+                        
+                        
+                    </h:panelGrid>
+  
+                    <p:separator />
+                    <p:commandButton icon="fa fa-plus-circle" value="Inserir" action="#{controladorLegislacao.adicionarLegislacao()}"
+                                     style="color: green; border-color: green;" update="@form"/>
+                </p:tab>
+            </p:tabView>
+        </h:form>
         
     </h:body>
 </html>

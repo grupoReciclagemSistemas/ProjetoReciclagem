@@ -9,7 +9,8 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <title>Materiais a Venda</title>
@@ -18,28 +19,34 @@ and open the template in the editor.
     <h:body style="width: 100%; height: 100%;">
 
         <ui:include src="/WEB-INF/menu.xhtml" />
-          
-            <h:form>
-                <b:panel title="Materiais Vendendo" showCollapseLink="false" collapsible="false" style="margin-top: 10px; height: 50%;">
-                    <b:dataTable value="#{controladorPedidoReciclagem.listagemVendas()}"
-                                 var="pedido" 
-                                 page-length="5"
-                                 page-length-menu="5,10,20"
-                                 customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                 responsive="true"
-                                 select="false">                     
-                        <b:dataTableColumn label="Nome do Material " value="#{pedido.itens.get(0).material.nome}"/>
-                        <b:dataTableColumn label="Valor Total do Pedido" value=" R$ #{pedido.valorTotal}"/>
-                        <b:dataTableColumn label="Peso (TONELADAS - KG)" value="Toneladas: #{pedido.itens.get(0).quantidade} - KG: #{pedido.itens.get(0).quantidade * 1000} "/>
-                        <b:dataTableColumn label="Razão Social - GERADOR" value="#{pedido.gerador.razaoSocial}"/>
-                        <b:dataTableColumn label="Negociar com Gerador" rendered="#{controladorLogado.recicladorLogado != null}">
-                            <b:commandButton value="NEGOCIAR" look="danger" col-lg="12" action="#{controladorReciclador.entrarEmNegociacao(pedido, controladorLogado.recicladorLogado)}"/>
-                        </b:dataTableColumn>
-                    </b:dataTable> 
 
-                </b:panel>
-            </h:form>
-      
+        <h:form prependId="false" style="margin-top: 4%;">
+            <p:tabView prependId="false">
+                <p:tab title="Materiais a Venda">
+            <p:dataTable id="dataListVendaMateriais" var="pedido" value="#{controladorPedidoReciclagem.listagemVendas()}">               
+                <p:column headerText="NOME DO MATERIAL">
+                    <h:outputText value="#{pedido.itens.get(0).material.nome}" style="font-weight: bold"/>
+                </p:column>
+
+                <p:column headerText="VALOR DO PEDIDO">
+                    <h:outputText value="R$ #{pedido.valorTotal}" style="font-weight: bold"/>
+                </p:column>
+
+                <p:column headerText="PESO TOTAL (TONELADAS)">
+                    <h:outputText value="#{pedido.itens.get(0).quantidade}" style="font-weight: bold"/>
+                </p:column>
+
+                <p:column headerText="VENDEDOR">
+                    <h:outputText value="#{pedido.gerador.razaoSocial}" style="font-weight: bold"/>
+                </p:column>
+                <p:column headerText="NEGOCIAR COM GERADOR" rendered="#{controladorLogado.recicladorLogado != null}">
+                          <p:commandButton value="Negociar" action="#{controladorReciclador.entrarEmNegociacao(pedido, controladorLogado.recicladorLogado)}" />  
+                </p:column>
+            </p:dataTable>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
         <b:jumbotron id="jumbotron-rodape-inferior">
             <footer>
                 <center> 

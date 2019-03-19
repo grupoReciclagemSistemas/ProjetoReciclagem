@@ -9,42 +9,45 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
     <h:head>
         <title>Geradores do Sistema</title>
     </h:head>
-    
+
     <h:body>
-        
+
         <ui:include src="/WEB-INF/menu_admin.xhtml" />
-        <b:jumbotron style="background-color: black; color: white;">
-        <b:container fluid="true">
-            
-            <b:form>
-                <b:panel title-style="background-color: white; color: black" collapsible="false" title="Registrar Novo Material"
-                         style="margin-top: 40px;">
-                    <h:outputLabel value="Nome do Material:" style="color: black" />
-                    <b:inputText placeholder="Digite o Nome do Novo Material..." style="color: blue" value="#{controladorMaterial.novoMaterial.nome}" />         
-                    <h:outputLabel value="Descrição do Material:" style="color: black" />
-                    <b:inputTextarea placeholder="Digite a descrição do Novo Material..." style="color: blue" rows="4" value="#{controladorMaterial.novoMaterial.descricao}" />             
-                     <br/>
-                    <h:outputLabel for="valorMin" value="Valor Mínimo em CENTAVOS:" style="color: black" />
-                    <b:inputText  id="valorMin"  value="#{controladorMaterial.novoMaterial.precoMin}" size="10" required="true" mask="numeric">
-                            <f:facet name="prepend"> R$ </f:facet>
-                        </b:inputText>
-                    <br/>
-                    <h:outputLabel for="valorMax" value="Valor Máximo em CENTAVOS:" style="color: black" />
-                    <br/>
-                    <b:inputText id="valorMax"  value="#{controladorMaterial.novoMaterial.precoMax}" size="10" required="true" mask="numeric">
-                            <f:facet name="prepend"> R$ </f:facet>
-                    </b:inputText>
-                    <br/>
-                <b:commandButton action="#{controladorMaterial.adicionarMaterial()}" value="Adicionar" look="success" />
-                </b:panel>
-            </b:form>
-        </b:container>
-        </b:jumbotron>
+
+        <h:form prependId="false" style="margin-top: 4%;">
+            <p:messages id="messages" closable="false" showIcon="true" showDetail="true"  />
+            <p:tabView prependId="false">
+                <p:tab title="Inserir Novo Material">
+                    <h:panelGrid columns="2" style="width: 35%;">
+                        <p:outputLabel value="NOME DO MATERIAL" for="nameMaterial" />
+                        <p:inputText id="nameMaterial" value="#{controladorMaterial.novoMaterial.nome}" required="true" requiredMessage="O nome é obrigatório"  />
+
+                        <p:outputLabel value="DESCRIÇÃO" for="descricaoMaterial" style="margin-top: 3%;" />
+                        <p:inputTextarea id="descricaoMaterial" value="#{controladorMaterial.novoMaterial.descricao}" required="true"
+                                         requiredMessage="A descrição é obrigatória" style="margin-top: 3%; width: 100%;" />
         
+                        <p:outputLabel value="Valor Mínimo (Centavos)" for="minVal" style="margin-top: 3%;" />
+                        <p:inputNumber id="minVal" required="true" value="#{controladorMaterial.novoMaterial.precoMin}"
+                                       requiredMessage="O valor mínimo é obrigatório" style="margin-top: 3%;" />
+       
+                        <p:outputLabel value="Valor Máximo (Centavos)" for="maxVal" style="margin-top: 3%;" />
+                        <p:inputNumber id="maxVal" required="true" value="#{controladorMaterial.novoMaterial.precoMax}"
+                                       requiredMessage="O valor máximo é obrigatório" style="margin-top: 3%;" />
+                        
+                    </h:panelGrid>
+  
+                    <p:separator />
+                    <p:commandButton icon="fa fa-plus-circle" value="Inserir" action="#{controladorMaterial.adicionarMaterial()}"
+                                     style="color: green; border-color: green;" update="@form"/>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
     </h:body>
 </html>

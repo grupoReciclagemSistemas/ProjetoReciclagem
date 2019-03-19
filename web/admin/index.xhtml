@@ -9,153 +9,137 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"   
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Painel do Admin</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
         <ui:include src="/WEB-INF/menu_admin.xhtml" />
-
-        <b:jumbotron>
-            <h:form>
-                <b:row>
-                    <b:column span="3" style="margin-top: 25px;"> 
-                        <b:container style="padding-right: 150px;">
-
-                            <b:panel collapsible="false" title-style="background-color: black; color: white;" title="MENU">
-                                <b:listLinks>
-                                    <h4 style="text-align: center; color: black;"> Listas </h4>
-                                    <b:commandLink value="Geradores" actionListener="#{controlePainel.mudarListagem(0)}" look="info" update="@form" />
-
-                                    <b:commandLink value="Transportadores" actionListener="#{controlePainel.mudarListagem(1)}" look="success" update="@form" style="margin-top: 2px;"/>
-
-                                    <b:commandLink value="Recicladores" actionListener="#{controlePainel.mudarListagem(2)}" look="warning" update="@form" style="margin-top: 2px;"/>
-
-                                    <b:commandLink value="Materiais" actionListener="#{controlePainel.mudarListagem(3)}" look="danger" update="@form" style="margin-top: 2px;"/>
-                                    
-                                    <b:commandLink value="Legislações" actionListener="#{controlePainel.mudarListagem(4)}" look="info" update="@form" style="margin-top: 2px;"/>
-                                    <hr style="border-color: black" />
-                                    <h4 style="text-align: center; color: black;"> Adicionar </h4>
-                                    <center><b:commandButton value="Material" action="material?faces-redirect=true"  style="margin-top: 2px; background-color: black; color: white;"/> 
-                                    </center>
-
-                                </b:listLinks>
-                            </b:panel>
-
-                        </b:container>
-                    </b:column>
-
-                    <b:column span="9" style="margin-top: 25px;"> 
-
-                        <b:container rendered="#{controlePainel.listagem == 0}">
-                            <b:panel title="Lista de Geradores" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
-                                <b:dataTable var="gerador" value="#{controladorGerador.lista()}"
-                                             page-length="5"
-                                             page-length-menu="5,10,20"
-                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                             responsive="true"
-                                             select="false" >
-                                    <b:dataTableColumn label="Nome" value="#{gerador.razaoSocial}"/>
-                                    <b:dataTableColumn label="CNPJ" value="#{gerador.cnpj}"/>
-                                    <b:dataTableColumn label="Telefone" value="#{gerador.telefone}"/>
-                                    <b:dataTableColumn label="Email" value="#{gerador.email}"/>
-                                    <b:dataTableColumn label="Mais info">
-                                        <b:commandButton look="info" value="+" />
-                                    </b:dataTableColumn>
-                                    <b:dataTableColumn label="Remover">
-                                        <b:commandButton look="danger" value="X" action="#{controlePainel.removerGerador(gerador)}" onclick="return confirm('Deseja realmente excluir o #{gerador.razaoSocial} ?')"/>
-                                    </b:dataTableColumn>
-                                </b:dataTable>
-                            </b:panel>
-                        </b:container>
-
-                        <b:container rendered="#{controlePainel.listagem == 1}">
-                            <b:panel title="Lista de Transportadores" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
-                                <b:dataTable var="trans" value="#{controladorTransportador.lista()}"
-                                             page-length="5"
-                                             page-length-menu="5,10,20"
-                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                             responsive="true"
-                                             select="false" >
-                                    <b:dataTableColumn label="Nome" value="#{trans.razaoSocial}"/>
-                                    <b:dataTableColumn label="CNPJ" value="#{trans.cnpj}"/>
-                                    <b:dataTableColumn label="Telefone" value="#{trans.telefone}"/>
-                                    <b:dataTableColumn label="Email" value="#{trans.email}"/>
-                                    <b:dataTableColumn label="Mais info">
-                                        <b:commandButton look="info" value="+" />
-                                    </b:dataTableColumn>
-                                </b:dataTable>
-                            </b:panel>
-                        </b:container>
-
-                        <b:container rendered="#{controlePainel.listagem == 2}">
-                            <b:panel title="Lista de Recicladores" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
-                                <b:dataTable var="reciclador" value="#{controladorReciclador.lista()}"
-                                             page-length="5"
-                                             page-length-menu="5,10,20"
-                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                             responsive="true"
-                                             select="false" >
-                                    <b:dataTableColumn label="Nome" value="#{reciclador.razaoSocial}"/>
-                                    <b:dataTableColumn label="CNPJ" value="#{reciclador.cnpj}"/>
-                                    <b:dataTableColumn label="Telefone" value="#{reciclador.telefone}"/>
-                                    <b:dataTableColumn label="Email" value="#{reciclador.email}"/>
-                                    <b:dataTableColumn label="Mais info">
-                                        <b:commandButton look="info" value="+" />
-                                    </b:dataTableColumn>
-                                </b:dataTable>
-                            </b:panel>
-                        </b:container>
-
-                        <b:container rendered="#{controlePainel.listagem == 3}">
-                            <b:panel title="Lista de Materiais" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
-                                <b:dataTable var="mat" value="#{controladorMaterial.lista()}"
-                                             page-length="5"
-                                             page-length-menu="5,10,20"
-                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                             responsive="true"
-                                             select="false" >
-                                    <b:dataTableColumn label="Nome" value="#{mat.nome}"/>
-                                    <b:dataTableColumn label="Descrição" value="#{mat.descricao}"/>
-                                    <b:dataTableColumn label="Data Cadastro" value="#{controladorMaterial.retornaDataCadastro(mat.dataCadastro)}"/>                          
-                                    <b:dataTableColumn label="Mais info">
-                                        <b:commandButton look="info" value="+" />
-                                    </b:dataTableColumn>
-                                </b:dataTable>
-                                <f:facet name="footer"> 
-                                    <b:commandLink look="info" value="Adicionar Novo Material" action="material?faces-redirect=true" />
-                                </f:facet>
-                            </b:panel>
-                        </b:container>
+        <h:form prependId="false" style="margin-top: 4%;">
+            <p:tabView prependId="false"> 
+                <p:tab title="Painel do Admin">
+                    <h:panelGrid columns="2">
+                    <p:menu>
+                        <p:submenu label="LISTAGENS" style="background-color: green; color: white;" icon="fa fa-database">
+                            <p:menuitem value="Gerador" actionListener="#{controlePainel.mudarListagem(0)}" update="@form" icon="fa fa-user" />
+                            <p:menuitem value="Transportador" actionListener="#{controlePainel.mudarListagem(1)}" update="@form" icon="fa fa-user" />
+                            <p:menuitem value="Reciclador" actionListener="#{controlePainel.mudarListagem(2)}" update="@form" icon="fa fa-user" />
+                            <p:menuitem value="Material" actionListener="#{controlePainel.mudarListagem(3)}" update="@form" icon="fa fa-trash" />
+                            <p:menuitem value="Legislação" actionListener="#{controlePainel.mudarListagem(4)}" update="@form" icon="fa fa-list-alt" />
+                        </p:submenu>
+                        <p:submenu label="ADICIONAR" style="background-color: green; color: white;" icon="fa fa-plus-circle">
+                            <p:menuitem value="Material" action="material?faces-redirect=true" update="@form" icon="fa fa-plus-circle" />
+                            <p:menuitem value="Legislação" action="legislacao?faces-redirect=true" update="@form" icon="fa fa-plus-circle" />
+                            <p:menuitem value="MaterialLegislação" action="materialLegislacao?faces-redirect=true" update="@form" icon="fa fa-plus-circle" />
+                        </p:submenu>
+                    </p:menu>
+        
+                    <p:panel header="LISTA DE GERADOR" rendered="#{controlePainel.listagem == 0}" style="margin-left: 1%; color: green;" >
+                        <p:dataTable var="gerador" value="#{controladorGerador.lista()}" emptyMessage="Nenhum registro encontrado!"
+                                     lazy="true" rowKey="#{gerador.idPessoaJuridica}" paginator="true">
+                            <p:column headerText="NOME">
+                                <h:outputText value="#{gerador.razaoSocial}" />
+                            </p:column>
+                            <p:column headerText="CNPJ">
+                                <h:outputText value="#{gerador.cnpj}"/>
+                            </p:column>
+                            <p:column headerText="TELEFONE">
+                                <h:outputText value="#{gerador.telefone}" />
+                            </p:column>
+                            <p:column headerText="EMAIL">
+                                <h:outputText value="#{gerador.email}" />
+                            </p:column>
+                            <p:column headerText="INFO" width="8%">
+                                <p:commandButton icon="fa fa-plus-circle" style="color: blue; border-color: blue; width: 100%;" />
+                            </p:column>
+                            <p:column headerText="REMOVER" width="8%">
+                                <p:commandButton icon="fa fa-trash-o" style="color: red; border-color: red; width: 100%;" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
                         
-                        <b:container rendered="#{controlePainel.listagem == 4}">
-                            <b:panel title="Lista de Legislações" title-style="background-color: black; color: white; " style="margin-right: 50px;" collapsible="false">
-                                <b:dataTable var="legislacao" value="#{controladorLegislacao.lista()}"
-                                             page-length="5"
-                                             page-length-menu="5,10,20"
-                                             customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                             responsive="true"
-                                             select="false" >
-                                    <b:dataTableColumn label="ID" value="#{legislacao.idLegislacao}"/>
-                                    <b:dataTableColumn label="CODIGO" value="#{legislacao.codigo}"/>
-                                    <b:dataTableColumn label="DESCRIÇÃO" value="#{legislacao.descricao}"/>                          
-                                    <b:dataTableColumn label="Mais info">
-                                        <b:commandButton look="info" value="+" />
-                                    </b:dataTableColumn>
-                                </b:dataTable>
-                                <f:facet name="footer"> 
-                                    <b:commandLink look="danger" value="Adicionar Nova Legislação" action="legislacao?faces-redirect=true" />
-                                </f:facet>
-                            </b:panel>
-                        </b:container>
-
-                    </b:column>
-                </b:row>
-            </h:form>
-
-            <b:growl />
-        </b:jumbotron>
-
+                        <p:panel header="LISTA DE TRANSPORTADOR" rendered="#{controlePainel.listagem == 1}" style="margin-left: 1%; color: green;" >
+                        <p:dataTable var="transporador" value="#{controladorTransportador.lista()}" emptyMessage="Nenhum registro encontrado!"
+                                     lazy="true" rowKey="#{transporador.idPessoaJuridica}" paginator="true">
+                            <p:column headerText="NOME" >
+                                <h:outputText value="#{transporador.razaoSocial}"/>
+                            </p:column>
+                            <p:column headerText="CNPJ">
+                                <h:outputText value="#{transporador.cnpj}"/>
+                            </p:column>
+                            <p:column headerText="TELEFONE">
+                                <h:outputText value="#{transporador.telefone}"/>
+                            </p:column>
+                            <p:column headerText="EMAIL" >
+                                <h:outputText value="#{transporador.email}"/>
+                            </p:column>
+                            <p:column headerText="INFO" width="8%" >
+                                <p:commandButton icon="fa fa-plus-circle" style="color: blue; border-color: blue; width: 100%;" />
+                            </p:column>
+                            <p:column headerText="DELETAR" width="8%" >
+                                <p:commandButton icon="fa fa-trash-o" style="color: red; border-color: red; width: 100%;" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                        
+                         <p:panel header="LISTA DE RECICLADOR" rendered="#{controlePainel.listagem == 2}" style="margin-left: 1%; color: green;" >
+                        <p:dataTable var="reciclador" value="#{controladorTransportador.lista()}" emptyMessage="Nenhum registro encontrado!"
+                                     lazy="true" rowKey="#{reciclador.idPessoaJuridica}" paginator="true">
+                            <p:column headerText="NOME">
+                                <h:outputText value="#{reciclador.razaoSocial}"/>
+                            </p:column>
+                            <p:column headerText="CNPJ">
+                                <h:outputText value="#{reciclador.cnpj}"/>
+                            </p:column>
+                            <p:column headerText="TELEFONE">
+                                <h:outputText value="#{reciclador.telefone}"/>
+                            </p:column>
+                            <p:column headerText="EMAIL">
+                                <h:outputText value="#{reciclador.email}"/>
+                            </p:column>
+                            <p:column headerText="INFO" width="8%">
+                                <p:commandButton icon="fa fa-plus-circle" style="color: blue; border-color: blue; width: 100%;" />
+                            </p:column>
+                            <p:column headerText="REMOVER" width="8%">
+                                <p:commandButton icon="fa fa-trash-o" style="color: red; border-color: red; width: 100%;" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                        
+                        <p:panel header="LISTA DE MATERIAL" rendered="#{controlePainel.listagem == 3}" style="margin-left: 1%; color: green;" >
+                        <p:dataTable var="mat" value="#{controladorMaterial.lista()}" emptyMessage="Nenhum registro encontrado!"
+                                     lazy="true" rowKey="#{mat.idMaterial}" paginator="true">
+                            <p:column headerText="NOME">
+                                <h:outputText value="#{mat.nome}"/>
+                            </p:column>
+                            <p:column headerText="DESCRIÇÃO">
+                                <h:outputText value="#{mat.descricao}"/>
+                            </p:column>
+                            <p:column headerText="DATA CADASTRO">
+                                <h:outputText value="#{controladorMaterial.retornaDataCadastro(mat.dataCadastro)}"/>
+                            </p:column>
+                            <p:column headerText="INFO" width="8%">
+                                <p:commandButton icon="fa fa-plus-circle" style="color: blue; border-color: blue; width: 100%;" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                        
+                        <p:panel header="LISTA DE LEGISLAÇÃO" rendered="#{controlePainel.listagem == 4}" style="margin-left: 1%; color: green;" >
+                        <p:dataTable var="legi" value="#{controladorLegislacao.lista()}" emptyMessage="Nenhum registro encontrado!"
+                                     lazy="true" rowKey="#{legi.idLegislacao}" paginator="true">
+                            <p:column headerText="CÓDIGO">
+                                <h:outputText value="#{legi.codigo}"/>
+                            </p:column>
+                            <p:column headerText="INFO" width="8%">
+                               <p:commandButton icon="fa fa-plus-circle" style="color: blue; border-color: blue; width: 100%;" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    </h:panelGrid>
+                </p:tab>
+            </p:tabView>
+        </h:form>
     </h:body>
 </html>
