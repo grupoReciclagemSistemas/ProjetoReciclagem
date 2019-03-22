@@ -36,8 +36,9 @@ public class ChatAplicacao implements Serializable {
   private Chat chat;
   
   //Quem está enviando a mensagem (Reciclador ou Gerador)
-  private PessoaJuridica pessoa;
-  
+  private Gerador gerador;
+  private Reciclador reciclador;
+ 
   //Data e Hora que a mensagem irá ser enviada
   @Temporal(TemporalType.TIMESTAMP)
   private Date dataHora;
@@ -85,20 +86,6 @@ public class ChatAplicacao implements Serializable {
     }
 
     /**
-     * @return the pessoa
-     */
-    public PessoaJuridica getPessoa() {
-        return pessoa;
-    }
-
-    /**
-     * @param pessoa the pessoa to set
-     */
-    public void setPessoa(PessoaJuridica pessoa) {
-        this.pessoa = pessoa;
-    }
-
-    /**
      * @return the dataHora
      */
     public Date getDataHora() {
@@ -110,6 +97,34 @@ public class ChatAplicacao implements Serializable {
      */
     public void setDataHora(Date dataHora) {
         this.dataHora = dataHora;
+    }
+
+    /**
+     * @return the gerador
+     */
+    public Gerador getGerador() {
+        return gerador;
+    }
+
+    /**
+     * @param gerador the gerador to set
+     */
+    public void setGerador(Gerador gerador) {
+        this.gerador = gerador;
+    }
+
+    /**
+     * @return the reciclador
+     */
+    public Reciclador getReciclador() {
+        return reciclador;
+    }
+
+    /**
+     * @param reciclador the reciclador to set
+     */
+    public void setReciclador(Reciclador reciclador) {
+        this.reciclador = reciclador;
     }
           
 }

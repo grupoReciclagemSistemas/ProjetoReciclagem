@@ -18,6 +18,8 @@ import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -28,6 +30,8 @@ import javax.inject.Named;
 @Named(value="controladorReciclador")
 public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
          
+    private Reciclador recicladorSelecionado;
+    
     public ControladorReciclador(){
         super(new Reciclador());
         
@@ -45,12 +49,8 @@ public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
         //Adiciona na lista de Reciclador e Gerador a Negociacao criada
         recicladorLogado.adicionarNegociacao(neg);
         pedido.getGerador().adicionarNegociacao(neg);
-        
-        // Insere o Chat
-        DAO<Chat> daoChat = new DAO(neg.getChat());
-        daoChat.inserir();
-        
-        // Insere o Negociacao
+             
+        // Insere a Negociacao
         DAO<Negociacao> daoNegociacao = new DAO(neg);
         daoNegociacao.inserir(); 
         
@@ -61,6 +61,20 @@ public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
         DAO<Gerador> daoGerador = new DAO(pedido.getGerador());
         daoGerador.alterar();
     }
+    
+      public void onDoubleClick(SelectEvent event){
+       Reciclador obj = (Reciclador) event.getObject();
+       recicladorSelecionado = obj;
+   }
+   
+   public void onRowSelect(SelectEvent event){
+       Reciclador obj = (Reciclador) event.getObject();
+       recicladorSelecionado = obj;
+   }
+   
+   public void onRowUnselect(UnselectEvent event){
+       recicladorSelecionado = null;
+   }
     
     public List<Reciclador> lista(){
         DAO<Reciclador> lista = new DAO(new Reciclador());
@@ -76,6 +90,20 @@ public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
     
     public String novoReciclador(){
         return "registrar?faces-redirect=true";
+    }
+
+    /**
+     * @return the recicladorSelecionado
+     */
+    public Reciclador getRecicladorSelecionado() {
+        return recicladorSelecionado;
+    }
+
+    /**
+     * @param recicladorSelecionado the recicladorLogado to set
+     */
+    public void setRecicladorSelecionado(Reciclador recicladorSelecionado) {
+        this.recicladorSelecionado = recicladorSelecionado;
     }
       
 }

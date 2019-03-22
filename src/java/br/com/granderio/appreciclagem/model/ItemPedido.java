@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -27,7 +28,7 @@ public class ItemPedido implements Serializable {
     private Double quantidade;
     
     // 1 item de pedido vai pertencer somente a um Pedido de Reciclagem
-    @ManyToOne
+    @OneToOne
     private PedidoReciclagem pedidoDeReciclagem;
     
     // 1 item de pedido vai conter 1 Material

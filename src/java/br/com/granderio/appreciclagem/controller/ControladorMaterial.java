@@ -7,16 +7,16 @@ package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.model.Material;
-import br.com.granderio.appreciclagem.model.PedidoReciclagem;
 import br.com.granderio.appreciclagem.util.UtilMensagens;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -28,6 +28,7 @@ import javax.inject.Named;
 public class ControladorMaterial extends ControladorPrincipal<Material> {
     
     private Material novoMaterial;
+    private Material materialSelecionado;
     
     public ControladorMaterial(){
         super ( new Material() );
@@ -35,7 +36,29 @@ public class ControladorMaterial extends ControladorPrincipal<Material> {
         
     }
     
+   public void onDoubleClick(SelectEvent event){
+       Material mat = (Material) event.getObject();
+       materialSelecionado = mat;
+   }
    
+   public void onRowSelect(SelectEvent event){
+       Material mat = (Material) event.getObject();
+       materialSelecionado = mat;
+   }
+   
+   public void onRowUnselect(UnselectEvent event){
+       materialSelecionado = null;
+   }
+   
+   public void abrirPopUp(){
+       RequestContext.getCurrentInstance().execute("PF('modalMaterial').show();");
+       RequestContext.getCurrentInstance().update("idMaterialModal");
+   }
+   
+   public void fecharPopUp(){
+       materialSelecionado = null;
+       RequestContext.getCurrentInstance().execute("PF('modalMaterial').hide();");
+   }
    
     public String adicionarMaterial(){
         if(novoMaterial.getPrecoMin() == 0 ){
@@ -85,6 +108,20 @@ public class ControladorMaterial extends ControladorPrincipal<Material> {
      */
     public void setNovoMaterial(Material novoMaterial) {
         this.novoMaterial = novoMaterial;
+    }
+
+    /**
+     * @return the materialSelecionado
+     */
+    public Material getMaterialSelecionado() {
+        return materialSelecionado;
+    }
+
+    /**
+     * @param materialSelecionado the materialSelecionado to set
+     */
+    public void setMaterialSelecionado(Material materialSelecionado) {
+        this.materialSelecionado = materialSelecionado;
     }
 
 

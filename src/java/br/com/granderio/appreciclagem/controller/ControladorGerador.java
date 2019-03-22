@@ -6,6 +6,7 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
+import br.com.granderio.appreciclagem.dao.DAOGerador;
 import br.com.granderio.appreciclagem.model.Estoque;
 import br.com.granderio.appreciclagem.model.EstoqueGerador;
 import br.com.granderio.appreciclagem.model.Gerador;
@@ -19,6 +20,8 @@ import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 
 /**
@@ -40,6 +43,9 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
     private Material materialEscolhido;
     private double quantidadeDoMaterialEscolhido = 0.0;
     
+    //Gerador selecionado no Painel Admin
+    private Gerador geradorSelecionado;
+    
     //Atributos para listar Venda
     private double quantidadeTotal;
     private double valorPorKG;
@@ -49,6 +55,35 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
         super( new Gerador() );
         novoGerador = new Gerador();
     }
+    
+     public void onDoubleClick(SelectEvent event){
+       Gerador obj = (Gerador) event.getObject();
+       geradorSelecionado = obj;
+   }
+   
+   public void onRowSelect(SelectEvent event){
+       Gerador obj = (Gerador) event.getObject();
+       geradorSelecionado = obj;
+   }
+   
+   public void abrirModalNovoEstoque(){
+       RequestContext.getCurrentInstance().execute("PF('varNovoEstoqueModal').show();");
+   }
+   
+   public void abrirModalVender(EstoqueGerador estoque){
+       this.estoque = estoque;
+       RequestContext.getCurrentInstance().execute("PF('varVender').show();");
+   }
+   
+   public void fecharModalNovoEstoque(){
+       materialEscolhido = null;
+       quantidadeDoMaterialEscolhido = 0.0;
+       RequestContext.getCurrentInstance().execute("PF('varNovoEstoqueModal').hide();");
+   }
+   
+   public void onRowUnselect(UnselectEvent event){
+       geradorSelecionado = null;
+   }
     
     public List<Gerador> lista(){
         DAO<Gerador> lista = new DAO(new Gerador());
@@ -94,6 +129,14 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
             UtilMensagens.mensagemError("A quantidade que você quer vender é maior que o seu Estoque!");
             return;
         }
+        if(valorPorKG > estoque.getEstoque().getMaterial().getPrecoMax()){
+           UtilMensagens.mensagemError("O preço que você colocou é maior que o preço máximo permitido por KG para esse Material!");
+            return; 
+        }
+         if(valorPorKG < estoque.getEstoque().getMaterial().getPrecoMin()){
+           UtilMensagens.mensagemError("O preço que você colocou é menor que o preço mínimo permitido por KG para esse Material!");
+            return; 
+        }
         ItemPedido itemPedido = new ItemPedido();
         PedidoReciclagem pedido = new PedidoReciclagem();
         itemPedido.setMaterial(estoque.getEstoque().getMaterial());
@@ -101,8 +144,8 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
         itemPedido.setQuantidade(quantidadeTotal);
         this.retirarQuantidadeDoEstoque();
         itemPedido.setPedidoDeReciclagem(pedido);
-        pedido.adicionarItemPedido(itemPedido);
-        Double valorTotal = (quantidadeTotal*1000) * valorPorKG;
+        pedido.setItem(itemPedido);
+        Double valorTotal = this.calcularValorTotalPedido(quantidadeTotal, valorPorKG);
         pedido.setData(null);
         pedido.setTransportador(null);
         pedido.setReciclador(null);
@@ -113,6 +156,16 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
         DAO<Estoque> dao = new DAO(estoque.getEstoque());
         dao.alterar();
         this.cancelarVenda();       
+    }
+    
+    public Double calcularValorTotalPedido(double quantidade, double valorPorKg){
+        String valorAtualStr = String.valueOf(quantidade);
+        String valorTotalStr = String.valueOf(valorPorKg); 
+        
+        BigDecimal valor1 = new BigDecimal(valorAtualStr);
+        BigDecimal valor2 = new BigDecimal(valorTotalStr);
+        
+        return (valor1.multiply(valor2)).doubleValue();
     }
     
     public void retirarQuantidadeDoEstoque(){
@@ -129,15 +182,55 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
         //Altera na instancia de estoque
         estoque.getEstoque().setQuantidadeMaterial(retorno.doubleValue());
     }
+    
+    public EstoqueGerador adicionarQuantidadeDoEstoque(PedidoReciclagem pedido, EstoqueGerador estoqueGer){
+        String valorDoPedido = String.valueOf(pedido.getItem().getQuantidade());
+        String valorTotal = String.valueOf(estoqueGer.getEstoque().getQuantidadeMaterial());
+        
+        BigDecimal quantidadeAtual = new BigDecimal(valorTotal);
+         BigDecimal quantidadePedido = new BigDecimal(valorDoPedido);
+         
+         BigDecimal retorno = quantidadeAtual.add(quantidadePedido);
+         estoqueGer.getEstoque().setQuantidadeMaterial(retorno.doubleValue());
+         return estoqueGer;
+    }
+    
+    public void excluirPedidoReciclagem(PedidoReciclagem pedido, Gerador geradorLogado){
+        EstoqueGerador estoqueGeradorCorreto = null;
+        for(EstoqueGerador estoqueGer : geradorLogado.getEstoques()){
+            if(estoqueGer.getEstoque().getMaterial().equals(pedido.getItem().getMaterial())){
+                estoqueGeradorCorreto = estoqueGer;
+            }
+        }
+        estoqueGeradorCorreto = this.adicionarQuantidadeDoEstoque(pedido, estoqueGeradorCorreto);
+        DAO<PedidoReciclagem> daoPedido = new DAO<PedidoReciclagem>(pedido);
+        daoPedido.excluir();
+        DAOGerador daoGer = new DAOGerador(geradorLogado);
+        daoGer.alterar();
+    }
+    
+    public List<PedidoReciclagem> pedidosGerador(Gerador geradorLogado){
+        DAOGerador dao = new DAOGerador(geradorLogado);
+        return dao.materiaisVendendo(geradorLogado);
+    }
       
     public void cancelarVenda(){
         estoque = null;
         valorPorKG = 0.0;
         quantidadeTotal = 0.0;
         vender = false;
+        RequestContext.getCurrentInstance().execute("PF('varVender').hide();");
     }
     
     public String adicionarNoEstoque(Gerador gerador){
+        if(materialEscolhido == null){
+            UtilMensagens.mensagemError("Material escolhido é nulo!");
+            return "";
+        }
+        if(quantidadeDoMaterialEscolhido <= 0){
+            UtilMensagens.mensagemError("Quantidade do Material escolhido é igual ou menor que 0!");
+            return "";
+        }
         EstoqueGerador estoqueGerador = new EstoqueGerador();
         Estoque estoque = new Estoque();
         estoque.setEstoqueGerador(estoqueGerador);
@@ -150,7 +243,9 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
         dao.alterar();     
         setMaterialEscolhido(new Material());
         setQuantidadeDoMaterialEscolhido(0.0);
-        return "minha_conta?faces-redirect=true";
+        UtilMensagens.mensagemInfo("Material incluído com sucesso!" );
+        this.fecharModalNovoEstoque();
+        return "minha_conta";
     }
     
     public void removerEstoqueGerador(EstoqueGerador obj, Gerador gerador){ 
@@ -273,6 +368,20 @@ public class ControladorGerador extends ControladorPrincipal <Gerador> {
      */
     public void setVender(boolean vender) {
         this.vender = vender;
+    }
+
+    /**
+     * @return the geradorSelecionado
+     */
+    public Gerador getGeradorSelecionado() {
+        return geradorSelecionado;
+    }
+
+    /**
+     * @param geradorSelecionado the geradorSelecionado to set
+     */
+    public void setGeradorSelecionado(Gerador geradorSelecionado) {
+        this.geradorSelecionado = geradorSelecionado;
     }
     
 }

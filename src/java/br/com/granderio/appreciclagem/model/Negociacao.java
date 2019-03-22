@@ -7,6 +7,7 @@
 package br.com.granderio.appreciclagem.model;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,7 +32,7 @@ public class Negociacao implements Serializable {
     @ManyToOne
     private Reciclador reciclador;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Chat chat;
     
     @OneToOne
@@ -46,6 +47,7 @@ public class Negociacao implements Serializable {
         this.pedido = pedido;
         this.reciclador = reciclador;
         chat = new Chat();
+        chat.setNegociacao(this);
     }
 
     /**

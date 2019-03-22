@@ -17,6 +17,7 @@ and open the template in the editor.
     </h:head>
     <h:body>
         <ui:include src="/WEB-INF/menu_admin.xhtml" />
+        
         <h:form prependId="false" style="margin-top: 4%;">
             <p:tabView prependId="false"> 
                 <p:tab title="Painel do Admin">
@@ -36,9 +37,14 @@ and open the template in the editor.
                         </p:submenu>
                     </p:menu>
         
-                    <p:panel header="LISTA DE GERADOR" rendered="#{controlePainel.listagem == 0}" style="margin-left: 1%; color: green;" >
+                    <p:panel id="panelGerador" header="LISTA DE GERADOR" rendered="#{controlePainel.listagem == 0}" style="margin-left: 1%; color: green;" >
                         <p:dataTable var="gerador" value="#{controladorGerador.lista()}" emptyMessage="Nenhum registro encontrado!"
-                                     lazy="true" rowKey="#{gerador.idPessoaJuridica}" paginator="true">
+                                     lazy="true" rowKey="#{gerador.idPessoaJuridica}" selection="#{controladorGerador.geradorSelecionado}" selectionMode="single">
+                            
+                            <p:ajax event="rowDblselect" listener="#{controladorGerador.onDoubleClick}" update="panelGerador" />
+                            <p:ajax event="rowSelect" listener="#{controladorGerador.onRowSelect}" update="panelGerador" />
+                            <p:ajax event="rowUnselect" listener="#{controladorGerador.onRowUnselect}" update="panelGerador" />
+                            
                             <p:column headerText="NOME">
                                 <h:outputText value="#{gerador.razaoSocial}" />
                             </p:column>
@@ -50,19 +56,25 @@ and open the template in the editor.
                             </p:column>
                             <p:column headerText="EMAIL">
                                 <h:outputText value="#{gerador.email}" />
-                            </p:column>
-                            <p:column headerText="INFO" width="8%">
-                                <p:commandButton icon="fa fa-plus-circle" style="color: blue; border-color: blue; width: 100%;" />
-                            </p:column>
-                            <p:column headerText="REMOVER" width="8%">
-                                <p:commandButton icon="fa fa-trash-o" style="color: red; border-color: red; width: 100%;" />
-                            </p:column>
+                            </p:column>                          
                         </p:dataTable>
+                        <f:facet name="footer">
+                                <p:commandButton icon="fa fa-plus-circle" value="Mais Info" style="color: blue; border-color: blue; width: 8%;"
+                                                 disabled="#{controladorGerador.geradorSelecionado == null}"/>
+                                <p:commandButton icon="fa fa-remove" value="Remover" style="color: red; border-color: red; width: 8%; margin-right: 3px;"
+                                                                    immediate="true"
+                                                 disabled="#{controladorGerador.geradorSelecionado == null}"/>                       
+                            </f:facet>                      
                     </p:panel>
                         
                         <p:panel header="LISTA DE TRANSPORTADOR" rendered="#{controlePainel.listagem == 1}" style="margin-left: 1%; color: green;" >
-                        <p:dataTable var="transporador" value="#{controladorTransportador.lista()}" emptyMessage="Nenhum registro encontrado!"
-                                     lazy="true" rowKey="#{transporador.idPessoaJuridica}" paginator="true">
+                        <p:dataTable id="panelTransportador" var="transporador" value="#{controladorTransportador.lista()}" emptyMessage="Nenhum registro encontrado!"
+                                     lazy="true" rowKey="#{transporador.idPessoaJuridica}" selection="#{controladorTransportador.transportadorSelecionado}" selectionMode="single">
+                            
+                            <p:ajax event="rowDblselect" listener="#{controladorTransportador.onDoubleClick}" update="panelTransportador" />
+                            <p:ajax event="rowSelect" listener="#{controladorTransportador.onRowSelect}" update="panelTransportador" />
+                            <p:ajax event="rowUnselect" listener="#{controladorTransportador.onRowUnselect}" update="panelTransportador" />
+                            
                             <p:column headerText="NOME" >
                                 <h:outputText value="#{transporador.razaoSocial}"/>
                             </p:column>
@@ -74,19 +86,25 @@ and open the template in the editor.
                             </p:column>
                             <p:column headerText="EMAIL" >
                                 <h:outputText value="#{transporador.email}"/>
-                            </p:column>
-                            <p:column headerText="INFO" width="8%" >
-                                <p:commandButton icon="fa fa-plus-circle" style="color: blue; border-color: blue; width: 100%;" />
-                            </p:column>
-                            <p:column headerText="DELETAR" width="8%" >
-                                <p:commandButton icon="fa fa-trash-o" style="color: red; border-color: red; width: 100%;" />
-                            </p:column>
+                            </p:column>       
                         </p:dataTable>
+                            <f:facet name="footer">
+                                <p:commandButton icon="fa fa-plus-circle" value="Mais Info" style="color: blue; border-color: blue; width: 8%;"
+                                                 disabled="#{controladorTransportador.transportadorSelecionado == null}"/>
+                                <p:commandButton icon="fa fa-remove" value="Remover" style="color: red; border-color: red; width: 8%; margin-right: 3px;"
+                                                                    immediate="true"
+                                                 disabled="#{controladorTransportador.transportadorSelecionado == null}"/>                       
+                            </f:facet>     
                     </p:panel>
                         
-                         <p:panel header="LISTA DE RECICLADOR" rendered="#{controlePainel.listagem == 2}" style="margin-left: 1%; color: green;" >
-                        <p:dataTable var="reciclador" value="#{controladorTransportador.lista()}" emptyMessage="Nenhum registro encontrado!"
-                                     lazy="true" rowKey="#{reciclador.idPessoaJuridica}" paginator="true">
+                         <p:panel id="panelReciclador" header="LISTA DE RECICLADOR" rendered="#{controlePainel.listagem == 2}" style="margin-left: 1%; color: green;" >
+                        <p:dataTable var="reciclador" value="#{controladorReciclador.lista()}" emptyMessage="Nenhum registro encontrado!"
+                                     lazy="true" rowKey="#{reciclador.idPessoaJuridica}" selection="#{controladorReciclador.recicladorSelecionado}" selectionMode="single">
+                            
+                            <p:ajax event="rowDblselect" listener="#{controladorReciclador.onDoubleClick}" update="panelReciclador" />
+                            <p:ajax event="rowSelect" listener="#{controladorReciclador.onRowSelect}" update="panelReciclador" />
+                            <p:ajax event="rowUnselect" listener="#{controladorReciclador.onRowUnselect}" update="panelReciclador" />
+                            
                             <p:column headerText="NOME">
                                 <h:outputText value="#{reciclador.razaoSocial}"/>
                             </p:column>
@@ -99,18 +117,25 @@ and open the template in the editor.
                             <p:column headerText="EMAIL">
                                 <h:outputText value="#{reciclador.email}"/>
                             </p:column>
-                            <p:column headerText="INFO" width="8%">
-                                <p:commandButton icon="fa fa-plus-circle" style="color: blue; border-color: blue; width: 100%;" />
-                            </p:column>
-                            <p:column headerText="REMOVER" width="8%">
-                                <p:commandButton icon="fa fa-trash-o" style="color: red; border-color: red; width: 100%;" />
-                            </p:column>
                         </p:dataTable>
+                             <f:facet name="footer">
+                                <p:commandButton icon="fa fa-plus-circle" value="Mais Info" style="color: blue; border-color: blue; width: 8%;"
+                                                 disabled="#{controladorGerador.geradorSelecionado == null}"/>
+                                <p:commandButton icon="fa fa-remove" value="Remover" style="color: red; border-color: red; width: 8%; margin-right: 3px;"
+                                                                    immediate="true"
+                                                 disabled="#{controladorGerador.geradorSelecionado == null}"/>                       
+                            </f:facet>   
                     </p:panel>
                         
-                        <p:panel header="LISTA DE MATERIAL" rendered="#{controlePainel.listagem == 3}" style="margin-left: 1%; color: green;" >
+                        <p:panel id="panelMaterial" header="LISTA DE MATERIAL" rendered="#{controlePainel.listagem == 3}" style="margin-left: 1%; color: green;" >
                         <p:dataTable var="mat" value="#{controladorMaterial.lista()}" emptyMessage="Nenhum registro encontrado!"
-                                     lazy="true" rowKey="#{mat.idMaterial}" paginator="true">
+                                     lazy="true" rowKey="#{mat.idMaterial}" paginator="true" selection="#{controladorMaterial.materialSelecionado}"
+                                     selectionMode="single">
+                            
+                            <p:ajax event="rowDblselect" listener="#{controladorMaterial.onDoubleClick}" update="panelMaterial" />
+                            <p:ajax event="rowSelect" listener="#{controladorMaterial.onRowSelect}" update="panelMaterial" />
+                            <p:ajax event="rowUnselect" listener="#{controladorMaterial.onRowUnselect}" update="panelMaterial" />
+                            
                             <p:column headerText="NOME">
                                 <h:outputText value="#{mat.nome}"/>
                             </p:column>
@@ -119,11 +144,17 @@ and open the template in the editor.
                             </p:column>
                             <p:column headerText="DATA CADASTRO">
                                 <h:outputText value="#{controladorMaterial.retornaDataCadastro(mat.dataCadastro)}"/>
-                            </p:column>
-                            <p:column headerText="INFO" width="8%">
-                                <p:commandButton icon="fa fa-plus-circle" style="color: blue; border-color: blue; width: 100%;" />
-                            </p:column>
+                            </p:column>       
                         </p:dataTable>
+                            <f:facet name="footer">
+                                <p:commandButton icon="fa fa-plus-circle" value="Mais Info" style="color: blue; border-color: blue; width: 8%;"
+                                                 action="#{controladorMaterial.abrirPopUp()}"
+                                                 disabled="#{controladorMaterial.materialSelecionado == null}"/>
+                                <p:commandButton icon="fa fa-remove" value="Remover" style="color: red; border-color: red; width: 8%; margin-right: 3px;"
+                                                                   action="#{controladorMaterial.abrirPopUp()}" immediate="true"
+                                                 disabled="#{controladorMaterial.materialSelecionado == null}"/>
+                               
+                            </f:facet>
                     </p:panel>
                         
                         <p:panel header="LISTA DE LEGISLAÇÃO" rendered="#{controlePainel.listagem == 4}" style="margin-left: 1%; color: green;" >
@@ -140,6 +171,11 @@ and open the template in the editor.
                     </h:panelGrid>
                 </p:tab>
             </p:tabView>
+            
+               
         </h:form>
+        
+        <ui:include src="dialogs/dialogMaterial.xhtml" />
+        
     </h:body>
 </html>

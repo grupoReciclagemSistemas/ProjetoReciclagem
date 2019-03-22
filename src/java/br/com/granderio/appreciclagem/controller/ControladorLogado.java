@@ -6,15 +6,18 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
+import br.com.granderio.appreciclagem.dao.DAOAdministrador;
 import br.com.granderio.appreciclagem.dao.DAOGerador;
 import br.com.granderio.appreciclagem.dao.DAOReciclador;
 import br.com.granderio.appreciclagem.dao.DAOTransportador;
+import br.com.granderio.appreciclagem.model.Administrador;
 import br.com.granderio.appreciclagem.model.Estoque;
 import br.com.granderio.appreciclagem.model.EstoqueGerador;
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
+import br.com.granderio.appreciclagem.util.UtilMensagens;
 import java.io.Serializable;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
@@ -35,13 +38,19 @@ public class ControladorLogado implements Serializable {
     private Reciclador recicladorLogado = null;
     private Gerador geradorLogado = null;
     private Transportador transportadorLogado = null;
+    private Administrador adminLogado = null;
     
     //Var para editar
     private EstoqueGerador estoque = null;
     private double quantidadeMais = 0.0;
       
+    //Atributos para logar Reciclador, Gerador ou Transportador
     private String email;
     private String senha;
+    
+     //Atributos para logar Administrador
+    private String login;
+    private String senhaAdmin;
 
     private int tipoLogin;
     
@@ -51,6 +60,8 @@ public class ControladorLogado implements Serializable {
      
     public ControladorLogado() {
       tipoLogin = 1;
+      login = "";
+      senhaAdmin="";
     }
     
     public void setarEstoqueGerador(EstoqueGerador obj){
@@ -69,6 +80,29 @@ public class ControladorLogado implements Serializable {
         }else{
             return "ENTRAR COMO TRANSPORTADOR";
         }
+    }
+    
+    public String logarAdmin(){
+        if(login.equals("") || senhaAdmin.equals("")){
+            UtilMensagens.mensagemAdvertencia("Os campos estão vazios!");
+            return "";
+        }
+        DAOAdministrador dao = new DAOAdministrador(new Administrador());
+        try{
+            adminLogado = dao.logarAdmin(login, senhaAdmin);
+            return "index?faces-redirect=true";
+        }catch(Exception e){
+            UtilMensagens.mensagemError(e.getMessage());
+        }
+        UtilMensagens.mensagemError("Login/Senha inválidos!");
+        return "";
+    }
+    
+    public String voltarInicio(){
+        login = null;
+        senha = null;
+        adminLogado = null;
+        return "../index?faces-redirect=true";
     }
     
     public void cancelar(){
@@ -354,6 +388,48 @@ public class ControladorLogado implements Serializable {
      */
     public void setQuantidadeMais(double quantidadeMais) {
         this.quantidadeMais = quantidadeMais;
+    }
+
+    /**
+     * @return the adminLogado
+     */
+    public Administrador getAdminLogado() {
+        return adminLogado;
+    }
+
+    /**
+     * @param adminLogado the adminLogado to set
+     */
+    public void setAdminLogado(Administrador adminLogado) {
+        this.adminLogado = adminLogado;
+    }
+
+    /**
+     * @return the login
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
+     * @param login the login to set
+     */
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    /**
+     * @return the senhaAdmin
+     */
+    public String getSenhaAdmin() {
+        return senhaAdmin;
+    }
+
+    /**
+     * @param senhaAdmin the senhaAdmin to set
+     */
+    public void setSenhaAdmin(String senhaAdmin) {
+        this.senhaAdmin = senhaAdmin;
     }
 
 }

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"   
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Logar no Sistema</title>  
+    </h:head>
+    <h:body style="background-color: green;">
+        <center>
+            <h:form id="formDialogLogar" prependId="false"> 
+                <p:panel header="Painel do Administrador - Logar" style="width: 20%; margin-top: 10%; "  >
+                    <h:panelGrid columns="1" style="width: 100%;">
+                    <p:inputText placeholder="SEU LOGIN" value="#{controladorLogado.login}" style="width: 100%;">
+                        <p:ajax event="change" process="@this" />
+                    </p:inputText>
+                    
+                    <p:password placeholder="SUA SENHA" value="#{controladorLogado.senhaAdmin}" style="width: 100%;">
+                         <p:ajax event="change" process="@this" />
+                    </p:password>
+                    </h:panelGrid>
+
+                    <f:facet name="footer">
+                        <center>
+                            <p:commandButton icon="fa fa-check" value="Entrar " action="#{controladorLogado.logarAdmin()}" 
+                                             update="mensagens" style="margin-right: 1%;" immediate="true" />
+
+                             <p:commandButton value="Voltar" icon="fa fa-remove" action="#{controladorLogado.voltarInicio()}" immediate="true"/>
+                         </center>
+                         <p:messages id="mensagens" />
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </center>
+    </h:body>
+</html>
+
+
+
+
+

@@ -11,63 +11,66 @@
         <title>Logar no Sistema</title>  
     </h:head>
     <h:body>
-             
+
         <h:form id="formDialogLogar" prependId="false"> 
             <p:dialog id="dialogLogar" widgetVar="modalLogar" draggable="false" closeOnEscape="false" showEffect="fade" hideEffect="fade"
                       modal="true" header="LOGAR NO SISTEMA - RECLICK" responsive="true" style="text-align: center; color: green;">  
                 <f:facet name="footer">
                     <center>
-                    <p:commandButton value="Logar" action="#{controladorLogado.logar()}" style="margin-right: 3px;" />
-                    <p:commandButton value="Cancelar" action="#{controladorLogado.fecharPopupLogar()}" />
+                        <p:commandButton value="Logar" action="#{controladorLogado.logar()}" icon="fa fa-send" style="margin-right: 3px; color: green; border-color: green;" />
+                        <p:commandButton value="Cancelar" action="#{controladorLogado.fecharPopupLogar()}" icon="fa fa-remove" style="color: red; border-color: red;"  />
                     </center>
                 </f:facet>
+                <p:panel header="#{controladorLogado.tipoQueIraLogar()}" id="panel">
                 <p:row>
                     <p:column colspan="4" style="margin-right: 6px;">
                         <p:commandButton value="RECICLADOR" action="#{controladorLogado.setTipoLogin(1)}"
-                                         update="panelGeral, tipoQueIraLogar"/>
+                                         update="panelGeral, panel" icon="fa fa-user" style="color: green; border-color: green;" />
                     </p:column>
-                    
+
                     <p:column colspan="4" style="margin-right: 6px;">
                         <p:commandButton value="GERADOR" action="#{controladorLogado.setTipoLogin(2)}"
-                                         update="panelGeral, tipoQueIraLogar"/>
+                                         update="panelGeral, panel" icon="fa fa-user" style="color: green; border-color: green;" />
                     </p:column>
-                    
+
                     <p:column colspan="4" >
                         <p:commandButton value="TRANSPORTADOR" action="#{controladorLogado.setTipoLogin(3)}" 
-                                         update="panelGeral, tipoQueIraLogar"/>
+                                         update="panelGeral, panel" icon="fa fa-user" style="color: green; border-color: green;" />
                     </p:column>
                 </p:row>
-                <p:separator />
-                <p:outputLabel value="#{controladorLogado.tipoQueIraLogar()}" id="tipoQueIraLogar" style="color: green" />
-                <h:panelGrid id="panelGeral" columns="1" style="margin-top: 10px;">
+
+                <p:separator style="width: 100%;" />
+
+                <h:panelGrid id="panelGeral" columns="1" style="margin-top: 10px; width: 100%;">
                     <h:panelGrid id="panelReciclador" rendered="#{controladorLogado.tipoLogin == 1}" columns="2"
                                  style="width: 100%;">
-                        <p:outputLabel value="EMAIL" style="color: green; text-align: right; font-size: 18px; margin-right: 4px;" />
+                        <p:outputLabel value="Email:" style="color: green; text-align: right; font-size: 16px; margin-right: 4px;" />
                         <p:inputText id="emailReciclador" value="#{controladorLogado.email}" style="width: 100%;" />
-                        <p:outputLabel value="SENHA"
-                                       style="color: green; text-align: right; font-size: 18px; margin-right: 4px; margin-top: 5px;" />
-                        <p:inputText id="senhaReciclador" value="#{controladorLogado.senha}" style="width: 100%; margin-top: 5px;"/>
+                        <p:outputLabel value="Senha:"
+                                       style="color: green; text-align: right; font-size: 16px; margin-right: 4px; margin-top: 5px;" />
+                        <p:password id="senhaReciclador" value="#{controladorLogado.senha}" style="width: 100%; margin-top: 5px;"/>
                     </h:panelGrid>
 
                     <h:panelGrid id="panelGerador" rendered="#{controladorLogado.tipoLogin == 2}" columns="2"
                                  style="width: 100%;">
-                        <p:outputLabel value="EMAIL" style="color: green; text-align: right; font-size: 18px; margin-right: 4px;" />
+                        <p:outputLabel value="Email:" style="color: green; text-align: right; font-size: 16px; margin-right: 4px;" />
                         <p:inputText id="emailGerador" value="#{controladorLogado.email}" style="width: 100%;" />
-                        <p:outputLabel value="SENHA"
-                                       style="color: green; text-align: right; font-size: 18px; margin-right: 4px; margin-top: 5px;" />
-                        <p:inputText id="senhaGerador" value="#{controladorLogado.senha}" style="width: 100%; margin-top: 5px;"/>
+                        <p:outputLabel value="Senha:"
+                                       style="color: green; text-align: right; font-size: 16px; margin-right: 4px; margin-top: 5px;" />
+                        <p:password id="senhaGerador" value="#{controladorLogado.senha}" style="width: 100%; margin-top: 5px;"/>
                     </h:panelGrid>
 
                     <h:panelGrid id="panelTransportador" rendered="#{controladorLogado.tipoLogin == 3}" columns="2"
                                  style="width: 100%;">
-                        <p:outputLabel value="EMAIL" style="color: green; text-align: right; font-size: 18px; margin-right: 4px;" />
+                        <p:outputLabel value="Email:" style="color: green; text-align: right; font-size: 16px; margin-right: 4px;" />
                         <p:inputText id="emailTransportador" value="#{controladorLogado.email}" style="width: 100%;" />
-                        <p:outputLabel value="SENHA"
-                                       style="color: green; text-align: right; font-size: 18px; margin-right: 4px; margin-top: 5px;" />
-                        <p:inputText id="senhaTransportador" value="#{controladorLogado.senha}" style="width: 100%; margin-top: 5px;"/>
+                        <p:outputLabel value="Senha:"
+                                       style="color: green; text-align: right; font-size: 16px; margin-right: 4px; margin-top: 5px;" />
+                        <p:password id="senhaTransportador" value="#{controladorLogado.senha}" style="width: 100%; margin-top: 5px;"/>
                     </h:panelGrid>
                 </h:panelGrid>
                 <p:messages id="messagesLogar" showDetail="true" showIcon="true" />
+                    </p:panel>
             </p:dialog>
         </h:form>
     </h:body>

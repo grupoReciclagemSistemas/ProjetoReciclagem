@@ -16,7 +16,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -25,6 +28,14 @@ import javax.persistence.TemporalType;
  * @author Rafael
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Pedido.buscarTodos", query="SELECT p FROM PedidoReciclagem p"),
+    @NamedQuery(name="Pedido.buscarPedidosPorCidade", query="SELECT p FROM PedidoReciclagem p inner join p.gerador g where g.endereco.cidade = :cidade"),
+    @NamedQuery(name="Pedido.buscarPedidosPorMaterialCidade", query="SELECT p FROM PedidoReciclagem p inner join p.gerador g inner join p.item i "
+            + "where g.endereco.cidade = :cidade"
+            + " AND i.material.idMaterial = :idmaterial"),
+    @NamedQuery(name="Pedido.buscarPedidosPorMaterial", query="SELECT p FROM PedidoReciclagem p inner join p.item i where i.material.idMaterial = :idmaterial")
+})
 public class PedidoReciclagem implements Serializable {
     
     @Id
@@ -38,8 +49,8 @@ public class PedidoReciclagem implements Serializable {
     
     private double valorTotal;
       
-    @OneToMany(mappedBy="pedidoDeReciclagem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ItemPedido> itens;
+    @OneToOne(mappedBy="pedidoDeReciclagem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private ItemPedido item;
     
     private String localEntrega;
     
@@ -59,16 +70,12 @@ public class PedidoReciclagem implements Serializable {
     
     public PedidoReciclagem(){
         idPedidoReciclagem = -1;
-        itens = new ArrayList();
         data = Calendar.getInstance();
         gerador = new Gerador();
         reciclador = new Reciclador();
         transportador = new Transportador();
     }
-    
-    public void adicionarItemPedido(ItemPedido item){
-        itens.add(item);
-    }
+
     /**
      * @return the idPedidoReciclagem
      */
@@ -198,18 +205,20 @@ public class PedidoReciclagem implements Serializable {
     }
 
     /**
-     * @return the itens
+     * @return the item
      */
-    public List<ItemPedido> getItens() {
-        return itens;
+    public ItemPedido getItem() {
+        return item;
     }
 
     /**
-     * @param itens the itens to set
+     * @param item the item to set
      */
-    public void setItens(List<ItemPedido> itens) {
-        this.itens = itens;
+    public void setItem(ItemPedido item) {
+        this.item = item;
     }
+
+    
     
     
 }

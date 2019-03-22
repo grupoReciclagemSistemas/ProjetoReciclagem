@@ -13,195 +13,208 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Java Server Faces</title>    
-        
+
     </h:head>
     <h:body>
         <ui:include src="/WEB-INF/menu.xhtml" />
-        <b:jumbotron style="background-color: white;"> 
-            <h:form prependId="false">
-                <b:row>
-                    <b:column span="3">
-                        <b:container style="padding-right: 150px;">
+            <h:form prependId="false" style="margin-top: 1%;">
+                <p:tabView id="tabViewGerador" prependId="false" rendered="#{controladorLogado.geradorLogado != null}" style="margin-top: 5%;">
+                    <p:tab title="DADOS GERAIS">
+                        <p:panel style="width: 100%;">
+                            <p:panelGrid columns="2" style="width: 100%;">
+                                <p:outputLabel value="EMAIL"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.email}" style="width: 100%;" />                         
+                                <p:outputLabel value="CNPJ" />
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.cnpj}" style="width: 100%;" />
+                                <p:outputLabel value="TELEFONE" />
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.telefone}" style="width: 100%;" /> 
+                                <p:outputLabel value="LOGRADOURO"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.logradouro}" style="width: 100%;" />
+                                <p:outputLabel value="CEP"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.cep}" style="width: 100%;" />
+                                <p:outputLabel value="CIDADE"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.cidade}" style="width: 100%;" />
+                                <p:outputLabel value="UF"/>
+                                <p:inputText readonly="true"  value="#{controladorLogado.geradorLogado.endereco.uf}" style="width: 100%;" />
+                                <p:outputLabel value="BAIRRO"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.bairro}" style="width: 100%;" />
+                            </p:panelGrid>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab title="ESTOQUE">
+                        <p:dataTable var="estoque" value="#{controladorLogado.geradorLogado.estoques}" style="width: 100%;"
+                                     emptyMessage="Nenhum Material no seu Estoque encontrado!">
+                            <p:column headerText="MATERIAL">
+                                <p:outputLabel value="#{estoque.estoque.material.nome}" />
+                            </p:column>
+                            <p:column headerText="QUANTIDADE">
+                                <p:outputLabel value="#{estoque.estoque.quantidadeMaterial} KG"  />
+                            </p:column>
+                            <p:column headerText="VENDER">
+                                <p:commandButton value="Vender" icon="fa fa-money" action="#{controladorGerador.abrirModalVender(estoque)}" />
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="Adicionar Novo Material" action="#{controladorGerador.abrirModalNovoEstoque()}" />                                                                        
+                        </f:facet>
+                        </p:dataTable>
 
-                            <b:panel collapsible="false" title-style="background-color: white; color: green;" title="GERENCIAR SUA CONTA">
-                                <b:listLinks>
-                                    <center> <h:outputLabel value="DADOS GERAIS"/> </center>
-                                    <b:commandLink value="Ver Dados"  look="info" update="@form" />
-                                    <center> <h:outputLabel value="AÇÕES DISPONÍVEIS" style="margin-top: 5px"/> </center>
-                                    <b:commandLink value="Lista de Materiais à Venda"  look="success" update="@form" rendered="#{controladorLogado.recicladorLogado != null}" />
-                                    <b:commandLink value="Vender Materiais"  look="success" update="@form" rendered="#{controladorLogado.geradorLogado != null}" />
-                                    <b:commandLink value="Convites para Transportar"  look="success" update="@form" rendered="#{controladorLogado.transportadorLogado != null}" />
-                                    <b:commandLink value="Deslogar" look="warning" action="#{controladorLogado.deslogar()}" />
-                                    <b:commandLink value="Remover Conta" look="danger" onclick="return confirm('Deseja realmente abrir uma Transação para deletar sua conta?')" />
-                                </b:listLinks>
-                            </b:panel>
+                    </p:tab>
+                    <p:tab title="NEGOCIAÇÕES">
+                        <p:dataTable var="negociacao" value="#{controladorLogado.geradorLogado.negociacoes}" style="width: 100%;"
+                                     emptyMessage="Nenhuma negociação encontrada!">
+                            <p:column headerText="MATERIAL"> 
+                                <p:outputLabel value="#{negociacao.pedido.item.material.nome}" />
+                            </p:column>
+                            <p:column headerText="RECICLADOR">
+                                <p:outputLabel value="#{negociacao.reciclador.razaoSocial}" />
+                            </p:column>
+                            <p:column headerText="VALOR TOTAL">
+                                <p:outputLabel value="R$ #{negociacao.pedido.valorTotal}" />
+                            </p:column>
+                            <p:column headerText="CHAT">
+                                <p:commandButton value="Ir para o Chat" action="chatNegociacao?faces-redirect=true"
+                                                 actionListener="#{controladorNegociacao.listenerIrNegociar(negociacao)}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                    
+                    <p:tab title="SEUS PEDIDOS ">
+                            <p:dataTable id="pedidosGerador" var="pedido" value="#{controladorGerador.pedidosGerador(controladorLogado.geradorLogado)}" style="width: 100%;"
+                                     emptyMessage="Nenhuma negociação encontrada!">
+                            <p:column headerText="MATERIAL"> 
+                                <p:outputLabel value="#{pedido.item.material.nome}" />
+                            </p:column>
+                                <p:column headerText="PESO TOTAL (KG)"> 
+                                    <p:outputLabel value="#{pedido.item.quantidade}" />
+                            </p:column>
+                                   <p:column headerText="PREÇO"> 
+                                       <p:outputLabel value="R$ #{pedido.valorTotal}" />
+                            </p:column>
+                                  <p:column headerText="CANCELAR"> 
+                                      <p:commandButton action="#{controladorGerador.excluirPedidoReciclagem(pedido, controladorLogado.geradorLogado)}"
+                                                       update="pedidosGerador" value="Cancelar" icon="fa fa-remove"/>
+                            </p:column>  
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
 
-                        </b:container>
-                    </b:column>
+                <p:tabView prependId="false" rendered="#{controladorLogado.recicladorLogado != null}" style="margin-left: 5%; margin-top: 5%;">
+                    <p:tab title="DADOS GERAIS">
+                        <p:panel style="width: 100%;">
+                            <p:panelGrid columns="2" style="width: 100%;">
+                                <p:outputLabel value="EMAIL" style="width: 100%;"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.email}" />
+                                <p:outputLabel value="CNPJ"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.cnpj}" />
+                                <p:outputLabel value="TELEFONE"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.telefone}" /> 
+                                <p:outputLabel value="LOGRADOURO"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.logradouro}" />
+                                <p:outputLabel value="CEP"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.cep}" />
+                                <p:outputLabel value="CIDADE"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.cidade}" />
+                                <p:outputLabel value="UF"/>
+                                <p:inputText readonly="true"  value="#{controladorLogado.recicladorLogado.endereco.uf}" />
+                                <p:outputLabel value="BAIRRO"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.bairro}" />
+                            </p:panelGrid>
+                        </p:panel>
+                    </p:tab>
 
-                    <b:column span="9" >
-                        <h:panelGrid columns="4" rendered="#{controladorLogado.geradorLogado != null}" >
-                            <b:container>
-                                <b:panel collapsible="false" title="Dados Gerais: #{controladorLogado.geradorLogado.razaoSocial}">                       
-                                    <b:inputText readonly="true" label="Seu E-mail:" value="#{controladorLogado.geradorLogado.email}" col-sm="4"/>
-                                    <b:inputText readonly="true" label="Seu CNPJ:" value="#{controladorLogado.geradorLogado.cnpj}" col-sm="4"/>
-                                    <b:inputText readonly="true" label="Seu Telefone:" value="#{controladorLogado.geradorLogado.telefone}" col-sm="4"/>     
-                                </b:panel>
-                                <b:panel collapsible="false" title="SEU ENDEREÇO:">
-                                    <b:inputText readonly="true" label="Logradouro:" value="#{controladorLogado.geradorLogado.endereco.logradouro}" col-sm="3"/>
-                                    <b:inputText readonly="true" label="CEP:" value="#{controladorLogado.geradorLogado.endereco.cep}" col-sm="2"/>
-                                    <b:inputText readonly="true" label="Cidade:" value="#{controladorLogado.geradorLogado.endereco.cidade}" col-sm="3"/>
-                                    <b:inputText readonly="true" label="UF:" value="#{controladorLogado.geradorLogado.endereco.uf}" col-sm="1"/>
-                                    <b:inputText readonly="true" label="Bairro:" value="#{controladorLogado.geradorLogado.endereco.bairro}" col-sm="3"/>
-                                </b:panel>
+                    <p:tab title="NEGOCIAÇÕES">
 
-                                <b:panel collapsible="false" title="SEU ESTOQUE:">
-                                    <b:dataTable var="estoque" value="#{controladorLogado.geradorLogado.estoques}"
-                                                 customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                                 responsive="true">
-                                        <b:dataTableColumn label="Nome do Material" value="#{estoque.estoque.material.nome}" style="width: 80px;"/>
-                                        <b:dataTableColumn label="Quantidade de Material" value="#{estoque.estoque.quantidadeMaterial} toneladas" 
-                                                           orderBy="#{estoque.estoque.quantidadeMaterial}" style="width: 25px;"/>
-                                        <b:dataTableColumn label="ADICIONAR QUANTIDADE" style="width: 30px; text-align: center">
-                                            <b:button look="info" value="EDITAR" col-lg="12" onclick="$('.teste').modal()" onmousemove="#{controladorGerador.setarEstoqueGerador(estoque)}" />
-                                               
-                                        </b:dataTableColumn>
-                                        <b:dataTableColumn label="VENDER" style="width: 30px; text-align: center">
-                                            <b:commandButton look="success" value="VENDER" col-lg="12" actionListener="#{controladorGerador.venderEstoqueGerador(estoque)}" 
-                                                             update=":formVender"/>
-                                              
-                                        </b:dataTableColumn>
-                                    </b:dataTable>
-                                    <f:facet name="footer">
-                                        <b:button look="success" value="Adicionar novo material..."   onclick="$('.modalPseudoClass2').modal()" />                                                                        
-                                    </f:facet>
-                                </b:panel>
-                                
-                                <b:modal id="modalNovoEstoque" styleClass="modalPseudoClass2" title="Adicionar Novo Estoque - #{controladorLogado.geradorLogado.razaoSocial}" closable="false"
-                                         close-on-escape="false" backdrop="false">
-                                    <b:panel>
-                                        <h:form>
-                                            <h:outputLabel value="Lista de Materiais Disponíveis" />
-                                            <b:selectOneMenu value="#{controladorGerador.materialEscolhido}">
-                                                <f:selectItems var="material" value="#{controladorLogado.geradorLogado.listaDeMaterialQuePodeAdicionar()}" itemLabel="#{material.nome}" itemValue="#{material}"/>
-                                            </b:selectOneMenu>
-                                            <b:inputText label="Quantidade do Material (TONELADAS)" value="#{controladorGerador.quantidadeDoMaterialEscolhido}" mask="numeric"/>
-                                            <b:commandButton value="Adicionar no Estoque" look="success" style="margin-right: 5px;" action="#{controladorGerador.adicionarNoEstoque(controladorLogado.geradorLogado)}"/>
-                                            <b:button value="Fechar Janela" look="warning" dismiss="modal" />
-                                        </h:form>
-                                    </b:panel>
-                                </b:modal>
-                                
-                                <b:modal id="editarQuantidade" styleClass="teste" title="Editar Quantidade do Estoque - #{controladorGerador.estoque}" closable="false"
-                                         close-on-escape="false" backdrop="false" >
-                                    <b:panel>
-                                        <h:form>
-                                            <h:outputLabel value="Digite a quantidade que deseja incluir nesse Estoque de Material" />
-                                            <b:inputText value="#{controladorGerador.quantidadeMais}" />
-                                            <b:commandButton value="Adicionar" action="#{controladorGerador.mudarQuantidadeTotal()}" look="success" style="margin-right: 4px;"/>
-                                            <b:commandButton value="Cancelar" action="#{controladorGerador.cancelar()}" look="warning"/>
-                                        </h:form>
-                                    </b:panel>
-                                </b:modal>
-                                                                                        
-                            </b:container>
-                        </h:panelGrid>                 
-                        <h:panelGrid columns="4" rendered="#{controladorLogado.recicladorLogado != null}">
-                            <b:container>
-                                <b:panel collapsible="false" title="Dados Gerais: #{controladorLogado.recicladorLogado.razaoSocial}">                       
-                                    <b:inputText readonly="true" label="Seu E-mail:" value="#{controladorLogado.recicladorLogado.email}" col-sm="4"/>
-                                    <b:inputText readonly="true" label="Seu CNPJ:" value="#{controladorLogado.recicladorLogado.cnpj}" col-sm="4"/>
-                                    <b:inputText readonly="true" label="Seu Telefone:" value="#{controladorLogado.recicladorLogado.telefone}" col-sm="4"/>     
-                                </b:panel>
-                                <b:panel collapsible="false" title="SEU ENDEREÇO:">
-                                    <b:inputText readonly="true" label="Logradouro:" value="#{controladorLogado.recicladorLogado.endereco.logradouro}" col-sm="3"/>
-                                    <b:inputText readonly="true" label="CEP:" value="#{controladorLogado.recicladorLogado.endereco.cep}" col-sm="2"/>
-                                    <b:inputText readonly="true" label="Cidade:" value="#{controladorLogado.recicladorLogado.endereco.cidade}" col-sm="3"/>
-                                    <b:inputText readonly="true" label="UF:" value="#{controladorLogado.recicladorLogado.endereco.uf}" col-sm="1"/>
-                                    <b:inputText readonly="true" label="Bairro:" value="#{controladorLogado.recicladorLogado.endereco.bairro}" col-sm="3"/>
-                                </b:panel>
-            
-                            </b:container>
-                        </h:panelGrid>
-                        
-                        <h:panelGrid columns="4" rendered="#{controladorLogado.transportadorLogado != null}">
-                            <b:container>
-                                <b:panel collapsible="false" title="Dados Gerais: #{controladorLogado.transportadorLogado.razaoSocial}">                       
-                                    <b:inputText readonly="true" label="Seu E-mail:" value="#{controladorLogado.transportadorLogado.email}" col-sm="4"/>
-                                    <b:inputText readonly="true" label="Seu CNPJ:" value="#{controladorLogado.transportadorLogado.cnpj}" col-sm="4"/>
-                                    <b:inputText readonly="true" label="Seu Telefone:" value="#{controladorLogado.transportadorLogado.telefone}" col-sm="4"/>     
-                                </b:panel>
-                                <b:panel collapsible="false" title="SEU ENDEREÇO:">
-                                    <b:inputText readonly="true" label="Logradouro:" value="#{controladorLogado.transportadorLogado.endereco.logradouro}" col-sm="3"/>
-                                    <b:inputText readonly="true" label="CEP:" value="#{controladorLogado.transportadorLogado.endereco.cep}" col-sm="2"/>
-                                    <b:inputText readonly="true" label="Cidade:" value="#{controladorLogado.transportadorLogado.endereco.cidade}" col-sm="3"/>
-                                    <b:inputText readonly="true" label="UF:" value="#{controladorLogado.transportadorLogado.endereco.uf}" col-sm="1"/>
-                                    <b:inputText readonly="true" label="Bairro:" value="#{controladorLogado.transportadorLogado.endereco.bairro}" col-sm="3"/>
-                                </b:panel>
-            
-                            </b:container>
-                        </h:panelGrid>
-                    </b:column>
-                </b:row>
+                        <p:dataTable var="negociacao" value="#{controladorLogado.recicladorLogado.negociacoes}" style="width: 100%;"
+                                     emptyMessage="Nenhuma negociação encontrada!">
+                            <p:column headerText="MATERIAL"> 
+                                <p:outputLabel value="#{negociacao.pedido.item.material.nome}" />
+                            </p:column>
+                            <p:column headerText="GERADOR">
+                                <p:outputLabel value="#{negociacao.gerador.razaoSocial}" />
+                            </p:column>
+                            <p:column headerText="VALOR TOTAL">
+                                <p:outputLabel value="R$ #{negociacao.pedido.valorTotal}" />
+                            </p:column>
+                            <p:column headerText="CHAT">
+                                <p:commandButton value="Ir para o Chat" action="chatNegociacao?faces-redirect=true"
+                                                 actionListener="#{controladorNegociacao.listenerIrNegociar(negociacao)}" />
+                            </p:column>
+                        </p:dataTable>
+
+                    </p:tab>
+                </p:tabView>
+
+                <p:tabView prependId="false" rendered="#{controladorLogado.transportadorLogado != null}" style="margin-left: 5%; margin-top: 5%;">
+                    <p:tab title="DADOS GERAIS">
+                        <p:panel style="width: 100%;">
+                            <p:panelGrid columns="2" style="width: 100%;">
+                                <p:outputLabel value="CNPJ"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.cnpj}" />
+                                <p:outputLabel value="TELEFONE"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.telefone}" /> 
+                                <p:outputLabel value="LOGRADOURO"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.logradouro}" />
+                                <p:outputLabel value="CEP"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.cep}" />
+                                <p:outputLabel value="CIDADE"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.cidade}" />
+                                <p:outputLabel value="UF"/>
+                                <p:inputText readonly="true"  value="#{controladorLogado.transportadorLogado.endereco.uf}" />
+                                <p:outputLabel value="BAIRRO"/>
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.bairro}" />
+                            </p:panelGrid>
+                        </p:panel>
+                    </p:tab>
+
+                </p:tabView>
             </h:form>
-            
-            <h:form id="formVender">
-                <b:panel id="panelVender" title="#{controladorGerador.estoque.estoque.material.nome}" rendered="#{controladorGerador.vender == true}">
-                                        
-                                            <h:outputLabel value="Digite o valor que deseja vender (R$ / KG)" />
-                                            <b:inputText value="#{controladorGerador.valorPorKG}" update="@this" process="@this" />
-                                            <h:outputLabel value="Digite a quantidade que deseja vender (TOTAL : #{controladorGerador.estoque.estoque.quantidadeMaterial})" />
-                                            <b:inputText value="#{controladorGerador.quantidadeTotal}" update="@this" process="@this" />
-                                            <b:commandButton value="Salvar" action="#{controladorGerador.listarVenda(controladorLogado.geradorLogado)}"
-                                              update="formVender" immediate="true" look="success" style="margin-right: 4px;"/>
-                                            <b:commandButton value="Cancelar" action="#{controladorGerador.cancelarVenda()}" look="warning"/>
-                                       
-                        </b:panel>
-              </h:form>
-            
-            <h:form id="negociacoes" style="width: 30%; height: 30%; text-align: center;">
-                <b:panel title="Suas Negociações" id="panelNegociacoes" rendered="#{controladorLogado.recicladorLogado != null}" collapsible="false">
-                    <b:dataTable var="negociacao" value="#{controladorLogado.recicladorLogado.negociacoes}">
-                       <b:dataTableColumn label="Nome do Material" value="#{negociacao.pedido.itens.get(0).material.nome}"/>
-                       <b:dataTableColumn label="Gerador" value="#{negociacao.pedido.gerador.razaoSocial}"/>
-                       <b:dataTableColumn label="Total do Pedido" value="R$ #{negociacao.pedido.valorTotal}"/>
-                       <b:dataTableColumn label="Peso em KG" value="R$ #{negociacao.pedido.valorTotal}"/>
-                       <b:dataTableColumn label="Mandar MSG">
-                           <b:commandButton value="Ir para o Chat" look="info" action="chatNegociacao?faces-redirect=true"
-                                            actionListener="#{controladorNegociacao.listenerIrNegociar(negociacao)}" />
-                       </b:dataTableColumn>
-                    </b:dataTable>
-                </b:panel>
-            </h:form>
-            
-            <h:form id="negociacoes2" style="width: 30%; height: 30%; text-align: center;">
-                <b:panel title="Suas Negociações" id="panelNegociacoes" rendered="#{controladorLogado.geradorLogado != null}" collapsible="false">
-                    <b:dataTable var="negociacao" value="#{controladorLogado.geradorLogado.negociacoes}">
-                       <b:dataTableColumn label="Nome do Material" value="#{negociacao.pedido.itens.get(0).material.nome}"/>
-                       <b:dataTableColumn label="Reciclador" value="#{negociacao.reciclador.razaoSocial}"/>
-                       <b:dataTableColumn label="Total do Pedido" value="R$ #{negociacao.pedido.valorTotal}"/>
-                       <b:dataTableColumn label="Peso em KG" value="R$ #{negociacao.pedido.valorTotal}"/>
-                       <b:dataTableColumn label="Mandar MSG">
-                           <b:commandButton value="Ir para o Chat" look="info" action="chatNegociacao?faces-redirect=true"
-                                            actionListener="#{controladorNegociacao.listenerIrNegociar(negociacao)}" />
-                       </b:dataTableColumn>
-                    </b:dataTable>
-                </b:panel>
-            </h:form>
-        </b:jumbotron>
-        <h:form prependId="false">
-       <p:menu>
-           <p:submenu label="DADOS GERAIS">
-            <p:menuitem value="Ver Dados" action="#{menuView.save}"  />
-        </p:submenu>
-        <p:submenu label="Non-Ajax">
-            <p:menuitem value="Delete" action="#{menuView.delete}"  ajax="false" icon="pi pi-times"/>
-        </p:submenu>
-        <p:submenu label="Navigations">
-            <p:menuitem value="External" url="http://www.primefaces.org" icon="pi pi-home"/>
-            <p:menuitem value="Internal" icon="pi pi-star"/>
-        </p:submenu>
-    </p:menu>
+        
+        <h:form id="formInserirNovoEstoque" prependId="false">
+            <p:dialog id="modalNovoEstoque" widgetVar="varNovoEstoqueModal" closable="false" closeOnEscape="false" dynamic="true" responsive="true">
+                <p:panel header="Inserir novo material em seu Estoque">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="ESCOLHA UM MATERIAL:" />
+                        <p:selectOneMenu value="#{controladorGerador.materialEscolhido}" style="width: 100%;" required="true" converter="materialConverter">
+                            <p:ajax event="change" process="@this" />
+                            <f:selectItem itemLabel="-- SELECIONE -- " itemValue="#{null}" />
+                            <f:selectItems var="mat" itemValue="#{mat}" value="#{controladorLogado.geradorLogado.listaDeMaterialQuePodeAdicionar()}"
+                                           itemLabel="#{mat.nome}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="QUANTIDADE QUE DESEJA ADICIONAR EM ESTOQUE INICIALMENTE (KG) :" />
+                        <p:inputNumber value="#{controladorGerador.quantidadeDoMaterialEscolhido}" required="true">
+                            <p:ajax event="change" process="@this" />
+                        </p:inputNumber>
+                    </h:panelGrid>
+                </p:panel>
+                <f:facet name="footer">
+                    <p:commandButton value="Adicionar" action="#{controladorGerador.adicionarNoEstoque(controladorLogado.geradorLogado)}" update="tabViewGerador, messages" immediate="true"/>
+                    <p:commandButton value="Cancelar" action="#{controladorGerador.fecharModalNovoEstoque()}" immediate="true"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+
+ <h:form id="formVender" prependId="false">
+            <p:dialog id="modalVender" widgetVar="varVender" closable="false" closeOnEscape="false" dynamic="true" responsive="true">
+                <p:panel header="Vender #{controladorGerador.estoque.estoque.material.nome} - (PESO TOTAL: #{controladorGerador.estoque.estoque.quantidadeMaterial} KG)">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Valor por KG (R$):" />
+                        <p:inputNumber value="#{controladorGerador.valorPorKG}">
+                             <p:ajax event="change" process="@this" />
+                        </p:inputNumber>
+                        <p:outputLabel value="Quantidade que Deseja Vender (MÁXIMO: #{controladorGerador.estoque.estoque.quantidadeMaterial}) :" />
+                        <p:inputNumber value="#{controladorGerador.quantidadeTotal}" required="true">
+                            <p:ajax event="change" process="@this" />
+                        </p:inputNumber>
+                    </h:panelGrid>
+                    <h5> VALORES PARA #{controladorGerador.estoque.estoque.material.nome} </h5>
+                    <h6> Valor mínimo/KG : #{controladorGerador.estoque.estoque.material.precoMin} </h6>
+                    <h6> Valor máximo/KG: #{controladorGerador.estoque.estoque.material.precoMax} </h6>
+                </p:panel>
+                <f:facet name="footer">
+                    <p:commandButton value="Vender" action="#{controladorGerador.listarVenda(controladorLogado.geradorLogado)}" update="tabViewGerador, messages" immediate="true"/>
+                    <p:commandButton value="Cancelar" action="#{controladorGerador.cancelarVenda()}" immediate="true"/>
+                </f:facet>
+            </p:dialog>
         </h:form>
     </h:body>
 </html>

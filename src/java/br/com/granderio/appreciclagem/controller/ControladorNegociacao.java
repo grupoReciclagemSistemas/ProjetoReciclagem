@@ -9,8 +9,10 @@ package br.com.granderio.appreciclagem.controller;
 import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.model.Chat;
 import br.com.granderio.appreciclagem.model.ChatAplicacao;
+import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Negociacao;
 import br.com.granderio.appreciclagem.model.PessoaJuridica;
+import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.util.UtilMensagens;
 import java.util.Date;
 import javax.annotation.ManagedBean;
@@ -31,13 +33,16 @@ public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
     
     private String novaMensagem;
     
+    private ChatAplicacao chatAplicacaoSelecionado;
+    
     public ControladorNegociacao(){
         super(new Negociacao() );
+        novaMensagem = null;
     }
     
-    public Negociacao updateNegociacao(){
-        DAO<Negociacao> acesso = new DAO(new Negociacao());
-        return acesso.buscarNegociacao(idNegociacao);
+    public void updateNegociacao(){
+        DAO<ChatAplicacao> acesso = new DAO(new ChatAplicacao());
+        negociacao.getChat().setChatAplicacao(acesso.buscarMensagensChat(negociacao.getChat()));
      }
     /**
      * @return the negociacao
@@ -46,24 +51,50 @@ public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
         return negociacao;
     }
     
-    public void adicionarNovaMensagem(PessoaJuridica pessoa){
-        if(novaMensagem != null){
-            if(novaMensagem.equals("")){
-                UtilMensagens.mensagemAdvertencia("Não pode enviar uma mensagem em branca!");
+    public void adicionarNovaMensagemGerador(Gerador pessoa){
+        if(novaMensagem == null){
+                UtilMensagens.mensagemError("Mensagem nula");
+                novaMensagem = null;
                 return;
             }
+        if(novaMensagem != null && novaMensagem.equals("")){
+            UtilMensagens.mensagemError("Mensagem nula");
+            novaMensagem = null;
+                return;
+        }
             ChatAplicacao novo = new ChatAplicacao();
             novo.setDataHora(new Date());
             novo.setChat(negociacao.getChat());
             novo.setMensagem(novaMensagem);
-            novo.setPessoa(pessoa);
+            novo.setGerador(pessoa);
             negociacao.getChat().adicionarChatAplica(novo);
-            DAO<Chat> dao = new DAO(negociacao.getChat());
-            dao.alterar();
-            novaMensagem = "";
+            DAO<ChatAplicacao> dao = new DAO(novo);
+            dao.inserir();
+            novaMensagem = null;
         }
-    }
-
+    
+     public void adicionarNovaMensagemReciclador(Reciclador pessoa){
+        if(novaMensagem == null){
+                UtilMensagens.mensagemError("Mensagem nula");
+                novaMensagem = null;
+                return;
+            }
+        if(novaMensagem != null && novaMensagem.equals("")){
+            UtilMensagens.mensagemError("Mensagem nula");
+            novaMensagem = null;
+                return;
+        }
+            ChatAplicacao novo = new ChatAplicacao();
+            novo.setDataHora(new Date());
+            novo.setChat(negociacao.getChat());
+            novo.setMensagem(novaMensagem);
+            novo.setReciclador(pessoa);
+            negociacao.getChat().adicionarChatAplica(novo);
+            DAO<ChatAplicacao> dao = new DAO(novo);
+            dao.inserir();
+            novaMensagem = null;
+        }
+    
     /**
      * @param negociacao the negociacao to set
      */
@@ -102,6 +133,20 @@ public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
      */
     public void setIdNegociacao(long idNegociacao) {
         this.idNegociacao = idNegociacao;
+    }
+
+    /**
+     * @return the chatAplicacaoSelecionado
+     */
+    public ChatAplicacao getChatAplicacaoSelecionado() {
+        return chatAplicacaoSelecionado;
+    }
+
+    /**
+     * @param chatAplicacaoSelecionado the chatAplicacaoSelecionado to set
+     */
+    public void setChatAplicacaoSelecionado(ChatAplicacao chatAplicacaoSelecionado) {
+        this.chatAplicacaoSelecionado = chatAplicacaoSelecionado;
     }
     
     

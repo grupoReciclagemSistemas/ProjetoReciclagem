@@ -67,5 +67,6 @@ Contributor(s):
     <mapping class="br.com.granderio.appreciclagem.model.Negociacao"/>
     <mapping class="br.com.granderio.appreciclagem.model.Chat"/>
     <mapping class="br.com.granderio.appreciclagem.model.ChatAplicacao"/>
+    <mapping class="br.com.granderio.appreciclagem.model.Administrador"/>
   </session-factory>
 </hibernate-configuration>

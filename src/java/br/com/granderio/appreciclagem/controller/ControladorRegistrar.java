@@ -5,15 +5,22 @@
  */
 package br.com.granderio.appreciclagem.controller;
 
+import br.com.correios.bsb.sigep.master.bean.cliente.SQLException_Exception;
+import br.com.correios.bsb.sigep.master.bean.cliente.SigepClienteException;
 import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.dao.DAOGerador;
 import br.com.granderio.appreciclagem.dao.DAOReciclador;
 import br.com.granderio.appreciclagem.dao.DAOTransportador;
+import br.com.granderio.appreciclagem.model.Endereco;
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
+import br.com.granderio.appreciclagem.util.Consulta;
+import br.com.granderio.appreciclagem.util.UtilMensagens;
 import br.com.granderio.appreciclagem.util.UtilSegundo;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -50,11 +57,47 @@ public  class ControladorRegistrar implements Serializable {
         novoGerador = new Gerador();
         novoReciclador = new Reciclador();
         novoTransportador = new Transportador();
-        
+        tipoDePessoa = 0;
     }
     
     public void registrarTipoPessoa(int valor){
         this.setTipoDePessoa(valor);    
+    }
+    
+    public void listenerRecicladorCEP(){  
+        try {
+            String cep = novoReciclador.getEndereco().getCep();
+            Endereco retornoDoWebService = Consulta.consultarCEP(cep);
+            novoReciclador.setEndereco(retornoDoWebService);
+        } catch (SQLException_Exception ex) {
+            Logger.getLogger(ControladorRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SigepClienteException ex) {
+            Logger.getLogger(ControladorRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void listenerGeradorCEP(){  
+        try {
+            String cep = novoGerador.getEndereco().getCep();
+            Endereco retornoDoWebService = Consulta.consultarCEP(cep);
+            novoGerador.setEndereco(retornoDoWebService);
+        } catch (SQLException_Exception ex) {
+            Logger.getLogger(ControladorRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SigepClienteException ex) {
+            Logger.getLogger(ControladorRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void listenerTransportadorCEP(){  
+        try {
+            String cep = novoTransportador.getEndereco().getCep();
+            Endereco retornoDoWebService = Consulta.consultarCEP(cep);
+            novoTransportador.setEndereco(retornoDoWebService);
+        } catch (SQLException_Exception ex) {
+            Logger.getLogger(ControladorRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SigepClienteException ex) {
+            Logger.getLogger(ControladorRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 
@@ -65,29 +108,16 @@ public  class ControladorRegistrar implements Serializable {
        String email = novoTransportador.getEmail();
        String cnpj = novoTransportador.getCnpj();
        if( acesso.verificarEmail(email) || acesso.verificarCNPJ(cnpj) ){
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Transportador já existe no Sistema!", "Este Reciclador já existe no Sistema!");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            try{
-                Thread.sleep(5000);
-            }catch(InterruptedException ex){
-                System.out.println("Error na Thread:" + ex.getMessage());
-            }
-            return "index";
+            UtilMensagens.mensagemError("Já existe o Transportador no Sistema!");   
+            return "";
         }  
        acesso.inserir();
        novoTransportador = new Transportador();
        tipoDePessoa = 0;
-       FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Transportador cadastrado com Sucesso!", "");
-       FacesContext.getCurrentInstance().addMessage(null, msg);
-       try{
-                Thread.sleep(5000);
-            }catch(InterruptedException ex){
-                System.out.println("Error na Thread:" + ex.getMessage());
-            }
-       return "login";
+        UtilMensagens.mensagemInfo("Transportador cadastrado com sucesso!");
+        return "index";
     }
      
-
     public String registrarGerador(){
         DAOGerador acesso = new DAOGerador(novoGerador);
         novoGerador.getEndereco().setPessoa(novoGerador);
@@ -95,34 +125,31 @@ public  class ControladorRegistrar implements Serializable {
         String email = novoGerador.getEmail();
         String cnpj = novoGerador.getCnpj();
         if( acesso.verificarEmail(email) || acesso.verificarCNPJ(cnpj) ){
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Gerador já existe no Sistema!", "Este Reciclador já existe no Sistema!");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            return "index";
+            UtilMensagens.mensagemError("Já existe o Gerador no Sistema!");
+            return "";
         }
         acesso.inserir();
         novoGerador = new Gerador();
         tipoDePessoa = 0;
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Gerador cadastrado com Sucesso!", "");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        return "login";
+        UtilMensagens.mensagemInfo("Gerador cadastrado com sucesso!");
+        return "index";
     }
     
-    public void registrarReciclador(){
+    public String registrarReciclador(){
         DAOReciclador acesso = new DAOReciclador(novoReciclador);
         novoReciclador.getEndereco().setPessoa(novoReciclador);
         novoReciclador.setPedidosDeReciclagens(null);
         String email = novoReciclador.getEmail();
         String cnpj = novoReciclador.getCnpj();
         if( acesso.verificarEmail(email) || acesso.verificarCNPJ(cnpj) ){
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Reciclador já existe no Sistema!", "Este Reciclador já existe no Sistema!");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            return;
+            UtilMensagens.mensagemError("Já existe o Reciclador no Sistema!");
+            return "";
         }  
         acesso.inserir();
         novoReciclador = new Reciclador();
         tipoDePessoa = 0;
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reciclador cadastrado com Sucesso!", "Bem-vindo ao Sistema, já pode efetuar Login!");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        UtilMensagens.mensagemInfo("Reciclador cadastrado com sucesso!");
+        return "index";
     }
       
     public void voltar(){

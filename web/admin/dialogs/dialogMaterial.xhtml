@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Java Server Faces</title>    
+    </h:head>
+    <h:body>
+        <h:form id="formDialogMaterial" prependId="false">
+            
+            <p:dialog id="idMaterialModal" modal="true" closable="false" widgetVar="modalMaterial" closeOnEscape="false" 
+                      responsive="true" header="Material - Informações" draggable="false" hideEffect="fade"
+                      showEffect="fade" style="width: 90%;" onHide="#{controladorMaterial.fecharPopUp()}">
+                    <f:facet name="footer">
+                        <p:commandButton icon="fa fa-close" value="Fechar" action="#{controladorMaterial.fecharPopUp()}" />
+                    </f:facet>
+                
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Nome do Material" />
+                    <p:inputText disabled="true" value="#{controladorMaterial.materialSelecionado.nome}" />
+                    <p:outputLabel value="Descrição" />
+                    <p:inputText disabled="true" value="#{controladorMaterial.materialSelecionado.descricao}" />
+                    <p:outputLabel value="Preço Mínimo (Centavos)" />
+                    <p:inputText disabled="true" value="R$ #{controladorMaterial.materialSelecionado.precoMin}" />
+                    <p:outputLabel value="Preço Máximo (Centavos)" />
+                    <p:inputText disabled="true" value="R$ #{controladorMaterial.materialSelecionado.precoMax}" />
+                </h:panelGrid>
+                
+                <p:panel header="Lista de Legislações" style="width: 100%;">
+                    <p:dataList value="#{controladorMaterial.materialSelecionado.listaMatLegi}" var="matLegi" 
+                                emptyMessage="Não há nenhuma Legislação vinculada a esse Material !!!">
+                        <h:panelGrid columns="2" bgcolor="green">
+                            <p:outputLabel value="Legislação Código" />
+                            <p:inputText disabled="true" value="#{matLegi.legislacao.codigo}" />
+                            <p:outputLabel value="Descrição Resumo da Legislação" />
+                            <p:inputText disabled="true" value="#{matLegi.legislacao.resumoDescricao}" />
+                        </h:panelGrid>
+                        
+                        <f:facet name="footer">
+                            <p:commandButton icon="fa fa-plus-circle" value="Adicionar" style="text-align: right;" />
+                        </f:facet>
+                    </p:dataList>
+                </p:panel>
+            </p:dialog>
+            
+        </h:form>
+    </h:body>
+</html>

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -352,6 +353,47 @@ public class DAO<T> {
         }
         return null;
     }
+    
+    public Material buscarMaterial(long id){
+      List<Material> lista = new ArrayList();
+        try {
+            s.getTransaction().begin();
+            Criteria criteria = s.createCriteria(Material.class);
+            criteria.add(Restrictions.eq("idMaterial", id));
+            lista = criteria.list();
+        } catch (HibernateException ex) {
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros (lista): " + mensagem);
+            s.getTransaction().rollback();
+        } finally {
+            s.getTransaction().commit();
+            s.flush();
+        }
+        if(lista.size() >0){
+            return lista.get(0);
+        }
+        return null;
+    }
+    
+     public List<ChatAplicacao> buscarMensagensChat(Chat chat){
+      List<ChatAplicacao> lista = null;
+        try {
+            s.getTransaction().begin();
+            Criteria criteria = s.createCriteria(ChatAplicacao.class);
+            criteria.add(Restrictions.eq("chat", chat));
+            criteria.addOrder(Order.desc("idChatAplicacao"));
+            lista = criteria.list();
+        } catch (HibernateException ex) {
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros (lista): " + mensagem);
+            s.getTransaction().rollback();
+        } finally {
+            s.getTransaction().commit();
+            s.flush();
+        }  
+        return lista;
+    }
+    
     public Negociacao buscarNegociacao(long id){
         List<Negociacao> lista = new ArrayList();
         try {
@@ -369,6 +411,22 @@ public class DAO<T> {
         }
         if(lista.size() >0){
             return lista.get(0);
+        }
+        return null;
+    }
+    
+    public List<?> listByNamedQuery(String name){
+        Query query = s.getNamedQuery(name);
+         try {
+            s.getTransaction().begin();
+            
+        } catch (HibernateException ex) {
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros (lista): " + mensagem);
+            s.getTransaction().rollback();
+        } finally {
+            s.getTransaction().commit();
+            s.flush();
         }
         return null;
     }

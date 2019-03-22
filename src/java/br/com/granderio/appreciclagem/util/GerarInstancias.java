@@ -1,6 +1,9 @@
 package br.com.granderio.appreciclagem.util;
 
+import br.com.correios.bsb.sigep.master.bean.cliente.SQLException_Exception;
+import br.com.correios.bsb.sigep.master.bean.cliente.SigepClienteException;
 import br.com.granderio.appreciclagem.dao.DAO;
+import br.com.granderio.appreciclagem.model.Administrador;
 import br.com.granderio.appreciclagem.model.Endereco;
 import br.com.granderio.appreciclagem.model.Estoque;
 import br.com.granderio.appreciclagem.model.EstoqueGerador;
@@ -8,12 +11,14 @@ import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GerarInstancias {
     
     public static void main(String[] args) throws InterruptedException{
-            
-//            Gerador g1 = new Gerador();
+      
+            //            Gerador g1 = new Gerador();
 //            Endereco ed = new Endereco();
 //            Material m1 = new Material();
 //            Estoque es1 = new Estoque();
@@ -53,7 +58,7 @@ public class GerarInstancias {
 //            es1.setMaterial(m1);
 //            es1.setQuantidadeMaterial(3.65);
 //            es1.setEstoqueGerador(eg1);
-//      
+//
 //            //Editando EstoqueGerador, que contém 1 estoque e o Gerador 
 //            eg1.setEstoque(es1);
 //            eg1.setGerador(g1);
@@ -63,8 +68,21 @@ public class GerarInstancias {
 //            
 //            DAO<Gerador> acesso = new DAO(g1);
 //            acesso.inserir();
-            
-            
+
+//System.out.println( Consulta.consultarCEP("25515125"));
+//        } catch (SQLException_Exception ex) {
+//            Logger.getLogger(GerarInstancias.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (SigepClienteException ex) {
+//            Logger.getLogger(GerarInstancias.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
+            Administrador adm = new Administrador();
+            adm.setEmail("rafaelnunes.inf@gmail.com");
+            adm.setLogin("admin");
+            adm.setSenha("1234");
+            adm.setNome("Administrador Geral");
+            DAO<Administrador> dao = new DAO(adm);
+            dao.inserir();
     }
    
 }

@@ -16,46 +16,48 @@ and open the template in the editor.
         <title>Materiais a Venda</title>
     </h:head>
 
-    <h:body style="width: 100%; height: 100%;">
+    <h:body>
 
         <ui:include src="/WEB-INF/menu.xhtml" />
 
-        <h:form prependId="false" style="margin-top: 4%;">
-            <p:tabView prependId="false">
-                <p:tab title="Materiais a Venda">
-            <p:dataTable id="dataListVendaMateriais" var="pedido" value="#{controladorPedidoReciclagem.listagemVendas()}">               
+        <h:form prependId="false" style="margin-top: 5%;">
+        <h:panelGrid columns="2" style="width: 100%;">
+            <p:panel header="Filtro" style="margin-left: 4%; width: 150%;" rendered="#{controladorLogado.recicladorLogado != null}">
+                <h:panelGrid columns="1">
+                <p:outputLabel value="MATERIAL:" />
+                <p:selectOneMenu value="#{controladorPedidoReciclagem.materialFiltro}" converter="materialConverter">
+                    <p:ajax event="change" />
+                    <f:selectItem itemLabel="-- SELECIONE -- " itemValue="#{null}"/>
+                    <f:selectItems value="#{controladorMaterial.lista()}" itemValue="#{mat}" var="mat" itemLabel="#{mat.nome}" />
+                </p:selectOneMenu>
+                </h:panelGrid>               
+                <p:commandButton icon="fa fa-search" style="width: 25%;" immediate="true"
+                                    action="#{controladorPedidoReciclagem.updateList(controladorLogado.recicladorLogado.endereco.cidade)}" update="dataListVendaMateriais" />
+                   
+                    <p:commandButton icon="fa fa-clear"  style="width: 25%;" />
+            </p:panel>
+         
+            <p:dataTable id="dataListVendaMateriais" var="pedido" value="#{controladorPedidoReciclagem.pedidosVendendo}"
+                         style="margin-left: 15%; width: 75%;" emptyMessage="Nenhum material vendendo!" >               
                 <p:column headerText="NOME DO MATERIAL">
-                    <h:outputText value="#{pedido.itens.get(0).material.nome}" style="font-weight: bold"/>
+                    <h:outputText value="#{pedido.item.material.nome}" />
                 </p:column>
 
                 <p:column headerText="VALOR DO PEDIDO">
-                    <h:outputText value="R$ #{pedido.valorTotal}" style="font-weight: bold"/>
+                    <h:outputText value="R$ #{pedido.valorTotal}" />
                 </p:column>
 
-                <p:column headerText="PESO TOTAL (TONELADAS)">
-                    <h:outputText value="#{pedido.itens.get(0).quantidade}" style="font-weight: bold"/>
+                <p:column headerText="PESO TOTAL (KG)">
+                    <h:outputText value="#{pedido.item.quantidade}" />
                 </p:column>
 
-                <p:column headerText="VENDEDOR">
-                    <h:outputText value="#{pedido.gerador.razaoSocial}" style="font-weight: bold"/>
+                <p:column headerText="CIDADE DO GERADOR">
+                    <h:outputText value="#{pedido.gerador.endereco.cidade}" />
                 </p:column>
-                <p:column headerText="NEGOCIAR COM GERADOR" rendered="#{controladorLogado.recicladorLogado != null}">
-                          <p:commandButton value="Negociar" action="#{controladorReciclador.entrarEmNegociacao(pedido, controladorLogado.recicladorLogado)}" />  
-                </p:column>
+               
             </p:dataTable>
-                </p:tab>
-            </p:tabView>
-        </h:form>
-
-        <b:jumbotron id="jumbotron-rodape-inferior">
-            <footer>
-                <center> 
-                    <h:form style="color: white;">
-                        <h:outputLabel value="@ Copywrith 2014" style="margin-right: 4px;"/>            
-                        <h:outputLabel value="Todos os direitos reservados"/>          
-                    </h:form>
-                </center>
-            </footer>
-        </b:jumbotron>
+            
+        </h:panelGrid>
+  </h:form>
     </h:body>
 </html>
