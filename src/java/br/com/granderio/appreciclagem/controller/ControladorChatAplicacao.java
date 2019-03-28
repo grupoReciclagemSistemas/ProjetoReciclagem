@@ -7,17 +7,15 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.model.ChatAplicacao;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @programador Feito por Rafael Nunes - rafaelnunes.inf@gmail.com
  */
-@ManagedBean
+@ManagedBean(name="controladorChatAplicacao")
 @SessionScoped
-@Named(value="controladorChatAplicacao")
 public class ControladorChatAplicacao extends ControladorPrincipal<ChatAplicacao>{
     
     public ControladorChatAplicacao(){

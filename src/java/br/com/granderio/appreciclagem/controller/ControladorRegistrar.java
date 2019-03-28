@@ -7,7 +7,6 @@ package br.com.granderio.appreciclagem.controller;
 
 import br.com.correios.bsb.sigep.master.bean.cliente.SQLException_Exception;
 import br.com.correios.bsb.sigep.master.bean.cliente.SigepClienteException;
-import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.dao.DAOGerador;
 import br.com.granderio.appreciclagem.dao.DAOReciclador;
 import br.com.granderio.appreciclagem.dao.DAOTransportador;
@@ -17,23 +16,19 @@ import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
 import br.com.granderio.appreciclagem.util.Consulta;
 import br.com.granderio.appreciclagem.util.UtilMensagens;
-import br.com.granderio.appreciclagem.util.UtilSegundo;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
 
 /**
  *
  * @author Rafael
  */
-@ManagedBean
+@ManagedBean(name="controladorRegistrar")
 @SessionScoped
-@Named(value="controladorRegistrar")
 public  class ControladorRegistrar implements Serializable {
     
     // 1 --> Reciclador

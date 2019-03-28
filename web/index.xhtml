@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"   
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core" >
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <title>Reclick - Inicio</title>
@@ -46,7 +47,7 @@
 
                         <div id="primeira-thumb">
                             <div class="imagem-primeira-thumb">
-                                <img src="/PegarABUILDDD/resources/img/imagem-primeira-thumb.png"></img>
+                                <img src="resources/img/imagem-primeira-thumb.png"></img>
                             </div>
                             <div class="texto-primeira-thumb">
                                 <p class="card-text">Faça uma busca dos materiais.</p>                                
@@ -56,7 +57,7 @@
                     <b:column id="coluna-dois" span="3">
                         <div id="segunda-thumb">
                             <div class="imagem-segunda-thumb">
-                                <img src="/PegarABUILDDD/resources/img/imagem-segunda-thumb.png"></img>
+                                <img src="resources/img/imagem-segunda-thumb.png"></img>
                             </div>
                             <div class="texto-segunda-thumb">
                                 <p class="card-text">Faça uma busca dos materiais.</p>                                
@@ -66,7 +67,7 @@
                     <b:column id="coluna-tres" span="3">
                         <div id="terceira-thumb">
                             <div class="imagem-terceira-thumb">
-                                <img src="/PegarABUILDDD/resources/img/imagem-terceira-thumb.png"></img>
+                                <img src="resources/img/imagem-terceira-thumb.png"></img>
                             </div>
                             <div class="texto-terceira-thumb">
                                 <p class="card-text">Faça uma busca dos materiais.</p>                                
@@ -81,31 +82,7 @@
 
                     <div class="segunda-linha" >
                         <b:column span="1" style="text-align: center;">.</b:column>
-                        <b:column span="5">   
-                            <h:form id="formulario-segunda-linha">             
-                                <div>
-                                    <p id="titulo-formulario"> Cotação de Preços - Rio de Janeiro </p>
-                                </div>
-                                <div>
-                                    <b:panel collapsible="false">        
-                                        <b:dataTable id="data-table-form" var="mat" value="#{controladorMaterial.lista()}"
-
-                                                     page-length="3"
-                                                     page-length-menu="3,6,9"
-                                                     responsive="true"
-                                                     select="false"
-                                                     customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
-                                                     >
-                                            <b:dataTableColumn class="coluna" label="Material" value="#{mat.nome}" />
-                                            <b:dataTableColumn class="coluna"  label="Descrição" value="#{mat.descricao}" />                
-                                            <b:dataTableColumn class="coluna"  label="Valor MIN - KG" value="R$ #{mat.precoMin}" />
-                                            <b:dataTableColumn class="coluna"  label="Valor MAX - KG" value="R$ #{mat.precoMax}" />
-                                        </b:dataTable>
-                                    </b:panel>     
-                                </div>    
-                            </h:form>
-                        </b:column>
-                        <b:column span="4" style="text-align: center;">
+                        <b:column span="4" style="text-align: center; margin-left: 3%;">
                             <p class="textos"> No segmento de materiais recicláveis, os preços variam da mesma forma que em qualquer outro setor da economia. São afetados não somente pela escassez ou abundância do produto no mercado, mas também por fatores sazonais, pela falta de valor agregado do protudot e pela forte concorrência.
                             </p>
                             <br></br>
@@ -124,11 +101,26 @@
                 <b:column span="5"> 
                     <h:form style="margin-left: 50px; text-align: left;">  
                         <h2 style="text-align: center; color: white;"> ENVIAR MENSAGEM </h2>
-                        <h:outputLabel value="EMAIL:" for="inputEnviarEmail" style="color: white;"/>
-                        <b:inputText id="inputEnviarEmail" placeholder="Digite seu Email aqui" style="color: white;" />
-                        <h:outputLabel value="MENSAGEM:" for="inputEnviarMensagem" style="color: white;"  />
-                        <b:inputTextarea id="inputEnviarMensagem" placeholder="Digite sua Mensagem aqui" style="color: #558b2f;" />               
-                        <b:commandButton style="background-color: whitesmoke; color: black; border: none;" colLg="5" value="ENVIAR MENSAGEM" />         
+                        <h:panelGrid columns="2" style="width: 100%;">
+                        <p:outputLabel value="EMAIL" for="inputEnviarEmail" style="color: white; width: 100%;"/>
+                        <p:inputText id="inputEnviarEmail" value="#{controladorEmail.remetente}" placeholder="Digite seu Email aqui" 
+                                     style="color: #558b2f; background-color: white; width: 100%;">
+                             <p:ajax event="change" />
+                        </p:inputText>
+                        
+                        <p:outputLabel value="TITULO" for="inputEnviarTitulo" style="color: white;"/>
+                        <p:inputText id="inputEnviarTitulo" value="#{controladorEmail.titulo}" placeholder="Digite o título do Email aqui" 
+                                     style="color: #558b2f; background-color: white; width: 100%;">
+                            <p:ajax event="change" />
+                        </p:inputText>
+                        
+                        <p:outputLabel value="MENSAGEM" for="inputEnviarMensagem" style="color: white;"  />
+                        <p:inputTextarea id="inputEnviarMensagem" value="#{controladorEmail.mensagem}" placeholder="Digite sua Mensagem aqui" 
+                                         style="color: #558b2f; background-color: white; width: 100%; float: left;">  
+                            <p:ajax event="change" />
+                        </p:inputTextarea>
+                        <p:commandButton value="Enviar" icon="fa fa-send" action="#{controladorEmail.enviarEmail()}" immediate="true" style="font-size: 16px;"/> 
+                        </h:panelGrid>
                     </h:form>
                 </b:column><b:column span="6"> 
                     <center> <h3 style="color: white"> PARCEIROS </h3></center>

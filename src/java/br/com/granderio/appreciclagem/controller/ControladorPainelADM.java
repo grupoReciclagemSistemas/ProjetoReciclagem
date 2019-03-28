@@ -12,17 +12,15 @@ import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
 import java.io.Serializable;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @programador Feito por Rafael Nunes - rafaelnunes.inf@gmail.com
  */
-@ManagedBean
+@ManagedBean(name="controlePainel")
 @SessionScoped
-@Named(value="controlePainel")
 public class ControladorPainelADM implements Serializable {
     
     /*

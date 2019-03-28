@@ -26,20 +26,24 @@ public class Gerador extends PessoaJuridica {
     public Gerador(){
         super();
         estoques = new ArrayList();
+        negociacoes = new ArrayList();
     }
     
     public List<Material> listaDeMaterialQuePodeAdicionar(){
-        List<Material> listaDeMaterialGerador = new ArrayList();
-        int count = 0;
-        for(EstoqueGerador estoqueGerador : estoques){
-            Material obj = (Material) estoques.get(count).getEstoque().getMaterial();     
-            listaDeMaterialGerador.add(obj);
-            count++;
-        }
         DAO<Material> dao = new DAO(new Material());
-        List<Material> listaDeMaterialConsolidada = (List<Material>) dao.obterLista();
-        listaDeMaterialConsolidada.removeAll(listaDeMaterialGerador);
-        return listaDeMaterialConsolidada;
+        if(estoques != null && estoques.size() > 0){
+            List<Material> listaDeMaterialGerador = new ArrayList();
+            int count = 0;
+            for(EstoqueGerador estoqueGerador : estoques){
+                Material obj = (Material) estoques.get(count).getEstoque().getMaterial();     
+                listaDeMaterialGerador.add(obj);
+                count++;
+            }
+            List<Material> listaDeMaterialConsolidada = (List<Material>) dao.obterLista();
+            listaDeMaterialConsolidada.removeAll(listaDeMaterialGerador);
+            return listaDeMaterialConsolidada;
+        }
+        return (List<Material>) dao.obterLista();
     }
     
     public void adicionarEstoqueGerador(EstoqueGerador obj){

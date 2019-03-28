@@ -19,9 +19,9 @@ and open the template in the editor.
         <ui:include src="/WEB-INF/menu_admin.xhtml" />
         
         <h:form prependId="false" style="margin-top: 4%;">
-            <p:tabView prependId="false"> 
+            <p:tabView prependId="false" > 
                 <p:tab title="Painel do Admin">
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="2" style="margin-top: 2%;">
                     <p:menu>
                         <p:submenu label="LISTAGENS" style="background-color: green; color: white;" icon="fa fa-database">
                             <p:menuitem value="Gerador" actionListener="#{controlePainel.mudarListagem(0)}" update="@form" icon="fa fa-user" />

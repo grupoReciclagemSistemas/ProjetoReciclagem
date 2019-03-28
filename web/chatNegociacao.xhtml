@@ -18,68 +18,72 @@ and open the template in the editor.
 
         <ui:include src="/WEB-INF/menu.xhtml" />
 
-        <h:form prependId="false">
-            <p:messages id="messages" showDetail="true"/>
-            
-        </h:form>
 
-        <h:form id="formReciclador" rendered="#{controladorNegociacao.negociacao != null and controladorLogado.recicladorLogado != null}" 
-                style="margin-top: 5%; margin-left: 15%; margin-right: 15%;" prependId="false">
-            <p:tabView id="tabViewReciclador" prependId="false"> 
-                <p:tab title="CHAT DE NEGOCIAÇÃO COM #{controladorNegociacao.negociacao.gerador.razaoSocial}">
-                    <p:dataTable id="dataListReciclador" value="#{controladorNegociacao.negociacao.chat.chatAplicacao}" var="msg" scrollable="true" scrollHeight="200" 
-                                 selection="#{controladorNegociacao.chatAplicacaoSelecionado}" selectionMode="single" rowKey="#{msg.idChatAplicacao}" lazy="true" >
-                        <p:column headerText="PESSOA" width="20%">               
-                            <p:outputLabel style="color: green; font-weight: bold;" value="#{msg.pessoa.razaoSocial}" />              
-                        </p:column>
-                        <p:column headerText="MENSAGEM" width="70%">
-                            <p:outputLabel value="#{msg.mensagem}" />
-                        </p:column>
-                        <p:column headerText="DATA/HORA" width="20%">
-                            <p:outputLabel value="#{msg.dataHora}" />
-                        </p:column>
-                    </p:dataTable>
-                    <p:inputTextarea id="novaMsg1" value="#{controladorNegociacao.novaMensagem}" style="margin-top: 2%; width: 100%;" rows="2">
+        <h:form prependId="false">
+            <p:panel header="CHAT" rendered="#{controladorLogado.recicladorLogado != null}"
+                     style="margin-left: 10%; margin-top: 5%; margin-right: 10%;">
+                <p:dataTable id="dataTableReciclador" value="#{controleChatLazyModel.model}" var="msg" lazy="true" paginator="true" rows="15"
+                             style="margin-top: 2%;" emptyMessage="Nenhuma mensagem ainda para este Chat!">
+                    <p:column headerText="REMETENTE" width="15%">
+                        <p:outputLabel value="#{controladorNegociacao.quemEnviouMsg(msg)}" />
+                    </p:column>
+
+                    <p:column headerText="MENSAGEM" width="20%">
+                        <p:outputLabel value="#{msg.mensagem}" />
+                    </p:column>
+
+                    <p:column headerText="DATA/HORA" width="10%">
+                        <p:outputLabel value="#{msg.dataHora}" />
+                    </p:column>
+                </p:dataTable>
+                    <p:inputTextarea id="novaMsg" value="#{controleChatLazyModel.novaMensagem}" 
+                                     style="margin-top: 2%; width: 100%; color: green; background-color: white;" rows="2" cols="5">
                         <p:ajax event="change" process="@this" />
                     </p:inputTextarea>
-                    
-                    <p:commandButton id="btn-enviar1" icon="fa fa-send" value="Enviar Mensagem" action="#{controladorNegociacao.adicionarNovaMensagemReciclador(controladorLogado.recicladorLogado)}"
-                                         style="margin-top: 2%; color: green; border-color: green;" update="tabViewReciclador" immediate="true"  />
-                    <p:commandButton id="btn-concluir1" icon="fa fa-check" value="Concluir Negociação" 
-                             style="margin-top: 2%; margin-left: 1%; color: blue; border-color: blue;" update="btn-enviar1, formReciclador, novaMsg1, messages" immediate="true"/>
-            <p:commandButton id="btn-cancelar1" icon="fa fa-remove" value="Encerrar Negociação" 
-                             style="margin-top: 2%; margin-left: 1%; color: red; border-color: red;" update="btn-enviar1, formReciclador, novaMsg1, messages" immediate="true"/>
-                </p:tab>            
-            </p:tabView>
-        </h:form>
+                
+                <f:facet name="footer">
+                <p:commandButton id="btn-enviar" icon="fa fa-send" value="Enviar Mensagem"
+                     action="#{controleChatLazyModel.adicionarNovaMensagemReciclador(controladorLogado.recicladorLogado)}"
+                     style="margin-top: 2%" update="dataTableReciclador, novaMsg" immediate="true"/>
+                
+                <p:commandButton id="btn-update" icon="fa fa-send" value="Atualizar Lista"
+                                 action="#{controleChatLazyModel.atualizarLista()}"
+                     style="margin-top: 2%; margin-left: 1%;" update="dataTableReciclador, novaMsg" immediate="true"/>
+                </f:facet>
+            </p:panel>
+            
+            <p:panel header="CHAT" rendered="#{controladorLogado.geradorLogado != null}"
+                     style="margin-left: 10%; margin-top: 5%; margin-right: 10%;">
+                <p:dataTable id="dataTableGerador" value="#{controleChatLazyModel.model}" var="msg2" lazy="true" paginator="true" rows="15"
+                             style="margin-top: 2%;" emptyMessage="Nenhuma mensagem ainda para este Chat!">
+                    <p:column headerText="REMETENTE" width="15%">
+                        <p:outputLabel value="#{controladorNegociacao.quemEnviouMsg(msg2)}" />
+                    </p:column>
 
-        <h:form  id="formGerador" rendered="#{controladorNegociacao.negociacao != null and controladorLogado.geradorLogado != null}" 
-                 style="margin-top: 5%; margin-left: 15%; margin-right: 15%;" prependId="false">
-            <p:tabView id="tabViewGerador" prependId="false">
-                <p:tab title="CHAT DE NEGOCIAÇÃO COM #{controladorNegociacao.negociacao.reciclador.razaoSocial}">
-            <p:dataTable id="dataListGerador" value="#{controladorNegociacao.negociacao.chat.chatAplicacao}" var="msg" scrollable="true" scrollHeight="200">
-                <p:column headerText="PESSOA" width="20%">               
-                            <p:outputLabel style="color: green; font-weight: bold;" value="#{msg.pessoa.razaoSocial}" />              
-                        </p:column>
-                        <p:column headerText="MENSAGEM" width="70%">
-                            <p:outputLabel value="#{msg.mensagem}" />
-                        </p:column>
-                        <p:column headerText="DATA/HORA" width="20%">
-                            <p:outputLabel value="#{msg.dataHora}" />
-                        </p:column>
-            </p:dataTable>
-            <p:inputTextarea id="novaMsg2" value="#{controladorNegociacao.novaMensagem}" style="margin-top: 2%; width: 100%;" rows="2">
+                    <p:column headerText="MENSAGEM" width="20%">
+                        <p:outputLabel value="#{msg2.mensagem}" />
+                    </p:column>
+
+                    <p:column headerText="DATA/HORA" width="10%">
+                        <p:outputLabel value="#{msg2.dataHora}" />
+                    </p:column>
+                </p:dataTable>
+                   <p:inputTextarea id="novaMsg2" value="#{controleChatLazyModel.novaMensagem}" 
+                                     style="margin-top: 2%; width: 100%; color: green; background-color: white;" rows="2" cols="5">
                         <p:ajax event="change" process="@this" />
-             </p:inputTextarea>
-
-            <p:commandButton id="btn-enviar2" icon="fa fa-send" value="Enviar Mensagem" action="#{controladorNegociacao.adicionarNovaMensagemGerador(controladorLogado.geradorLogado)}"
-                             style="margin-top: 2%; color: green; border-color: green;" update="tabViewGerador" immediate="true"/>
-            <p:commandButton id="btn-concluir2" icon="fa fa-check" value="Concluir Negociação"
-                             style="margin-top: 2%; margin-left: 1%; color: blue; border-color: blue;" update="btn-enviar2, formGerador, novaMsg2, messages" immediate="true"/>
-            <p:commandButton id="btn-cancelar2" icon="fa fa-remove" value="Encerrar Negociação" 
-                             style="margin-top: 2%; margin-left: 1%; color: red; border-color: red;" update="btn-enviar2, formGerador, novaMsg2, messages" immediate="true"/>
-                </p:tab>
-            </p:tabView>
+                    </p:inputTextarea>
+                
+                <f:facet name="footer">
+                <p:commandButton id="btn-enviar2" icon="fa fa-send" value="Enviar Mensagem"
+                     action="#{controleChatLazyModel.adicionarNovaMensagemGerador(controladorLogado.geradorLogado)}"
+                     style="margin-top: 2%" update="dataTableGerador, novaMsg2" immediate="true"/>
+                
+                <p:commandButton id="btn-update2" icon="fa fa-send" value="Atualizar Lista"
+                                 action="#{controleChatLazyModel.atualizarLista()}"
+                     style="margin-top: 2%; margin-left: 1%;" update="dataTableGerador, novaMsg2" immediate="true"/>
+                </f:facet>
+            </p:panel>
         </h:form>
+        
     </h:body>
 </html>

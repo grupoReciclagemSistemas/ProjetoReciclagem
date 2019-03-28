@@ -6,6 +6,7 @@
 
 package br.com.granderio.appreciclagem.dao;
 
+import br.com.granderio.appreciclagem.model.Negociacao;
 import br.com.granderio.appreciclagem.model.PedidoReciclagem;
 import br.com.granderio.appreciclagem.model.Transportador;
 import br.com.granderio.appreciclagem.util.UtilError;
@@ -93,6 +94,26 @@ public class DAOPedidoReciclagem extends DAO<PedidoReciclagem> {
             s.flush();
         }
         return retorno;
+    }
+    
+    public boolean existeNegociacoes(PedidoReciclagem pedido){
+        List<Negociacao> retorno = null;
+          Query query = s.getNamedQuery("Negociacao.listarPorIdPedidoReciclagem");
+         try {
+            s.getTransaction().begin();  
+            retorno = query.setLong("id", pedido.getIdPedidoReciclagem()).list();
+        } catch (HibernateException ex) {
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros (lista): " + mensagem);
+            s.getTransaction().rollback();
+        } finally {
+            s.getTransaction().commit();
+            s.flush();
+        }
+        if(retorno.size() > 0)
+            return true;
+       
+        return false;
     }
       
 }

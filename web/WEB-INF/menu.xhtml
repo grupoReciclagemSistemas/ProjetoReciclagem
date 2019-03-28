@@ -217,11 +217,47 @@ and open the template in the editor.
  
             <b:navBar class="navbar" brand="Reclick" brandStyle="color: white; font-size: 18px; font-style: italic;" brand-img="resources/img/logo.png" brand-img-style="width: 35px; padding-right: 10px;" fixed="top" brandHref="index.xhtml">
                 <b:navbarLinks styleClass="navbar-right">
-                    <b:navCommandLink style="color: white;" value="Inicio" action="index?faces-redirect=true" />
-                    <b:navCommandLink style="color: white;" value="Sobre" action="index?faces-redirect=true" />
-                    <b:navCommandLink style="color: white;" value="Logar" action="#{controladorLogado.abrirPopupLogar()}" rendered="#{controladorLogado.verificarLogado() == false}"  />
-                    <b:navCommandLink style="color: white;" value="Sua Conta" action="minha_conta?faces-redirect=true" rendered="#{controladorLogado.verificarLogado() == true}"  />
-                    <b:navCommandLink style="color: white;" value="Materiais Vendendo" action="listaVenda_material?faces-redirect=true" />
+                    <b:navCommandLink style="color: white; font-weight: bold;" value="Inicio" action="index?faces-redirect=true" />
+                    <b:navCommandLink style="color: white; font-weight: bold;" value="Sobre" action="index?faces-redirect=true" />               
+                    <b:navCommandLink style="color: white; font-weight: bold;" value="Materiais Vendendo" action="listaVenda_material?faces-redirect=true" />
+                    
+                    <b:navCommandLink style="color: white; font-weight: bold;" value="LOGAR" 
+                                      action="#{controladorLogado.abrirPopupLogar()}" 
+                                      rendered="#{controladorLogado.verificarLogado() == false}"  />
+                    
+                    <b:dropMenu style="color: white; font-weight: bold;" value="#{controladorLogado.geradorLogado.razaoSocial}"
+                                rendered="#{controladorLogado.geradorLogado != null}">
+                        <center>
+                           <p:commandButton value="Sua Conta" icon="fa fa-user" action="minha_conta?faces-redirect=true" 
+                                            style="width: 90%;"/>
+                           
+                           <p:commandButton value="Deslogar" icon="fa fa-arrow-circle-left" action="#{controladorLogado.deslogar()}" 
+                                            style="width: 90%; margin-top: 1%;"/>
+                        </center>
+                    </b:dropMenu>
+                    
+                    <b:dropMenu style="color: white; font-weight: bold;" value="#{controladorLogado.recicladorLogado.razaoSocial}"
+                                rendered="#{controladorLogado.recicladorLogado != null}">
+                        <center>
+                           <p:commandButton value="Sua Conta" icon="fa fa-user" action="minha_conta?faces-redirect=true"
+                                            style="width: 90%;"/>
+                           
+                           <p:commandButton value="Deslogar" icon="fa fa-arrow-circle-left" action="#{controladorLogado.deslogar()}"  
+                                            style="width: 90%; margin-top: 1%;"/>
+                        </center>
+                    </b:dropMenu>
+                    
+                    <b:dropMenu style="color: white; font-weight: bold;" value="#{controladorLogado.transportadorLogado.razaoSocial}"
+                                rendered="#{controladorLogado.transportadorLogado != null}" >
+                        <center>
+                           <p:commandButton value="Sua Conta" icon="fa fa-user" action="minha_conta?faces-redirect=true"
+                                            style="width: 90%;"/>
+                           
+                           <p:commandButton value="Deslogar" icon="fa fa-arrow-circle-left" action="#{controladorLogado.deslogar()}" 
+                                            style="width: 90%; margin-top: 1%;"/>
+                        </center>
+                    </b:dropMenu>
+                    
                 </b:navbarLinks>
             </b:navBar>  
         </h:form>

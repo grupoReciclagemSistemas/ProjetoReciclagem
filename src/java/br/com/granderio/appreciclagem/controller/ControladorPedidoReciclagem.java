@@ -11,17 +11,15 @@ import br.com.granderio.appreciclagem.model.Material;
 import br.com.granderio.appreciclagem.model.PedidoReciclagem;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author Rafael
  */
-@ManagedBean
+@ManagedBean(name="controladorPedidoReciclagem")
 @SessionScoped
-@Named(value="controladorPedidoReciclagem")
 public class ControladorPedidoReciclagem extends ControladorPrincipal<PedidoReciclagem> {
     
     private  DAOPedidoReciclagem dao = new DAOPedidoReciclagem(new PedidoReciclagem());
@@ -29,10 +27,11 @@ public class ControladorPedidoReciclagem extends ControladorPrincipal<PedidoReci
     
     private Material materialFiltro;
     private boolean listarPorCidadeEndereco = false;
+    private String cidadeFiltro;
     
     public ControladorPedidoReciclagem(){
         super (new PedidoReciclagem());
-        this.updateList("");
+        this.updateList();
     }
     
     public List<PedidoReciclagem> listagemVendas(){
@@ -46,13 +45,13 @@ public class ControladorPedidoReciclagem extends ControladorPrincipal<PedidoReci
         return (List<PedidoReciclagem>) dao.executarConsultaPersonalizada(query);
     }
     
-    public void updateList(String cidade){
-        if(materialFiltro != null && listarPorCidadeEndereco){
-            pedidosVendendo = getDao().listarPorCidadeMaterial(cidade, materialFiltro.getIdMaterial());
-        }else if(materialFiltro != null && (!listarPorCidadeEndereco)){
+    public void updateList(){
+        if(materialFiltro != null && cidadeFiltro != null && cidadeFiltro.length() > 5){
+            pedidosVendendo = getDao().listarPorCidadeMaterial(cidadeFiltro, materialFiltro.getIdMaterial());
+        }else if(materialFiltro != null && cidadeFiltro == null){
             pedidosVendendo = getDao().listarPorMaterial(materialFiltro.getIdMaterial());
-        }else if(materialFiltro == null && listarPorCidadeEndereco){
-            pedidosVendendo = getDao().listarPorCidade(cidade);
+        }else if(materialFiltro == null && cidadeFiltro != null){
+            pedidosVendendo = getDao().listarPorCidade(cidadeFiltro);
         }else{
             pedidosVendendo = getDao().listarTodos();
         }
@@ -113,6 +112,20 @@ public class ControladorPedidoReciclagem extends ControladorPrincipal<PedidoReci
      */
     public void setDao(DAOPedidoReciclagem dao) {
         this.dao = dao;
+    }
+
+    /**
+     * @return the cidadeFiltro
+     */
+    public String getCidadeFiltro() {
+        return cidadeFiltro;
+    }
+
+    /**
+     * @param cidadeFiltro the cidadeFiltro to set
+     */
+    public void setCidadeFiltro(String cidadeFiltro) {
+        this.cidadeFiltro = cidadeFiltro;
     }
     
 }

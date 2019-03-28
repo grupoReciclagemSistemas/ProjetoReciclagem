@@ -8,8 +8,14 @@ package br.com.granderio.appreciclagem.filter;
 
 import br.com.granderio.appreciclagem.controller.ControladorLogado;
 import br.com.granderio.appreciclagem.model.Administrador;
+import br.com.granderio.appreciclagem.model.Gerador;
+import br.com.granderio.appreciclagem.model.Reciclador;
+import br.com.granderio.appreciclagem.model.Transportador;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
+import javax.faces.context.FacesContext;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -20,6 +26,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -28,7 +35,7 @@ import javax.servlet.http.HttpSession;
  * rafaelnunes.inf@gmail.com
  * @programador Desenvolvedor Java 
  */
-@WebFilter(urlPatterns="/admin/")
+@WebFilter(urlPatterns="/*")
 public class FiltroSeguranca implements Filter {
 
     @Override
@@ -45,34 +52,38 @@ public class FiltroSeguranca implements Filter {
         String urlPadrao = httpRequest.getContextPath();      
         //URL Completa
         String urlCompleta = httpRequest.getRequestURL().toString();
-      
-        ControladorLogado controleLogin = (ControladorLogado) session.getAttribute("controladorLogado");
         
-//        if(urlCompleta.contains("/admin/index") || urlCompleta.contains("/admin/legislacao") || urlCompleta.contains("/admin/material") || 
-//                urlCompleta.contains("admin/materialLegislacao")){
-//            if(controleLogin == null  ){
-//                httpResponse.sendRedirect(urlPadrao + "/admin/logar.xhtml");
-//            } else if(controleLogin.getAdminLogado() == null){
-//                httpResponse.sendRedirect(urlPadrao + "/admin/logar.xhtml");
-//            }
-//        }
-//        
-//        if(urlCompleta.contains("/minha_conta.xhtml")){
-//            if(controleLogin == null  ){
-//                httpResponse.sendRedirect(urlPadrao + "/index.xhtml");
-//            } else if(controleLogin.getGeradorLogado() == null && controleLogin.getRecicladorLogado() == null && controleLogin.getTransportadorLogado() == null){
-//                    httpResponse.sendRedirect(urlPadrao + "/index.xhtml");
-//            }
-//        }
-//        
-//        if(urlCompleta.contains("/registrar.xhtml")){
-//            if(controleLogin != null){
-//                if(controleLogin.getGeradorLogado() != null || controleLogin.getRecicladorLogado() != null || controleLogin.getTransportadorLogado() != null)
-//                    httpResponse.sendRedirect(urlPadrao + "/minha_conta.xhtml");
-//            }
-//        }
+        Administrador adminLogado = (Administrador) session.getAttribute("adminLogado");
+        Gerador geradorLogado = (Gerador) session.getAttribute("geradorLogado");
+        Reciclador recicladorLogado = (Reciclador) session.getAttribute("recicladorLogado");
+        Transportador transportadorLogado = (Transportador) session.getAttribute("transportadorLogado");
+        
+ 
+        if(urlCompleta.contains("/admin/index") || urlCompleta.contains("/admin/legislacao") || urlCompleta.contains("/admin/material") || 
+                urlCompleta.contains("admin/materialLegislacao")){
+            if(adminLogado == null  ){
+                httpResponse.sendRedirect(urlPadrao + "/admin/logar.xhtml");
+            }else{
+                Date dataAtual = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy hh:MM:ss");
+                System.out.println("Admin " + adminLogado.getNome() + " validado com sucesso em: " + sdf.format(dataAtual));
+            }
+        }
+        
+        if(urlCompleta.contains("/minha_conta.xhtml")){
+            if(geradorLogado == null && recicladorLogado == null && transportadorLogado == null){
+                httpResponse.sendRedirect(urlPadrao + "/index.xhtml");
+            }
+        }
+        
+        if(urlCompleta.contains("/registrar.xhtml")){
+            if(geradorLogado != null || recicladorLogado != null || transportadorLogado != null){
+                httpResponse.sendRedirect(urlPadrao + "/minha_conta.xhtml");
+            } 
+        }
+        
         //Faz o Filtro
-//        chain.doFilter(request, response);
+        chain.doFilter(request, response);
     }
 
     @Override

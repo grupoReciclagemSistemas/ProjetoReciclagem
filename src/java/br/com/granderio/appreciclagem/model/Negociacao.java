@@ -14,12 +14,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @programador Feito por Rafael Nunes - rafaelnunes.inf@gmail.com
  */
+
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Negociacao.listarPorIdPedidoReciclagem", 
+            query="SELECT n FROM Negociacao n inner join n.gerador inner join n.reciclador inner join n.chat inner join n.pedido WHERE "
+                    + "n.pedido.idPedidoReciclagem = :id"),
+    @NamedQuery(name="Negociacao.listarPorPedidoReciclador", 
+            query="SELECT n FROM Negociacao n inner join n.gerador inner join n.reciclador inner join n.chat inner join n.pedido WHERE "
+                    + "n.pedido.idPedidoReciclagem = :id AND n.gerador.idPessoaJuridica = :idReciclador")
+})
 public class Negociacao implements Serializable {
     
     @Id

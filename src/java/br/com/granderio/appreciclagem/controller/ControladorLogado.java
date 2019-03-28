@@ -15,24 +15,25 @@ import br.com.granderio.appreciclagem.model.Estoque;
 import br.com.granderio.appreciclagem.model.EstoqueGerador;
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Material;
+import br.com.granderio.appreciclagem.model.Negociacao;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.model.Transportador;
 import br.com.granderio.appreciclagem.util.UtilMensagens;
+import java.io.IOException;
 import java.io.Serializable;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author Rafael
  */
-@ManagedBean
+@ManagedBean(name="controladorLogado")
 @SessionScoped
-@Named(value = "controladorLogado")
 public class ControladorLogado implements Serializable {
 
     private Reciclador recicladorLogado = null;
@@ -62,6 +63,12 @@ public class ControladorLogado implements Serializable {
       tipoLogin = 1;
       login = "";
       senhaAdmin="";
+      email = "";
+      senha = "";
+    }
+    
+    public void listenerIrNegociar(Negociacao negociacao){
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("idChat", negociacao.getChat().getIdChat());
     }
     
     public void setarEstoqueGerador(EstoqueGerador obj){
@@ -90,6 +97,7 @@ public class ControladorLogado implements Serializable {
         DAOAdministrador dao = new DAOAdministrador(new Administrador());
         try{
             adminLogado = dao.logarAdmin(login, senhaAdmin);
+            setAttribute("adminLogado", adminLogado);
             return "index?faces-redirect=true";
         }catch(Exception e){
             UtilMensagens.mensagemError(e.getMessage());
@@ -98,11 +106,15 @@ public class ControladorLogado implements Serializable {
         return "";
     }
     
-    public String voltarInicio(){
+    public void voltarInicio(){
         login = null;
         senha = null;
         adminLogado = null;
-        return "../index?faces-redirect=true";
+        try{
+        FacesContext.getCurrentInstance().getExternalContext().redirect("../index.xhtml");
+        }catch(IOException e){
+            System.out.println("Error: "+ e.getMessage());
+        }
     }
     
     public void cancelar(){
@@ -155,6 +167,7 @@ public class ControladorLogado implements Serializable {
         DAOReciclador acesso = new DAOReciclador(recicladorLogado);
         try{
             recicladorLogado = acesso.logarReciclador(email, senha);
+            setAttribute("recicladorLogado", recicladorLogado);
         }catch(Exception e){
             System.out.println("Error: " + e.getMessage());
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Email/Senha inválidos!");
@@ -164,7 +177,6 @@ public class ControladorLogado implements Serializable {
         }
         email = "";
         senha = "";
-        tipoLogin = 1;
         return "minha_conta?faces-redirect=true";
     }
 
@@ -172,6 +184,7 @@ public class ControladorLogado implements Serializable {
         DAOGerador acesso = new DAOGerador(geradorLogado);
         try{
             geradorLogado = acesso.logarGerador(email, senha);
+            setAttribute("geradorLogado", geradorLogado);
         }catch(Exception e){
             System.out.println("Error: " + e.getMessage());
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Email/Senha inválidos!");
@@ -189,6 +202,7 @@ public class ControladorLogado implements Serializable {
         DAOTransportador acesso = new DAOTransportador(transportadorLogado);
         try{
             transportadorLogado = acesso.logarTransportador(email, senha);
+             setAttribute("transportadorLogado", transportadorLogado);
         }catch(Exception e){
             System.out.println("Error: " + e.getMessage());
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Email/Senha inválidos!");
@@ -207,6 +221,9 @@ public class ControladorLogado implements Serializable {
         geradorLogado = null;
         transportadorLogado = null;
         tipoLogin = 1;
+        setAttribute("transportadorLogado", null);
+        setAttribute("recicladorLogado", null);
+        setAttribute("geradorLogado", null);
         return "index?faces-redirect=true";
     }
 
@@ -332,6 +349,8 @@ public class ControladorLogado implements Serializable {
      */
     public void setTipoLogin(int tipoLogin) {
         this.tipoLogin = tipoLogin;
+        email = "";
+        senha = "";      
     }
 
     /**
@@ -430,6 +449,27 @@ public class ControladorLogado implements Serializable {
      */
     public void setSenhaAdmin(String senhaAdmin) {
         this.senhaAdmin = senhaAdmin;
+    }
+    
+    private ExternalContext currentExternalContext(){
+         if (FacesContext.getCurrentInstance() == null){
+             System.out.println("O contexto atual é nulo!");
+             return null;
+         }else{
+             return FacesContext.getCurrentInstance().getExternalContext();
+         }
+    }
+
+    public Object getAttribute(String nome) {
+        return currentExternalContext().getSessionMap().get(nome);
+    }
+
+    public void setAttribute(String nome, Object valor) {
+        currentExternalContext().getSessionMap().put(nome, valor);
+    }
+    
+    public void encerrarSessao(){   
+         currentExternalContext().invalidateSession();
     }
 
 }

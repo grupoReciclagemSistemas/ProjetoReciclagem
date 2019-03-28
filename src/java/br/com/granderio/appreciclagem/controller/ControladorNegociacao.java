@@ -7,25 +7,21 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
-import br.com.granderio.appreciclagem.model.Chat;
 import br.com.granderio.appreciclagem.model.ChatAplicacao;
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Negociacao;
-import br.com.granderio.appreciclagem.model.PessoaJuridica;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.util.UtilMensagens;
 import java.util.Date;
-import javax.annotation.ManagedBean;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @programador Feito por Rafael Nunes - rafaelnunes.inf@gmail.com
  */
-@ManagedBean
-@javax.enterprise.context.SessionScoped
-@Named(value="controladorNegociacao")
+@ManagedBean(name="controladorNegociacao")
+@SessionScoped
 public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
     
     private Negociacao negociacao;
@@ -41,9 +37,20 @@ public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
     }
     
     public void updateNegociacao(){
+        try{
         DAO<ChatAplicacao> acesso = new DAO(new ChatAplicacao());
         negociacao.getChat().setChatAplicacao(acesso.buscarMensagensChat(negociacao.getChat()));
+        }catch(Exception e){
+            UtilMensagens.mensagemError(e.getMessage());
+        }
      }
+    
+    public String quemEnviouMsg(ChatAplicacao chatAplica){
+        if(chatAplica.getGerador() != null){
+            return chatAplica.getGerador().getRazaoSocial();
+        }
+        return chatAplica.getReciclador().getRazaoSocial();
+    }
     /**
      * @return the negociacao
      */
@@ -147,6 +154,11 @@ public class ControladorNegociacao extends ControladorPrincipal<Negociacao> {
      */
     public void setChatAplicacaoSelecionado(ChatAplicacao chatAplicacaoSelecionado) {
         this.chatAplicacaoSelecionado = chatAplicacaoSelecionado;
+    }
+    
+    public void excluirNegociacao(Negociacao neg){
+        DAO<Negociacao> dao = new DAO<Negociacao>(neg);
+        dao.excluir();
     }
     
     

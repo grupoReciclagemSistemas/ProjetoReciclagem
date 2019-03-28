@@ -7,6 +7,7 @@
 package br.com.granderio.appreciclagem.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -34,6 +35,10 @@ public class Chat implements Serializable {
    //Chat ficará vinculado a negociação entre gerador e reciclador
    @OneToOne
    private Negociacao negociacao;
+   
+   public Chat(){
+       chatAplicacao = new ArrayList<>();
+   }
    
     public void adicionarChatAplica(ChatAplicacao e){
         chatAplicacao.add(e);

@@ -7,27 +7,23 @@ package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.dao.DAOReciclador;
-import br.com.granderio.appreciclagem.model.Chat;
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Negociacao;
 import br.com.granderio.appreciclagem.model.PedidoReciclagem;
 import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.util.UtilMensagens;
 import java.util.List;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author Rafael
  */
-@ManagedBean
+@ManagedBean(name="controladorReciclador")
 @SessionScoped
-@Named(value="controladorReciclador")
 public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
          
     private Reciclador recicladorSelecionado;
@@ -37,12 +33,12 @@ public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
         
     }
    
-    public void entrarEmNegociacao(PedidoReciclagem pedido, Reciclador recicladorLogado){
+    public String entrarEmNegociacao(PedidoReciclagem pedido, Reciclador recicladorLogado){
         DAOReciclador dao = new DAOReciclador(recicladorLogado);
 //        boolean negociacaoExiste = dao.verificarNegociacaoSeExiste(pedido, recicladorLogado);
 //        if(negociacaoExiste){
 //            UtilMensagens.mensagemAdvertencia("Você já está em Negociação para este pedido.");
-//            return;
+//            return "";
 //        }
         Negociacao neg = new Negociacao(pedido, recicladorLogado, pedido.getGerador());
         
@@ -60,6 +56,7 @@ public class ControladorReciclador extends ControladorPrincipal<Reciclador> {
         // Atualiza o Gerador 
         DAO<Gerador> daoGerador = new DAO(pedido.getGerador());
         daoGerador.alterar();
+        return "minha_conta?faces-redirec=true";
     }
     
       public void onDoubleClick(SelectEvent event){

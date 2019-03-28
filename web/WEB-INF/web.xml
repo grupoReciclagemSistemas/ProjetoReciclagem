@@ -34,7 +34,7 @@
     
     <context-param>  
         <param-name>primefaces.THEME</param-name>  
-        <param-value>bootstrap</param-value>  
+        <param-value>theme-reciclagem-green</param-value>  
     </context-param>
 
 </web-app>

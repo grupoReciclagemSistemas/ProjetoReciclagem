@@ -11,9 +11,8 @@ import br.com.granderio.appreciclagem.util.UtilMensagens;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -22,9 +21,8 @@ import org.primefaces.event.UnselectEvent;
  *
  * @author Rafael
  */
-@ManagedBean
+@ManagedBean(name="controladorMaterial")
 @SessionScoped
-@Named(value="controladorMaterial")
 public class ControladorMaterial extends ControladorPrincipal<Material> {
     
     private Material novoMaterial;

@@ -26,7 +26,6 @@ public class Consulta {
          retorno.setBairro(result.getBairro());
          retorno.setCep(cep);
          retorno.setCidade(result.getCidade());
-         retorno.setComplemento(result.getComplemento2());
          retorno.setLogradouro(result.getEnd());
          retorno.setUf(result.getUf());
          return retorno;

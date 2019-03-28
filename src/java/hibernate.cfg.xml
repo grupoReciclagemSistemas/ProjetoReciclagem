@@ -52,6 +52,7 @@ Contributor(s):
     <property name="hibernate.current_session_context_class">
     org.hibernate.context.internal.ThreadLocalSessionContext
     </property>
+    <property name="hibernate.transaction.flush_before_completion">false</property>
     <mapping class="br.com.granderio.appreciclagem.model.Gerador"/>
     <mapping class="br.com.granderio.appreciclagem.model.PessoaJuridica"/>
     <mapping class="br.com.granderio.appreciclagem.model.Reciclador"/>

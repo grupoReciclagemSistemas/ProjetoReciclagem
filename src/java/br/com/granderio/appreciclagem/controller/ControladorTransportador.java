@@ -9,9 +9,8 @@ import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.Transportador;
 import java.util.List;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -19,9 +18,8 @@ import org.primefaces.event.UnselectEvent;
  *
  * @author Rafael
  */
-@ManagedBean
+@ManagedBean(name="controladorTransportador")
 @SessionScoped
-@Named(value="controladorTransportador")
 public class ControladorTransportador extends ControladorPrincipal<Transportador> {
     
     private Transportador transportadorSelecionado;

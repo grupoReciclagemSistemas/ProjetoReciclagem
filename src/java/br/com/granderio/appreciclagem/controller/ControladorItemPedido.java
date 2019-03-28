@@ -6,17 +6,15 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.model.ItemPedido;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author Rafael
  */
-@ManagedBean
+@ManagedBean(name="controladorItemPedido")
 @SessionScoped
-@Named(value="controladorItemPedido")
 public class ControladorItemPedido extends ControladorPrincipal<ItemPedido> {
     
     public ControladorItemPedido() {

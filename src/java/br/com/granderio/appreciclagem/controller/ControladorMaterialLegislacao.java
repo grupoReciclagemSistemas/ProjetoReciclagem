@@ -7,17 +7,15 @@
 package br.com.granderio.appreciclagem.controller;
 
 import br.com.granderio.appreciclagem.model.MaterialLegislacao;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @programador Feito por Rafael Nunes - rafaelnunes.inf@gmail.com
  */
-@ManagedBean
+@ManagedBean(name="controladorMaterialLegi")
 @SessionScoped
-@Named(value="controladorMaterialLegi")
 public class ControladorMaterialLegislacao extends ControladorPrincipal<MaterialLegislacao> {
     
     public ControladorMaterialLegislacao(){

@@ -8,6 +8,7 @@ package br.com.granderio.appreciclagem.dao;
 
 import br.com.granderio.appreciclagem.model.Gerador;
 import br.com.granderio.appreciclagem.model.PedidoReciclagem;
+import br.com.granderio.appreciclagem.model.Reciclador;
 import br.com.granderio.appreciclagem.util.UtilError;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -62,5 +63,26 @@ public class DAOGerador extends DAOPessoaJuridica {
         }
         return list;
     }
+    
+    public Gerador buscarGerador(long id){
+         List<Gerador> list = null;
+         try{
+             s.getTransaction().begin();
+             Criteria criteria = s.createCriteria(Gerador.class);
+             criteria.add(Restrictions.eq("idPessoaJuridica", id));
+             list = criteria.list();
+             s.getTransaction().commit();
+         }catch(HibernateException ex){
+             String mensagem = UtilError.getMensagemErro(ex);
+             System.err.println("Erro ao logar: " + mensagem);
+             s.getTransaction().rollback();
+         }finally{
+             s.flush(); 
+         }       
+         if(list.size() > 0 )
+             return list.get(0);
+         
+         return null;
+     }
    
 }

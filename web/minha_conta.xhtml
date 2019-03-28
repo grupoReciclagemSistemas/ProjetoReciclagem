@@ -20,29 +20,37 @@ and open the template in the editor.
             <h:form prependId="false" style="margin-top: 1%;">
                 <p:tabView id="tabViewGerador" prependId="false" rendered="#{controladorLogado.geradorLogado != null}" style="margin-top: 5%;">
                     <p:tab title="DADOS GERAIS">
-                        <p:panel style="width: 100%;">
+                        <p:panel style="width: 100%; margin-top: 2%;">
                             <p:panelGrid columns="2" style="width: 100%;">
                                 <p:outputLabel value="EMAIL"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.email}" style="width: 100%;" />                         
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.email}" 
+                                             style="width: 100%; background-color: white; color: green;" />                         
                                 <p:outputLabel value="CNPJ" />
-                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.cnpj}" style="width: 100%;" />
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.cnpj}" 
+                                             style="width: 100%; background-color: white; color: green;" />
                                 <p:outputLabel value="TELEFONE" />
-                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.telefone}" style="width: 100%;" /> 
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.telefone}"
+                                             style="width: 100%; background-color: white; color: green;" /> 
                                 <p:outputLabel value="LOGRADOURO"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.logradouro}" style="width: 100%;" />
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.logradouro}" 
+                                             style="width: 100%; background-color: white; color: green;" />
                                 <p:outputLabel value="CEP"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.cep}" style="width: 100%;" />
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.cep}" 
+                                             style="width: 100%; background-color: white; color: green;" />
                                 <p:outputLabel value="CIDADE"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.cidade}" style="width: 100%;" />
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.cidade}" 
+                                             style="width: 100%; background-color: white; color: green;" />
                                 <p:outputLabel value="UF"/>
-                                <p:inputText readonly="true"  value="#{controladorLogado.geradorLogado.endereco.uf}" style="width: 100%;" />
+                                <p:inputText readonly="true"  value="#{controladorLogado.geradorLogado.endereco.uf}" 
+                                             style="width: 100%; background-color: white; color: green;" />
                                 <p:outputLabel value="BAIRRO"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.bairro}" style="width: 100%;" />
+                                <p:inputText readonly="true" value="#{controladorLogado.geradorLogado.endereco.bairro}" 
+                                             style="width: 100%; background-color: white; color: green;" />
                             </p:panelGrid>
                         </p:panel>
                     </p:tab>
                     <p:tab title="ESTOQUE">
-                        <p:dataTable var="estoque" value="#{controladorLogado.geradorLogado.estoques}" style="width: 100%;"
+                        <p:dataTable var="estoque" value="#{controladorLogado.geradorLogado.estoques}" style="width: 100%; margin-top: 2%;"
                                      emptyMessage="Nenhum Material no seu Estoque encontrado!">
                             <p:column headerText="MATERIAL">
                                 <p:outputLabel value="#{estoque.estoque.material.nome}" />
@@ -50,9 +58,13 @@ and open the template in the editor.
                             <p:column headerText="QUANTIDADE">
                                 <p:outputLabel value="#{estoque.estoque.quantidadeMaterial} KG"  />
                             </p:column>
+                            
+                            <p:column headerText="ADICIONAR QUANTIDADE">
+                                <p:commandButton value="Adicionar" icon="fa fa-plus-circle" action="#{controladorGerador.abrirModalAdicionarQuantidade(estoque)}" />
+                            </p:column>
                             <p:column headerText="VENDER">
                                 <p:commandButton value="Vender" icon="fa fa-money" action="#{controladorGerador.abrirModalVender(estoque)}" />
-                            </p:column>
+                            </p:column>                
                             <f:facet name="footer">
                                 <p:commandButton value="Adicionar Novo Material" action="#{controladorGerador.abrirModalNovoEstoque()}" />                                                                        
                         </f:facet>
@@ -60,7 +72,7 @@ and open the template in the editor.
 
                     </p:tab>
                     <p:tab title="NEGOCIAÇÕES">
-                        <p:dataTable var="negociacao" value="#{controladorLogado.geradorLogado.negociacoes}" style="width: 100%;"
+                        <p:dataTable id="negociacoesGerador" var="negociacao" value="#{controladorLogado.geradorLogado.negociacoes}" style="width: 100%; margin-top: 2%;"
                                      emptyMessage="Nenhuma negociação encontrada!">
                             <p:column headerText="MATERIAL"> 
                                 <p:outputLabel value="#{negociacao.pedido.item.material.nome}" />
@@ -72,14 +84,19 @@ and open the template in the editor.
                                 <p:outputLabel value="R$ #{negociacao.pedido.valorTotal}" />
                             </p:column>
                             <p:column headerText="CHAT">
-                                <p:commandButton value="Ir para o Chat" action="chatNegociacao?faces-redirect=true"
-                                                 actionListener="#{controladorNegociacao.listenerIrNegociar(negociacao)}" />
+                                <p:commandButton value="Ir para o Chat" action="chatNegociacao?faces-redirect=true" 
+                                                 actionListener="#{controladorLogado.listenerIrNegociar(negociacao)}" immediate="true" />
+                            </p:column >
+                            <p:column headerText="EXCLUIR">
+                                <p:commandButton value="Excluir" icon="fa fa-remove" action="#{controladorNegociacao.excluirNegociacao(negociacao)}"
+                                                 update="negociacoesGerador, messages" />
                             </p:column>
                         </p:dataTable>
                     </p:tab>
                     
                     <p:tab title="SEUS PEDIDOS ">
-                            <p:dataTable id="pedidosGerador" var="pedido" value="#{controladorGerador.pedidosGerador(controladorLogado.geradorLogado)}" style="width: 100%;"
+                            <p:dataTable id="pedidosGerador" var="pedido" value="#{controladorGerador.pedidosGerador(controladorLogado.geradorLogado)}" 
+                                     style="width: 100%; margin-top: 2%;"
                                      emptyMessage="Nenhuma negociação encontrada!">
                             <p:column headerText="MATERIAL"> 
                                 <p:outputLabel value="#{pedido.item.material.nome}" />
@@ -92,7 +109,7 @@ and open the template in the editor.
                             </p:column>
                                   <p:column headerText="CANCELAR"> 
                                       <p:commandButton action="#{controladorGerador.excluirPedidoReciclagem(pedido, controladorLogado.geradorLogado)}"
-                                                       update="pedidosGerador" value="Cancelar" icon="fa fa-remove"/>
+                                                       update="tabViewGerador, messages" value="Cancelar" icon="fa fa-remove"/>
                             </p:column>  
                         </p:dataTable>
                     </p:tab>
@@ -100,31 +117,38 @@ and open the template in the editor.
 
                 <p:tabView prependId="false" rendered="#{controladorLogado.recicladorLogado != null}" style="margin-left: 5%; margin-top: 5%;">
                     <p:tab title="DADOS GERAIS">
-                        <p:panel style="width: 100%;">
+                        <p:panel style="width: 100%; margin-top: 2%;">
                             <p:panelGrid columns="2" style="width: 100%;">
                                 <p:outputLabel value="EMAIL" style="width: 100%;"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.email}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.email}"
+                                             style="width: 100%; background-color: white; color: green;"/>
                                 <p:outputLabel value="CNPJ"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.cnpj}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.cnpj}"
+                                             style="width: 100%; background-color: white; color: green;"/>
                                 <p:outputLabel value="TELEFONE"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.telefone}" /> 
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.telefone}"
+                                             style="width: 100%; background-color: white; color: green;"/> 
                                 <p:outputLabel value="LOGRADOURO"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.logradouro}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.logradouro}" 
+                                             style="width: 100%; background-color: white; color: green;"/>
                                 <p:outputLabel value="CEP"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.cep}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.cep}"
+                                             style="width: 100%; background-color: white; color: green;"/>
                                 <p:outputLabel value="CIDADE"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.cidade}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.cidade}" 
+                                             style="width: 100%; background-color: white; color: green;" />
                                 <p:outputLabel value="UF"/>
-                                <p:inputText readonly="true"  value="#{controladorLogado.recicladorLogado.endereco.uf}" />
+                                <p:inputText readonly="true"  value="#{controladorLogado.recicladorLogado.endereco.uf}"
+                                             style="width: 100%; background-color: white; color: green;"/>
                                 <p:outputLabel value="BAIRRO"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.bairro}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.recicladorLogado.endereco.bairro}"
+                                             style="width: 100%; background-color: white; color: green;"/>
                             </p:panelGrid>
                         </p:panel>
                     </p:tab>
 
                     <p:tab title="NEGOCIAÇÕES">
-
-                        <p:dataTable var="negociacao" value="#{controladorLogado.recicladorLogado.negociacoes}" style="width: 100%;"
+                        <p:dataTable var="negociacao" value="#{controladorLogado.recicladorLogado.negociacoes}" style="width: 100%; margin-top: 2%;"
                                      emptyMessage="Nenhuma negociação encontrada!">
                             <p:column headerText="MATERIAL"> 
                                 <p:outputLabel value="#{negociacao.pedido.item.material.nome}" />
@@ -136,8 +160,8 @@ and open the template in the editor.
                                 <p:outputLabel value="R$ #{negociacao.pedido.valorTotal}" />
                             </p:column>
                             <p:column headerText="CHAT">
-                                <p:commandButton value="Ir para o Chat" action="chatNegociacao?faces-redirect=true"
-                                                 actionListener="#{controladorNegociacao.listenerIrNegociar(negociacao)}" />
+                                <p:commandButton value="Ir para o Chat" action="chatNegociacao?faces-redirect=true" 
+                                                 actionListener="#{controladorLogado.listenerIrNegociar(negociacao)}" immediate="true" />
                             </p:column>
                         </p:dataTable>
 
@@ -146,22 +170,29 @@ and open the template in the editor.
 
                 <p:tabView prependId="false" rendered="#{controladorLogado.transportadorLogado != null}" style="margin-left: 5%; margin-top: 5%;">
                     <p:tab title="DADOS GERAIS">
-                        <p:panel style="width: 100%;">
+                        <p:panel style="width: 100%; margin-top: 2%;">
                             <p:panelGrid columns="2" style="width: 100%;">
                                 <p:outputLabel value="CNPJ"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.cnpj}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.cnpj}"
+                                             style="width: 100%; background-color: white; color: green;"/>
                                 <p:outputLabel value="TELEFONE"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.telefone}" /> 
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.telefone}"
+                                             style="width: 100%; background-color: white; color: green;"/> 
                                 <p:outputLabel value="LOGRADOURO"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.logradouro}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.logradouro}"
+                                             style="width: 100%; background-color: white; color: green;"/>
                                 <p:outputLabel value="CEP"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.cep}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.cep}"
+                                             style="width: 100%; background-color: white; color: green;"/>
                                 <p:outputLabel value="CIDADE"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.cidade}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.cidade}"
+                                             style="width: 100%; background-color: white; color: green;"/>
                                 <p:outputLabel value="UF"/>
-                                <p:inputText readonly="true"  value="#{controladorLogado.transportadorLogado.endereco.uf}" />
+                                <p:inputText readonly="true"  value="#{controladorLogado.transportadorLogado.endereco.uf}" 
+                                             style="width: 100%; background-color: white; color: green;" />
                                 <p:outputLabel value="BAIRRO"/>
-                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.bairro}" />
+                                <p:inputText readonly="true" value="#{controladorLogado.transportadorLogado.endereco.bairro}"
+                                             style="width: 100%; background-color: white; color: green;" />
                             </p:panelGrid>
                         </p:panel>
                     </p:tab>
@@ -170,7 +201,7 @@ and open the template in the editor.
             </h:form>
         
         <h:form id="formInserirNovoEstoque" prependId="false">
-            <p:dialog id="modalNovoEstoque" widgetVar="varNovoEstoqueModal" closable="false" closeOnEscape="false" dynamic="true" responsive="true">
+            <p:dialog id="modalNovoEstoque" widgetVar="varNovoEstoqueModal" responsive="true">
                 <p:panel header="Inserir novo material em seu Estoque">
                     <h:panelGrid columns="2">
                         <p:outputLabel value="ESCOLHA UM MATERIAL:" />
@@ -215,6 +246,21 @@ and open the template in the editor.
                     <p:commandButton value="Cancelar" action="#{controladorGerador.cancelarVenda()}" immediate="true"/>
                 </f:facet>
             </p:dialog>
+</h:form>
+        
+        <h:form id="formAddQuantidade" prependId="false">
+            <p:dialog id="editarQuantidade" widgetVar="varAddQuantidade" header="Adicionar Quantidade do Estoque" 
+                      closable="false" draggable="false" rendered="#{controladorGerador.estoque != null}">
+                     <p:outputLabel value="Digite a quantidade que deseja incluir nesse Estoque de Material" style="font-size: 16px; margin-right: 5p;" />
+                     <p:inputNumber value="#{controladorGerador.quantidadeMais}" style="background-color: white; color: green; font-size: 16px;">
+                         <p:ajax event="change" process="@this" />
+                     </p:inputNumber>
+                     <f:facet name="footer">
+                        <p:commandButton value="Adicionar" action="#{controladorGerador.mudarQuantidadeTotal()}" icon="fa fa-plus-circle" style="margin-right: 4px;"
+                                         update="messages, tabViewGerador" immediate="true"/>
+                        <p:commandButton value="Cancelar" action="#{controladorGerador.cancelar()}" immediate="true" />
+                     </f:facet>
+             </p:dialog>
         </h:form>
     </h:body>
 </html>

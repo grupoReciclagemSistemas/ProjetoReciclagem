@@ -10,17 +10,15 @@ import br.com.granderio.appreciclagem.dao.DAO;
 import br.com.granderio.appreciclagem.model.Legislacao;
 import br.com.granderio.appreciclagem.model.MaterialLegislacao;
 import java.util.List;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @programador Feito por Rafael Nunes - rafaelnunes.inf@gmail.com
  */
-@ManagedBean
+@ManagedBean(name="controladorLegislacao")
 @SessionScoped
-@Named(value="controladorLegislacao")
 public class ControladorLegislacao extends ControladorPrincipal<Legislacao> {
     
     private Legislacao modelo2;

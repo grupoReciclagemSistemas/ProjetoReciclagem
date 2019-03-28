@@ -31,13 +31,17 @@ import br.com.granderio.appreciclagem.util.HibernateUtil;
 import br.com.granderio.appreciclagem.util.UtilError;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import javax.faces.context.FacesContext;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.primefaces.model.SortOrder;
 
 /**
  * Esta classe implementa um DAO (Data Access Object - Genérico) para conexão ao
@@ -122,14 +126,12 @@ public class DAO<T> {
             Criteria cri = s.createCriteria(Transportador.class);
             cri.add(Restrictions.eq("email", email));
             cri.add(Restrictions.eq("senha", senha));
-            quantidade = cri.list().size();          
+            quantidade = cri.list().size();
+            s.getTransaction().commit();
         }catch(HibernateException ex){
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao logar: " + mensagem);
             s.getTransaction().rollback();
-        }finally{
-            s.getTransaction().commit();
-            s.flush();
         }
         return quantidade;
     }
@@ -146,13 +148,11 @@ public class DAO<T> {
         try {      
             s.getTransaction().begin();
             s.save(getObjetoModelo());
+            s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao incluir registro: " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
     }
     
@@ -160,13 +160,11 @@ public class DAO<T> {
         try {
             s.getTransaction().begin();
             s.update(getObjetoModelo());
+            s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao incluir alterar: " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
     }
   
@@ -176,12 +174,10 @@ public class DAO<T> {
             s.getTransaction().begin();       
             Criteria cri = s.createCriteria(Material.class);
             lista = cri.list();
+            s.getTransaction().commit();
         }catch(HibernateException ex){
             System.err.println("Erro ao buscar lista de Material: " + ex);
             s.getTransaction().rollback();
-        }finally{
-           s.getTransaction().commit();
-           s.flush();
         }
         return lista.size();
     }
@@ -209,13 +205,11 @@ public class DAO<T> {
         try {      
             s.getTransaction().begin();
             s.delete(getObjetoModelo());
+             s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);       
             System.err.println("Erro ao excluir registro: " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
     }
     
@@ -269,15 +263,12 @@ public class DAO<T> {
             Criteria criteria = s.createCriteria(getObjetoModelo().getClass());
             criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
             list = criteria.list();
+             s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao buscar registros (lista): " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
-
         return list;
     }
 
@@ -285,13 +276,11 @@ public class DAO<T> {
         try {
             s.getTransaction().begin();
             s.load(getObjetoModelo(), id);
+            s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao buscar registro: " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
     }
     
@@ -302,13 +291,11 @@ public class DAO<T> {
             SQLQuery query = s.createSQLQuery(sql);
             query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
             data = query.list();
+            s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao buscar registros: " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
         return data;
     }
@@ -321,15 +308,12 @@ public class DAO<T> {
             criteria.add(Restrictions.isNull("transportador"));
             criteria.add(Restrictions.isNull("reciclador"));
             list = criteria.list();
+             s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao buscar registros (lista): " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
-
         return (List<PedidoReciclagem>) list;
     }
     
@@ -340,13 +324,30 @@ public class DAO<T> {
             Criteria criteria = s.createCriteria(ChatAplicacao.class);
             criteria.add(Restrictions.eq("idChatAplicacao", id));
             lista = criteria.list();
+            s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao buscar registros (lista): " + mensagem);
             s.getTransaction().rollback();
-        } finally {
+        }
+        if(lista.size() >0){
+            return lista.get(0);
+        }
+        return null;
+    }
+    
+    public Chat buscarChat(long idChat){
+      List<Chat> lista = new ArrayList();
+        try {
+            s.getTransaction().begin();
+            Criteria criteria = s.createCriteria(Chat.class);
+            criteria.add(Restrictions.eq("idChat", idChat));
+            lista = criteria.list();
             s.getTransaction().commit();
-            s.flush();
+        } catch (HibernateException ex) {
+            String mensagem = UtilError.getMensagemErro(ex);
+            System.err.println("Erro ao buscar registros (lista): " + mensagem);
+            s.getTransaction().rollback();
         }
         if(lista.size() >0){
             return lista.get(0);
@@ -361,13 +362,11 @@ public class DAO<T> {
             Criteria criteria = s.createCriteria(Material.class);
             criteria.add(Restrictions.eq("idMaterial", id));
             lista = criteria.list();
+            s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao buscar registros (lista): " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
         if(lista.size() >0){
             return lista.get(0);
@@ -376,23 +375,68 @@ public class DAO<T> {
     }
     
      public List<ChatAplicacao> buscarMensagensChat(Chat chat){
-      List<ChatAplicacao> lista = null;
-        try {
+        List<ChatAplicacao> lista = null;
+         try{
             s.getTransaction().begin();
             Criteria criteria = s.createCriteria(ChatAplicacao.class);
             criteria.add(Restrictions.eq("chat", chat));
             criteria.addOrder(Order.desc("idChatAplicacao"));
-            lista = criteria.list();
-        } catch (HibernateException ex) {
-            String mensagem = UtilError.getMensagemErro(ex);
-            System.err.println("Erro ao buscar registros (lista): " + mensagem);
-            s.getTransaction().rollback();
-        } finally {
+            lista = criteria.list();  
             s.getTransaction().commit();
-            s.flush();
-        }  
-        return lista;
+            return lista;
+        }catch(HibernateException e){
+             System.out.println("Error: " + e.getMessage());
+             s.getTransaction().rollback();
+             return null;
+        }
     }
+     
+     public List<ChatAplicacao> buscarLazyModelMensagens(int first, int max, String sortField, SortOrder sortOrder, Map<String, Object> filters){   
+        List<ChatAplicacao> lista = null;
+        long idChat = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("idChat");
+        Query query = null;
+         try{
+            s.getTransaction().begin();
+//            if(filters != null && filters.size() > 0){
+//                idChat = (long) filters.get("idChat");
+//                query = s.getNamedQuery("ChatAplica.buscarTodos").setLong("idChat", idChat);
+//            }else{
+//                query = s.getNamedQuery("ChatAplica.buscarTodos2");
+//            } 
+            query = s.getNamedQuery("ChatAplica.buscarTodos").setLong("idChat", idChat);
+            query.setFirstResult(first);
+            query.setMaxResults(max);
+            lista = query.list();
+            s.getTransaction().commit();
+            return lista;
+        }catch(HibernateException e){
+             System.out.println("Error: " + e.getMessage());
+             s.getTransaction().rollback();
+             return null;
+        }
+    }
+     
+     public int getChatAplicacaoTotalCount() {
+      List<ChatAplicacao> lista = null;
+      Query query = null;
+      long idChat = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("idChat");
+         try{
+            s.getTransaction().begin();
+//            if(idChat > 0){
+//                query = s.getNamedQuery("ChatAplica.buscarTodos").setLong("idChat", idChat);
+//            }else{
+//                query = s.getNamedQuery("ChatAplica.buscarTodos2");
+//            }
+            query = s.getNamedQuery("ChatAplica.buscarTodos").setLong("idChat", idChat);
+            lista = query.list();
+            s.getTransaction().commit();
+            return lista.size();
+        }catch(HibernateException e){
+             System.out.println("Error: " + e.getMessage());
+             s.getTransaction().rollback();
+             return 0;
+        }
+  }
     
     public Negociacao buscarNegociacao(long id){
         List<Negociacao> lista = new ArrayList();
@@ -401,13 +445,11 @@ public class DAO<T> {
             Criteria criteria = s.createCriteria(Negociacao.class);
             criteria.add(Restrictions.eq("idNegociacao", id));
             lista = criteria.list();
+            s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao buscar registros (lista): " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
         if(lista.size() >0){
             return lista.get(0);
@@ -419,14 +461,11 @@ public class DAO<T> {
         Query query = s.getNamedQuery(name);
          try {
             s.getTransaction().begin();
-            
+            s.getTransaction().commit();
         } catch (HibernateException ex) {
             String mensagem = UtilError.getMensagemErro(ex);
             System.err.println("Erro ao buscar registros (lista): " + mensagem);
             s.getTransaction().rollback();
-        } finally {
-            s.getTransaction().commit();
-            s.flush();
         }
         return null;
     }

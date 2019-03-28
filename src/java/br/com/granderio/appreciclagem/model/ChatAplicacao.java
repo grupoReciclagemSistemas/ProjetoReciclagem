@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -21,11 +23,15 @@ import javax.persistence.TemporalType;
  * @programador Feito por Rafael Nunes - rafaelnunes.inf@gmail.com
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name="ChatAplica.buscarTodos", query="SELECT c FROM ChatAplicacao c inner join c.chat WHERE c.chat.idChat = :idChat ORDER BY c.idChatAplicacao DESC"),
+    @NamedQuery(name="ChatAplica.buscarTodos2", query="SELECT c FROM ChatAplicacao c inner join c.chat ORDER BY c.idChatAplicacao DESC")
+})
 public class ChatAplicacao implements Serializable {
-    
+   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long idChatAplicacao;
+  private Long idChatAplicacao;
   
   
   //Mensagem que irá ser enviada
@@ -36,7 +42,10 @@ public class ChatAplicacao implements Serializable {
   private Chat chat;
   
   //Quem está enviando a mensagem (Reciclador ou Gerador)
+  @ManyToOne
   private Gerador gerador;
+  
+  @ManyToOne
   private Reciclador reciclador;
  
   //Data e Hora que a mensagem irá ser enviada
@@ -46,14 +55,14 @@ public class ChatAplicacao implements Serializable {
     /**
      * @return the idChatAplicacao
      */
-    public long getIdChatAplicacao() {
+    public Long getIdChatAplicacao() {
         return idChatAplicacao;
     }
 
     /**
      * @param idChatAplicacao the idChatAplicacao to set
      */
-    public void setIdChatAplicacao(long idChatAplicacao) {
+    public void setIdChatAplicacao(Long idChatAplicacao) {
         this.idChatAplicacao = idChatAplicacao;
     }
 

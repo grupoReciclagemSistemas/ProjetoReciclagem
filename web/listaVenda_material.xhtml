@@ -14,50 +14,94 @@ and open the template in the editor.
 
     <h:head>
         <title>Materiais a Venda</title>
+  
     </h:head>
 
     <h:body>
 
         <ui:include src="/WEB-INF/menu.xhtml" />
 
-        <h:form prependId="false" style="margin-top: 5%;">
-        <h:panelGrid columns="2" style="width: 100%;">
-            <p:panel header="Filtro" style="margin-left: 4%; width: 150%;" rendered="#{controladorLogado.recicladorLogado != null}">
-                <h:panelGrid columns="1">
-                <p:outputLabel value="MATERIAL:" />
-                <p:selectOneMenu value="#{controladorPedidoReciclagem.materialFiltro}" converter="materialConverter">
-                    <p:ajax event="change" />
-                    <f:selectItem itemLabel="-- SELECIONE -- " itemValue="#{null}"/>
-                    <f:selectItems value="#{controladorMaterial.lista()}" itemValue="#{mat}" var="mat" itemLabel="#{mat.nome}" />
-                </p:selectOneMenu>
-                </h:panelGrid>               
-                <p:commandButton icon="fa fa-search" style="width: 25%;" immediate="true"
-                                    action="#{controladorPedidoReciclagem.updateList(controladorLogado.recicladorLogado.endereco.cidade)}" update="dataListVendaMateriais" />
-                   
-                    <p:commandButton icon="fa fa-clear"  style="width: 25%;" />
-            </p:panel>
-         
-            <p:dataTable id="dataListVendaMateriais" var="pedido" value="#{controladorPedidoReciclagem.pedidosVendendo}"
-                         style="margin-left: 15%; width: 75%;" emptyMessage="Nenhum material vendendo!" >               
-                <p:column headerText="NOME DO MATERIAL">
-                    <h:outputText value="#{pedido.item.material.nome}" />
-                </p:column>
+        <h:form prependId="false" style="margin-top: 5%;" id="formGeral">
+<!--            <p:poll interval="3" listener="#{controladorPedidoReciclagem.updateList()}" update="formGeral" />-->
+            <p:tabView prependId="false">
+                <p:tab title="Materiais Vendendo">
+                    <h:panelGrid columns="2" style="width: 100%; margin-top: 2%;" rendered="#{controladorLogado.recicladorLogado != null}">
+                        <p:panel header="Filtros" style="margin-left: 4%; width: 150%; margin-top: 2%; font-size: 18px;">
+                            <h:panelGrid columns="1">
+                            <p:outputLabel value="MATERIAL:" style="font-size: 20px; color: green; float: left; font-weight: bold;" />
+                            <p:selectOneMenu value="#{controladorPedidoReciclagem.materialFiltro}" converter="materialConverter"
+                                             style="background-color: white; color: green; font-size: 14px; width: 100%;">
+                                <p:ajax event="change" />
+                                <f:selectItem itemLabel="-- SELECIONE -- " itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorMaterial.lista()}" itemValue="#{mat}" var="mat" itemLabel="#{mat.nome}" />
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="CIDADE:" style="font-size: 20px; color: green; float: left; font-weight: bold;" />
+                            <p:selectOneRadio value="#{controladorPedidoReciclagem.cidadeFiltro}" layout="grid" columns="1"
+                                              style="text-align: left;">
+                                <p:ajax event="change" />
+                                <f:selectItem itemLabel="Todas" itemValue="#{null}"  />
+                                <f:selectItem itemLabel="Sua Cidade" itemValue="#{controladorLogado.recicladorLogado.endereco.cidade}" />
+                                <f:selectItem itemLabel="Ordenar por Distancia" itemValue="#{null}" />
+                            </p:selectOneRadio>
+                            </h:panelGrid>  
+                            <f:facet name="footer">
+                            <p:commandButton icon="fa fa-search" value="Filtrar" style="text-align: center;" immediate="true"
+                                action="#{controladorPedidoReciclagem.updateList()}" update="dataListVendaMateriais" />
 
-                <p:column headerText="VALOR DO PEDIDO">
-                    <h:outputText value="R$ #{pedido.valorTotal}" />
-                </p:column>
+                            <p:commandButton icon="fa fa-remove"  value="Limpar"  style="text-align: center;" />
+                            </f:facet>
+                        </p:panel>
 
-                <p:column headerText="PESO TOTAL (KG)">
-                    <h:outputText value="#{pedido.item.quantidade}" />
-                </p:column>
+                        <p:dataTable id="dataListVendaMateriais" var="pedido" value="#{controladorPedidoReciclagem.pedidosVendendo}"
+                                     style="margin-left: 10%; width: 85%;" emptyMessage="Nenhum material vendendo!" >               
+                            <p:column headerText="NOME DO MATERIAL" style="font-size: 16px;">
+                                <h:outputText value="#{pedido.item.material.nome}" />
+                            </p:column>
 
-                <p:column headerText="CIDADE DO GERADOR">
-                    <h:outputText value="#{pedido.gerador.endereco.cidade}" />
-                </p:column>
-               
-            </p:dataTable>
-            
-        </h:panelGrid>
-  </h:form>
+                            <p:column headerText="VALOR DO PEDIDO" style="font-size: 16px;">
+                                <h:outputText value="R$ #{pedido.valorTotal}" />
+                            </p:column>
+
+                            <p:column headerText="PESO TOTAL (KG)" style="font-size: 16px;">
+                                <h:outputText value="#{pedido.item.quantidade}" />
+                            </p:column>
+
+                            <p:column headerText="CIDADE DO GERADOR" style="font-size: 16px;">
+                                <h:outputText value="#{pedido.gerador.endereco.cidade}" />
+                            </p:column>
+                            <p:column headerText="NEGOCIAR" style="font-size: 16px;">
+                                <p:commandButton icon="fa fa-money" value="Negociar" immediate="true" update="messages"
+                                                 action="#{controladorReciclador.entrarEmNegociacao(pedido, controladorLogado.recicladorLogado)}" />
+                            </p:column>
+                        </p:dataTable>
+                        
+                    </h:panelGrid>
+                    
+                     <h:panelGrid columns="2" style="width: 100%;" rendered="#{controladorLogado.recicladorLogado == null}">
+ 
+                        <p:dataTable id="dataListVendaMateriais2" var="pedido" value="#{controladorPedidoReciclagem.pedidosVendendo}"
+                                     style=" margin-left: 4%; width: 95%; margin-top: 2%;" emptyMessage="Nenhum material vendendo!" >               
+                            <p:column headerText="NOME DO MATERIAL" width="150px;" style="font-size: 16px;">
+                                <h:outputText value="#{pedido.item.material.nome}" />
+                            </p:column>
+
+                            <p:column headerText="VALOR DO PEDIDO" width="150px;" style="font-size: 16px;">
+                                <h:outputText value="R$ #{pedido.valorTotal}" />
+                            </p:column>
+
+                            <p:column headerText="PESO TOTAL (KG)" width="150px;" style="font-size: 16px;">
+                                <h:outputText value="#{pedido.item.quantidade}" />
+                            </p:column>
+
+                            <p:column headerText="CIDADE DO GERADOR" width="150px;" style="font-size: 16px;">
+                                <h:outputText value="#{pedido.gerador.endereco.cidade}" />
+                            </p:column>              
+                        </p:dataTable>
+                        
+                    </h:panelGrid>
+                </p:tab>
+            </p:tabView>
+        </h:form>
     </h:body>
 </html>
